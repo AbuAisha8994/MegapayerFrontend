@@ -1,0 +1,9 @@
+Create the following image files in this directory:
+- blockchain.webp
+- social-media.webp
+- p2p.webp
+- dex.webp
+- wallet.webp
+- stablecoin.webp
+
+These should be 400x200px (or larger) images that represent each product.

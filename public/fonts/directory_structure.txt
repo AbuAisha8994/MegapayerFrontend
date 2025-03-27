@@ -1,0 +1,4 @@
+Place the following font file here:
+- Inter-Bold.woff
+
+You can download Inter font from https://fonts.google.com/specimen/Inter or https://github.com/rsms/inter

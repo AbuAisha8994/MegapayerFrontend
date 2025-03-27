@@ -1,0 +1,333 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 10, 10, 20;
+  --background-end-rgb: 5, 5, 15;
+  --primary-color: #4f46e5;
+  --primary-dark: #3730a3;
+  --primary-light: #818cf8;
+  --secondary-color: #10b981;
+  --accent-color: #f59e0b;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: 
+    radial-gradient(circle at 70% 10%, rgba(79, 70, 229, 0.3), transparent 25%),
+    radial-gradient(circle at 30% 45%, rgba(16, 185, 129, 0.25), transparent 30%),
+    radial-gradient(circle at 80% 80%, rgba(245, 158, 11, 0.25), transparent 30%),
+    linear-gradient(
+      to bottom,
+      rgb(var(--background-start-rgb)),
+      rgb(var(--background-end-rgb))
+    )
+    fixed;
+  font-family: 'Inter', sans-serif;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Cosmic background elements */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+    radial-gradient(circle at 85% 85%, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+  background-size: 60px 60px;
+  background-position: 0 0;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Star-like dots for cosmic effect */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    radial-gradient(rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.2) 1px, transparent 1px),
+    radial-gradient(rgba(255, 255, 255, 0.1) 1px, transparent 1px);
+  background-size: 200px 200px, 100px 100px, 50px 50px;
+  background-position: 0 0, 25px 25px, 12px 12px;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* Improve scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--primary-dark);
+}
+
+/* Enhanced Animations */
+@layer components {
+  .animate-pulse-slow {
+    animation: pulse 3s cubic-bezier(0.4, 0.6, 1) infinite;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-10px); }
+  }
+  
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+  
+  .animate-glow {
+    animation: glow 2s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 5px #fff, 0 0 10px #fff, 0 0 15px var(--primary-color), 0 0 20px var(--primary-color);
+    }
+    to {
+      text-shadow: 0 0 10px #fff, 0 0 20px #fff, 0 0 30px var(--primary-color), 0 0 40px var(--primary-color);
+    }
+  }
+
+  .animate-cosmic-pulse {
+    animation: cosmicPulse 5s ease-in-out infinite alternate;
+  }
+  
+  @keyframes cosmicPulse {
+    0% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.05); opacity: 1; }
+    100% { transform: scale(1); opacity: 0.7; }
+  }
+  
+  .animate-shimmer {
+    background: linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0) 0%,
+      rgba(255, 255, 255, 0.1) 50%,
+      rgba(255, 255, 255, 0) 100%
+    );
+    background-size: 200% 100%;
+    animation: shimmer 2s infinite;
+  }
+  
+  @keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+  }
+
+  .glass-card {
+    @apply backdrop-blur-lg bg-white/5 border border-white/10 rounded-xl shadow-xl;
+  }
+
+  .neo-brutalism {
+    @apply bg-primary border-2 border-white shadow-[5px_5px_0px_0px_rgba(255,255,255,0.8)] hover:shadow-[8px_8px_0px_0px_rgba(255,255,255,0.8)] hover:-translate-x-1 hover:-translate-y-1 transition-all;
+  }
+
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-400 to-primary-light;
+  }
+  
+  .text-gradient-gold {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-amber-300 via-yellow-500 to-amber-300;
+  }
+
+  .hero-gradient {
+    @apply absolute inset-0 bg-gradient-to-b from-transparent via-dark/70 to-dark;
+  }
+  
+  .cosmic-border {
+    @apply relative border border-white/10 overflow-hidden;
+  }
+  
+  .cosmic-border::after {
+    @apply content-[''] absolute inset-0 opacity-50;
+    background: linear-gradient(90deg, transparent, rgba(79, 70, 229, 0.5), transparent);
+    transform: translateX(-100%);
+    animation: cosmic-border 3s infinite;
+  }
+  
+  @keyframes cosmic-border {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  
+  /* Mobile menu animation */
+  @keyframes slideDown {
+    from { height: 0; opacity: 0; }
+    to { height: var(--menu-height); opacity: 1; }
+  }
+  
+  .mobile-menu-enter {
+    animation: slideDown 0.3s ease forwards;
+  }
+  
+  /* Background gradients for product pages */
+  .bg-gradient-radial {
+    background: radial-gradient(circle, var(--gradient-start) 0%, var(--gradient-end) 100%);
+  }
+  
+  /* Enhanced button styles */
+  .btn-primary {
+    @apply bg-primary text-white font-bold py-3 px-6 rounded-lg hover:bg-primary-dark focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-dark transition-all shadow-lg shadow-primary/20;
+  }
+  
+  .btn-secondary {
+    @apply bg-transparent border-2 border-white/20 text-white font-bold py-3 px-6 rounded-lg hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-white/30 focus:ring-offset-2 focus:ring-offset-dark transition-all;
+  }
+  
+  /* Responsive typography helpers */
+  .heading-xl {
+    @apply text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight;
+  }
+  
+  .heading-lg {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight;
+  }
+  
+  .heading-md {
+    @apply text-2xl md:text-3xl lg:text-4xl font-bold tracking-tight;
+  }
+}
+
+/* Better content styling */
+.content-overlay {
+  @apply relative z-10 bg-black/30 backdrop-blur-sm p-8 rounded-xl border border-white/10;
+}
+
+.hover-card {
+  @apply transition-all duration-300 hover:shadow-lg hover:shadow-primary/20 hover:-translate-y-1;
+}
+
+/* Improved typography */
+h1, h2, h3, h4, h5, h6 {
+  @apply font-bold tracking-tight;
+}
+
+h1 {
+  @apply text-4xl md:text-6xl lg:text-7xl;
+}
+
+h2 {
+  @apply text-3xl md:text-4xl lg:text-5xl;
+}
+
+/* Add more responsive utility classes */
+.bg-gradient-radial {
+  background-image: radial-gradient(var(--tw-gradient-stops));
+}
+
+/* Multi-chain animations */
+@keyframes moveRightToLeft {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(200%); }
+}
+
+@keyframes moveTopToBottom {
+  0% { transform: translateY(0%); }
+  100% { transform: translateY(200%); }
+}
+
+/* Responsive container for 3D elements */
+.canvas-container {
+  @apply w-full h-full min-h-[400px] lg:min-h-[500px];
+}
+
+/* Whitepaper styles */
+.whitepaper-content h1 {
+  font-size: 2.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.whitepaper-content h2 {
+  font-size: 2rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+  font-weight: 700;
+}
+
+.whitepaper-content h3 {
+  font-size: 1.5rem;
+  margin-top: 1.25rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+}
+
+.whitepaper-content p {
+  margin-bottom: 1rem;
+}
+
+.whitepaper-content ul {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.whitepaper-content ol {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.whitepaper-content li {
+  margin-bottom: 0.5rem;
+}
+
+.whitepaper-content code {
+  font-family: monospace;
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 0.2rem 0.4rem;
+  border-radius: 0.25rem;
+}
+
+.whitepaper-content pre {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
+}
+
+.whitepaper-content blockquote {
+  border-left: 4px solid #4f46e5;
+  padding-left: 1rem;
+  margin-left: 0;
+  margin-right: 0;
+  font-style: italic;
+}
+
+.whitepaper-content a {
+  color: #4f46e5;
+  text-decoration: underline;
+}
+
+.whitepaper-content a:hover {
+  color: #818cf8;
+}

@@ -1,0 +1,10 @@
+# robots.txt for Megapayer Website - 2025
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://megapayer.com/sitemap.xml
+
+# Disallow sensitive directories
+Disallow: /api/
+Disallow: /admin/
