@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [hoveredLink, setHoveredLink] = useState<string | null>(null);
   const router = useRouter();
 
   // Handle scroll effects
@@ -45,9 +46,10 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Fixed Logo */}
+          {/* Logo with enhanced hover effects */}
           <Link href="/" className="flex items-center group">
             <div className="relative h-10 w-40 overflow-visible">
+<<<<<<< HEAD
               {/* Cosmic background effects */}
               <div className="absolute -inset-1 bg-gradient-to-r from-primary via-violet-500 to-secondary opacity-75 blur-md rounded-full group-hover:opacity-100 transition-opacity duration-700"></div>
 
@@ -55,6 +57,15 @@ const Navbar = () => {
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
                 <motion.div
                   className="absolute w-1.5 h-1.5 rounded-full bg-primary"
+=======
+              {/* Enhanced cosmic background effects */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-violet-500 to-secondary opacity-75 blur-md rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"></div>
+
+              {/* Enhanced orbiting particles */}
+              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
+                <motion.div
+                  className="absolute w-1.5 h-1.5 rounded-full bg-primary group-hover:w-2 group-hover:h-2 transition-all"
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                   animate={{
                     x: [0, 10, 0, -10, 0],
                     y: [0, -10, 0, 10, 0],
@@ -66,7 +77,11 @@ const Navbar = () => {
                   }}
                 />
                 <motion.div
+<<<<<<< HEAD
                   className="absolute w-1 h-1 rounded-full bg-secondary"
+=======
+                  className="absolute w-1 h-1 rounded-full bg-secondary group-hover:w-1.5 group-hover:h-1.5 transition-all"
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                   animate={{
                     x: [0, -15, 0, 15, 0],
                     y: [0, 5, 0, -5, 0],
@@ -76,20 +91,51 @@ const Navbar = () => {
                     repeat: Infinity,
                     ease: "easeInOut",
                     delay: 0.5,
+<<<<<<< HEAD
+=======
+                  }}
+                />
+                {/* New particle appears on hover */}
+                <motion.div
+                  className="absolute w-0 h-0 opacity-0 group-hover:w-2 group-hover:h-2 group-hover:opacity-100 rounded-full bg-cyan-400 transition-all duration-300"
+                  animate={{
+                    x: [5, 15, 5, -5, 5],
+                    y: [5, -5, 15, 5, 5],
+                  }}
+                  transition={{
+                    duration: 7,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 0.2,
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                   }}
                 />
               </div>
 
+<<<<<<< HEAD
               {/* Logo content - Fixed to show all text clearly */}
+=======
+              {/* Logo content with enhanced hover effects */}
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
               <div className="absolute inset-0 flex items-center">
-                <div className="relative flex items-center bg-dark/70 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10 shadow-lg shadow-primary/20 group-hover:border-primary/30 transition-all duration-300">
-                  {/* M symbol with cosmic effect */}
+                <div className="relative flex items-center bg-dark/70 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10 shadow-lg shadow-primary/20 group-hover:border-primary/50 group-hover:shadow-xl group-hover:shadow-primary/30 transition-all duration-300">
+                  {/* M symbol with enhanced cosmic effect */}
                   <div className="relative mr-2">
+<<<<<<< HEAD
                     <span className="text-3xl font-black text-white">M</span>
 
                     {/* Glowing dot */}
                     <motion.div
                       className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full"
+=======
+                    <span className="text-3xl font-black text-white group-hover:text-primary transition-colors duration-300">
+                      M
+                    </span>
+
+                    {/* Enhanced glowing dot */}
+                    <motion.div
+                      className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full group-hover:scale-150"
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                       animate={{
                         opacity: [1, 0.3, 1],
                         scale: [1, 1.3, 1],
@@ -101,9 +147,13 @@ const Navbar = () => {
                       }}
                     />
 
+<<<<<<< HEAD
                     {/* Light rays */}
+=======
+                    {/* Enhanced light rays */}
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                     <motion.div
-                      className="absolute -inset-1 bg-primary/20 rounded-full blur-sm"
+                      className="absolute -inset-1 bg-primary/20 rounded-full blur-sm group-hover:bg-primary/40 group-hover:blur-md"
                       animate={{
                         opacity: [0.3, 0.8, 0.3],
                       }}
@@ -115,27 +165,39 @@ const Navbar = () => {
                     />
                   </div>
 
+<<<<<<< HEAD
                   {/* EGAPAYER text - Fixed visibility */}
+=======
+                  {/* EGAPAYER text with hover effect */}
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                   <div className="flex items-center">
-                    <span className="text-lg font-bold tracking-wider text-white">
+                    <span className="text-lg font-bold tracking-wider text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-secondary transition-all duration-300">
                       EGAPAYER
                     </span>
-                    {/* 2025 badge removed */}
                   </div>
                 </div>
               </div>
             </div>
           </Link>
 
+<<<<<<< HEAD
           {/* Desktop navigation */}
           <nav className="hidden lg:flex items-center space-x-1">
             {navigationLinks.map((link) => {
               const isActive = router.pathname === link.href;
+=======
+          {/* Desktop navigation with enhanced hover effects */}
+          <nav className="hidden lg:flex items-center space-x-1">
+            {navigationLinks.map((link) => {
+              const isActive = router.pathname === link.href;
+              const isHovered = hoveredLink === link.name;
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
 
               return (
                 <Link
                   key={link.name}
                   href={link.href}
+<<<<<<< HEAD
                   className={`relative px-3 py-2 text-sm rounded-lg transition-all duration-300 ${
                     isActive
                       ? "text-white font-medium"
@@ -150,19 +212,59 @@ const Navbar = () => {
                       }`}
                     ></span>
                   </span>
+=======
+                  onMouseEnter={() => setHoveredLink(link.name)}
+                  onMouseLeave={() => setHoveredLink(null)}
+                  className={`relative px-3 py-2 text-sm rounded-lg transition-all duration-300 ${
+                    isActive
+                      ? "text-white font-medium"
+                      : "text-gray-300 hover:text-white"
+                  } hover:transform hover:scale-110`}
+                >
+                  {link.name}
+                  {(isActive || isHovered) && (
+                    <motion.div
+                      layoutId="navIndicator"
+                      className={`absolute inset-0 rounded-lg -z-10 ${
+                        isActive ? "bg-primary/10" : "bg-white/5"
+                      }`}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  )}
+                  {/* Enhanced hover effect - subtle glow */}
+                  {isHovered && !isActive && (
+                    <motion.div
+                      className="absolute inset-0 rounded-lg -z-20 opacity-70 blur-sm bg-gradient-to-r from-primary/30 to-secondary/30"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 0.7 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ duration: 0.2 }}
+                    />
+                  )}
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                 </Link>
               );
             })}
           </nav>
 
-          {/* Right side buttons */}
+          {/* Right side buttons with enhanced hover effects */}
           <div className="flex items-center space-x-4">
             <Link
               href="/whitepapers"
+<<<<<<< HEAD
               className="hidden md:flex items-center text-gray-300 hover:text-white text-sm transition-colors"
             >
               <svg
                 className="w-4 h-4 mr-1"
+=======
+              className="hidden md:flex items-center text-gray-300 hover:text-white text-sm transition-all hover:transform hover:scale-110 group"
+            >
+              <svg
+                className="w-4 h-4 mr-1 group-hover:text-primary transition-colors"
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
@@ -179,9 +281,26 @@ const Navbar = () => {
 
             <Link
               href="/enterprise/contact"
+<<<<<<< HEAD
               className="hidden sm:block text-sm px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark text-white transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transform hover:-translate-y-0.5"
+=======
+              className="hidden sm:block text-sm px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark text-white transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transform hover:-translate-y-1 hover:scale-105 relative overflow-hidden group"
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
             >
-              Enterprise
+              <span className="relative z-10">Enterprise</span>
+              {/* Dynamic hover glow effect */}
+              <motion.div
+                className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-white/20"
+                animate={{
+                  opacity: [0, 0.5, 0],
+                  scale: [1, 1.1, 1],
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut",
+                }}
+              />
             </Link>
 
             <button
@@ -215,7 +334,11 @@ const Navbar = () => {
         </div>
       </div>
 
+<<<<<<< HEAD
       {/* Mobile menu */}
+=======
+      {/* Mobile menu with enhanced hover effects */}
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
       <AnimatePresence>
         {isMobileMenuOpen && (
           <motion.div
@@ -236,13 +359,36 @@ const Navbar = () => {
                       <Link
                         key={link.name}
                         href={link.href}
+<<<<<<< HEAD
                         className={`px-4 py-3 rounded-lg transition-all duration-300 ${
                           isActive
                             ? "bg-primary/20 text-white font-medium"
                             : "text-gray-300 hover:bg-white/10 hover:text-white hover:translate-x-1"
+=======
+                        className={`px-4 py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] ${
+                          isActive
+                            ? "bg-primary/20 text-white font-medium"
+                            : "text-gray-300 hover:bg-gradient-to-r hover:from-white/5 hover:to-primary/10 hover:text-white"
+>>>>>>> f80b70851eae3841a9d00de1549af7cbff653315
                         }`}
                       >
-                        {link.name}
+                        <div className="flex justify-between items-center">
+                          <span>{link.name}</span>
+                          <motion.svg
+                            className="w-4 h-4 opacity-0 transition-opacity"
+                            whileHover={{ opacity: 1 }}
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M9 5l7 7-7 7"
+                            />
+                          </motion.svg>
+                        </div>
                       </Link>
                     );
                   })}
