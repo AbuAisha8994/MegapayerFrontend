@@ -331,7 +331,7 @@ const HeroBanner = () => {
             className="mb-6 drop-shadow-2xl"
           >
             <span className="block text-gradient-gold mb-2 text-xl md:text-2xl shadow-lg">
-              2025 - Next Generation Defi
+              2025 - Next Generation Blockchaın
             </span>
             <span
               className="text-7xl md:text-8xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
