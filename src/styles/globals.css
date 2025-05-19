@@ -16,7 +16,14 @@
   --accent-color: #f59e0b;
 }
 
-html {
+/* Fix for background extension */
+html,
+body {
+  min-height: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(5, 5, 15);
   scroll-behavior: smooth;
 }
 
@@ -46,6 +53,11 @@ body {
   font-family: "Inter", sans-serif;
   position: relative;
   overflow-x: hidden;
+}
+
+/* Next.js app wrapper - ensure full height */
+#__next {
+  min-height: 100%;
 }
 
 /* Cosmic background elements */

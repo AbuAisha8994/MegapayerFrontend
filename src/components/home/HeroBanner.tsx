@@ -331,7 +331,7 @@ const HeroBanner = () => {
             className="mb-6 drop-shadow-2xl"
           >
             <span className="block text-gradient-gold mb-2 text-xl md:text-2xl shadow-lg">
-              2025 - Next Generation Blockchaın
+              Fair Future, Together
             </span>
             <span
               className="text-7xl md:text-8xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
@@ -356,8 +356,8 @@ const HeroBanner = () => {
             transition={{ duration: 0.8, delay: 0.4 }}
             className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto drop-shadow-lg"
           >
-            The next generation blockchain ecosystem powering the future of
-            decentralized finance
+            Building the future of the internet, together. Your partner for a
+            community-driven, transparent, and fair Web3 experience.
           </motion.p>
 
           <motion.div
