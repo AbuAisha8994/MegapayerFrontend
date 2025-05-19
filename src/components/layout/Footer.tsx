@@ -11,12 +11,8 @@ const Footer = () => {
           {/* Logo & About */}
           <div className="md:col-span-1">
             <Link href="/" className="block mb-4">
-              <div className="text-2xl font-bold flex items-center">
-                <div className="relative mr-2">
-                  <span className="text-3xl text-white">M</span>
-                  <div className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full"></div>
-                </div>
-                <span className="text-white">EGAPAYER</span>
+              <div className="font-['Public_Sans'] tracking-wider text-2xl font-bold">
+                <span className="text-white">Megapayer</span>
               </div>
             </Link>
 

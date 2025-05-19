@@ -48,7 +48,7 @@ const Navbar = () => {
         <div className="flex justify-between items-center">
           {/* Logo with enhanced hover effects */}
           <Link href="/" className="flex items-center group">
-            <div className="relative h-10 w-40 overflow-visible">
+            <div className="relative h-[50px] w-[180px] overflow-visible">
               {/* Enhanced cosmic background effects */}
               <div className="absolute -inset-1 bg-gradient-to-r from-primary via-violet-500 to-secondary opacity-75 blur-md rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"></div>
 
@@ -95,49 +95,27 @@ const Navbar = () => {
                 />
               </div>
 
-              {/* Logo content with enhanced hover effects */}
+              {/* Logo content with updated font styling */}
               <div className="absolute inset-0 flex items-center">
-                <div className="relative flex items-center bg-dark/70 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10 shadow-lg shadow-primary/20 group-hover:border-primary/50 group-hover:shadow-xl group-hover:shadow-primary/30 transition-all duration-300">
-                  {/* M symbol with enhanced cosmic effect */}
-                  <div className="relative mr-2">
-                    <span className="text-3xl font-black text-white group-hover:text-primary transition-colors duration-300">
-                      M
-                    </span>
-
-                    {/* Enhanced glowing dot */}
-                    <motion.div
-                      className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full group-hover:scale-150"
-                      animate={{
-                        opacity: [1, 0.3, 1],
-                        scale: [1, 1.3, 1],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-
-                    {/* Enhanced light rays */}
-                    <motion.div
-                      className="absolute -inset-1 bg-primary/20 rounded-full blur-sm group-hover:bg-primary/40 group-hover:blur-md"
-                      animate={{
-                        opacity: [0.3, 0.8, 0.3],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
+                <div className="relative flex items-center bg-dark/70 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10 shadow-lg shadow-primary/20 group-hover:border-primary/50 group-hover:shadow-xl group-hover:shadow-primary/30 transition-all duration-300">
+                  {/* Updated logo text with proper capitalization and larger size */}
+                  <div className="font-['Public_Sans'] tracking-wider text-white group-hover:text-primary transition-colors duration-300">
+                    <span className="text-2xl font-black">Megapayer</span>
                   </div>
 
-                  {/* EGAPAYER text with hover effect */}
-                  <div className="flex items-center">
-                    <span className="text-lg font-bold tracking-wider text-white group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-primary group-hover:to-secondary transition-all duration-300">
-                      EGAPAYER
-                    </span>
-                  </div>
+                  {/* Enhanced glowing dot */}
+                  <motion.div
+                    className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full group-hover:scale-150"
+                    animate={{
+                      opacity: [1, 0.3, 1],
+                      scale: [1, 1.3, 1],
+                    }}
+                    transition={{
+                      duration: 3,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                    }}
+                  />
                 </div>
               </div>
             </div>
