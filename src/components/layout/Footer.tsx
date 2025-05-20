@@ -116,6 +116,30 @@ const Footer = () => {
                   Stablecoin
                 </Link>
               </li>
+              <li>
+                <Link
+                  href="/mpc-coin"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  MPC Coin
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/mpc-id"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  MPC ID
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/nft-marketplace"
+                  className="text-gray-400 hover:text-white transition-colors"
+                >
+                  NFT Marketplace
+                </Link>
+              </li>
             </ul>
           </div>
 

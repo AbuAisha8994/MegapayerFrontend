@@ -1,12 +1,33 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
+
+type DropdownState = {
+  [key: string]: boolean;
+};
+
+type SubmenuItem = {
+  name: string;
+  href: string;
+};
+
+type NavItem = {
+  name: string;
+  href: string;
+  submenu?: SubmenuItem[];
+  isExternal?: boolean;
+};
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hoveredLink, setHoveredLink] = useState<string | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState<DropdownState>({});
+  const [mobileSubmenuOpen, setMobileSubmenuOpen] = useState<DropdownState>({});
+  const [currentLanguage, setCurrentLanguage] = useState("English");
+  const [languageDropdownOpen, setLanguageDropdownOpen] = useState(false);
+  const dropdownRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
   const router = useRouter();
 
   // Handle scroll effects
@@ -16,10 +37,7 @@ const Navbar = () => {
     };
 
     window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   // Close mobile menu on route change
@@ -27,14 +45,135 @@ const Navbar = () => {
     setIsMobileMenuOpen(false);
   }, [router.pathname]);
 
-  const navigationLinks = [
-    { name: "Blockchain", href: "/blockchain" },
-    { name: "Social Media", href: "/social-media" },
-    { name: "P2P Exchange", href: "/p2p-exchange" },
-    { name: "DEX", href: "/dex" },
-    { name: "Wallet", href: "/wallet" },
-    { name: "Stablecoin", href: "/stablecoin" },
+  // Close dropdowns when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      // Close all dropdowns when clicking outside
+      Object.keys(dropdownOpen).forEach((key) => {
+        if (
+          dropdownOpen[key] &&
+          dropdownRef.current[key] &&
+          !dropdownRef.current[key]?.contains(event.target as Node)
+        ) {
+          setDropdownOpen((prev) => ({ ...prev, [key]: false }));
+        }
+      });
+
+      // Close language dropdown when clicking outside
+      if (languageDropdownOpen) {
+        const langDropdown = document.getElementById("language-dropdown");
+        if (langDropdown && !langDropdown.contains(event.target as Node)) {
+          setLanguageDropdownOpen(false);
+        }
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [dropdownOpen, languageDropdownOpen]);
+
+  const navigationLinks: NavItem[] = [
+    {
+      name: "Build",
+      href: "/build",
+      submenu: [
+        { name: "Start Building", href: "/build/start" },
+        { name: "MPC ID", href: "/build/mpc-id" },
+        { name: "Zenith", href: "/build/zenith" },
+        { name: "NFT Marketplace", href: "/build/nft" },
+      ],
+    },
+    {
+      name: "Solutions",
+      href: "/solutions",
+      submenu: [
+        { name: "DEX", href: "/dex" },
+        { name: "Wallet", href: "/wallet" },
+        { name: "P2P Exchange", href: "/p2p-exchange" },
+        { name: "Stablecoin", href: "/stablecoin" },
+        { name: "MPC Coin", href: "/solutions/mpc-coin" },
+      ],
+    },
+    {
+      name: "Developers",
+      href: "/developers",
+      submenu: [
+        { name: "SDK / API", href: "/developers/sdk" },
+        {
+          name: "GitHub",
+          href: "https://github.com/megapayer",
+          isExternal: true,
+        },
+        { name: "Testnet", href: "/developers/testnet" },
+        { name: "Explorer", href: "/developers/explorer" },
+        { name: "Bridge", href: "/developers/bridge" },
+      ],
+    },
+    {
+      name: "Community",
+      href: "/community",
+      submenu: [
+        {
+          name: "X (Twitter)",
+          href: "https://twitter.com/megapayer",
+          isExternal: true,
+        },
+        { name: "Telegram", href: "https://t.me/megapayer", isExternal: true },
+        {
+          name: "Discord",
+          href: "https://discord.gg/megapayer",
+          isExternal: true,
+        },
+        { name: "Airdrop", href: "/community/airdrop" },
+        { name: "Governance / DAO", href: "/community/governance" },
+      ],
+    },
+    {
+      name: "Docs",
+      href: "/docs",
+      submenu: [
+        { name: "Overview", href: "/docs/overview" },
+        { name: "Tokenomics", href: "/docs/tokenomics" },
+        { name: "Ecosystem Map", href: "/docs/ecosystem" },
+        { name: "Roadmap", href: "/docs/roadmap" },
+        { name: "Technical Documents", href: "/docs/technical" },
+        { name: "Whitepaper", href: "/docs/whitepaper" },
+        { name: "Validator Guidelines", href: "/docs/validator-guidelines" },
+        { name: "Fatwa", href: "/docs/fatwa" },
+      ],
+    },
+    {
+      name: "Blog",
+      href: "/blog",
+    },
   ];
+
+  const languages = [
+    { name: "English", code: "en" },
+    { name: "Türkçe", code: "tr" },
+    { name: "Özbekçe", code: "uz" },
+    { name: "Русский", code: "ru" },
+  ];
+
+  const handleToggleDropdown = (name: string) => {
+    setDropdownOpen((prev) => ({
+      ...Object.keys(prev).reduce((acc, key) => ({ ...acc, [key]: false }), {}),
+      [name]: !prev[name],
+    }));
+  };
+
+  const handleToggleMobileSubmenu = (name: string) => {
+    setMobileSubmenuOpen((prev) => ({
+      ...prev,
+      [name]: !prev[name],
+    }));
+  };
+
+  const handleLanguageChange = (language: string) => {
+    setCurrentLanguage(language);
+    setLanguageDropdownOpen(false);
+    // Here you would also implement the actual language change logic
+  };
 
   return (
     <header
@@ -45,12 +184,12 @@ const Navbar = () => {
       }`}
     >
       <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           {/* Logo with enhanced hover effects */}
-          <Link href="/" className="flex items-center group">
+          <Link href="/" className="flex items-center group flex-shrink-0">
             <div className="relative h-[50px] w-[180px] overflow-visible">
               {/* Enhanced cosmic background effects */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-violet-500 to-secondary opacity-75 blur-md rounded-full group-hover:opacity-100 group-hover:scale-110 transition-all duration-700"></div>
+              <div className="absolute -inset-0.5 bg-gradient-to-r from-primary/40 via-indigo-700/30 to-secondary/40 opacity-60 blur-sm rounded-full group-hover:opacity-80 group-hover:scale-105 transition-all duration-700"></div>
 
               {/* Enhanced orbiting particles */}
               <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
@@ -98,7 +237,6 @@ const Navbar = () => {
               {/* Logo content with updated font styling */}
               <div className="absolute inset-0 flex items-center">
                 <div className="relative flex items-center bg-dark/70 backdrop-blur-sm rounded-full px-4 py-2 border border-white/10 shadow-lg shadow-primary/20 group-hover:border-primary/50 group-hover:shadow-xl group-hover:shadow-primary/30 transition-all duration-300">
-                  {/* Updated logo text with proper capitalization and larger size */}
                   <div className="font-['Public_Sans'] tracking-wider text-white group-hover:text-primary transition-colors duration-300">
                     <span className="text-2xl font-black">Megapayer</span>
                   </div>
@@ -121,94 +259,196 @@ const Navbar = () => {
             </div>
           </Link>
 
-          {/* Desktop navigation with enhanced hover effects */}
-          <nav className="hidden lg:flex items-center space-x-1">
-            {navigationLinks.map((link) => {
-              const isActive = router.pathname === link.href;
-              const isHovered = hoveredLink === link.name;
+          {/* Desktop navigation with dropdown - Centered */}
+          <nav className="hidden lg:flex items-center justify-center flex-1">
+            <div className="flex items-center space-x-6">
+              {navigationLinks.map((link) => {
+                const hasSubmenu = link.submenu && link.submenu.length > 0;
 
-              return (
-                <Link
-                  key={link.name}
-                  href={link.href}
-                  onMouseEnter={() => setHoveredLink(link.name)}
-                  onMouseLeave={() => setHoveredLink(null)}
-                  className={`relative px-3 py-2 text-sm rounded-lg transition-all duration-300 ${
-                    isActive
-                      ? "text-white font-medium"
-                      : "text-gray-300 hover:text-white"
-                  } hover:transform hover:scale-110`}
-                >
-                  {link.name}
-                  {(isActive || isHovered) && (
-                    <motion.div
-                      layoutId="navIndicator"
-                      className={`absolute inset-0 rounded-lg -z-10 ${
-                        isActive ? "bg-primary/10" : "bg-white/5"
-                      }`}
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 1 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  )}
-                  {/* Enhanced hover effect - subtle glow */}
-                  {isHovered && !isActive && (
-                    <motion.div
-                      className="absolute inset-0 rounded-lg -z-20 opacity-70 blur-sm bg-gradient-to-r from-primary/30 to-secondary/30"
-                      initial={{ opacity: 0 }}
-                      animate={{ opacity: 0.7 }}
-                      exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    />
-                  )}
-                </Link>
-              );
-            })}
+                return (
+                  <div
+                    key={link.name}
+                    className="relative"
+                    ref={(el) => (dropdownRef.current[link.name] = el)}
+                  >
+                    <button
+                      onClick={() =>
+                        hasSubmenu && handleToggleDropdown(link.name)
+                      }
+                      onMouseEnter={() => setHoveredLink(link.name)}
+                      onMouseLeave={() => setHoveredLink(null)}
+                      className={`relative px-2 py-2 text-sm rounded-lg transition-all duration-300 ${
+                        router.pathname === link.href ||
+                        router.pathname.startsWith(link.href + "/")
+                          ? "text-white font-medium"
+                          : "text-gray-300 hover:text-white"
+                      } hover:transform hover:scale-105 flex items-center whitespace-nowrap`}
+                    >
+                      {link.name}
+                      {hasSubmenu && (
+                        <svg
+                          className={`ml-1 w-4 h-4 transition-transform ${
+                            dropdownOpen[link.name] ? "rotate-180" : ""
+                          }`}
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={2}
+                            d="M19 9l-7 7-7-7"
+                          />
+                        </svg>
+                      )}
+
+                      {/* Hover/Active indicator */}
+                      {(hoveredLink === link.name ||
+                        router.pathname === link.href ||
+                        router.pathname.startsWith(link.href + "/")) && (
+                        <motion.div
+                          layoutId="navIndicator"
+                          className={`absolute inset-0 rounded-lg -z-10 ${
+                            router.pathname === link.href ||
+                            router.pathname.startsWith(link.href + "/")
+                              ? "bg-primary/10"
+                              : "bg-white/5"
+                          }`}
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.2 }}
+                        />
+                      )}
+                    </button>
+
+                    {/* Dropdown menu */}
+                    {hasSubmenu && (
+                      <AnimatePresence>
+                        {dropdownOpen[link.name] && (
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            exit={{ opacity: 0, y: 10 }}
+                            transition={{ duration: 0.2 }}
+                            className="absolute left-0 mt-1 min-w-[200px] bg-dark/95 backdrop-blur-lg rounded-lg border border-white/10 shadow-xl z-50"
+                          >
+                            <div className="py-2">
+                              {link.submenu?.map((item) => (
+                                <Link
+                                  key={item.name}
+                                  href={item.href}
+                                  target={
+                                    item.isExternal ? "_blank" : undefined
+                                  }
+                                  rel={
+                                    item.isExternal
+                                      ? "noopener noreferrer"
+                                      : undefined
+                                  }
+                                  className="flex items-center px-4 py-2 text-sm text-gray-300 hover:bg-primary/10 hover:text-white transition-colors"
+                                >
+                                  {item.name}
+                                  {item.isExternal && (
+                                    <svg
+                                      className="w-3 h-3 ml-1"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      viewBox="0 0 24 24"
+                                    >
+                                      <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                      />
+                                    </svg>
+                                  )}
+                                </Link>
+                              ))}
+                            </div>
+                          </motion.div>
+                        )}
+                      </AnimatePresence>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
           </nav>
 
           {/* Right side buttons with enhanced hover effects */}
-          <div className="flex items-center space-x-4">
-            <Link
-              href="/whitepapers"
-              className="hidden md:flex items-center text-gray-300 hover:text-white text-sm transition-all hover:transform hover:scale-110 group"
-            >
-              <svg
-                className="w-4 h-4 mr-1 group-hover:text-primary transition-colors"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+          <div className="flex items-center space-x-4 flex-shrink-0">
+            {/* Language selector - Visible on desktop */}
+            <div className="relative hidden lg:block" id="language-dropdown">
+              <button
+                onClick={() => setLanguageDropdownOpen(!languageDropdownOpen)}
+                className="flex items-center text-sm text-gray-300 hover:text-white"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                />
-              </svg>
-              Whitepapers
-            </Link>
+                <span>{currentLanguage}</span>
+                <svg
+                  className={`ml-1 w-4 h-4 transition-transform ${
+                    languageDropdownOpen ? "rotate-180" : ""
+                  }`}
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M19 9l-7 7-7-7"
+                  />
+                </svg>
+              </button>
 
+              {/* Language dropdown menu */}
+              <AnimatePresence>
+                {languageDropdownOpen && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: 10 }}
+                    transition={{ duration: 0.2 }}
+                    className="absolute right-0 mt-2 w-36 bg-dark/95 backdrop-blur-lg rounded-lg border border-white/10 shadow-xl z-50 py-1"
+                  >
+                    {languages.map((lang) => (
+                      <button
+                        key={lang.code}
+                        onClick={() => handleLanguageChange(lang.name)}
+                        className={`block w-full text-left px-4 py-2 text-sm hover:bg-primary/10 transition-colors ${
+                          currentLanguage === lang.name
+                            ? "text-primary"
+                            : "text-gray-300"
+                        }`}
+                      >
+                        {lang.name}
+                      </button>
+                    ))}
+                  </motion.div>
+                )}
+              </AnimatePresence>
+            </div>
+
+            {/* Join Presale CTA - Desktop */}
             <Link
-              href="/enterprise/contact"
-              className="hidden sm:block text-sm px-4 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark text-white transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transform hover:-translate-y-1 hover:scale-105 relative overflow-hidden group"
+              href="/presale"
+              className="hidden lg:inline-block px-4 py-1.5 text-sm font-medium bg-gradient-to-r from-primary to-secondary text-white rounded-lg hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
             >
-              <span className="relative z-10">Enterprise</span>
-              {/* Dynamic hover glow effect */}
-              <motion.div
-                className="absolute inset-0 opacity-0 group-hover:opacity-100 bg-white/20"
-                animate={{
-                  opacity: [0, 0.5, 0],
-                  scale: [1, 1.1, 1],
-                }}
-                transition={{
-                  duration: 1.5,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-              />
+              Join Presale
             </Link>
 
+            {/* Join Presale CTA - Mobile */}
+            <Link
+              href="/presale"
+              className="sm:hidden px-4 py-1.5 text-sm font-medium bg-gradient-to-r from-primary to-secondary text-white rounded-lg"
+            >
+              Join Presale
+            </Link>
+
+            {/* Mobile menu button */}
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="lg:hidden text-white p-1 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary/50"
@@ -255,122 +495,114 @@ const Navbar = () => {
                 {/* Mobile menu items */}
                 <nav className="flex flex-col space-y-2">
                   {navigationLinks.map((link) => {
-                    const isActive = router.pathname === link.href;
+                    const hasSubmenu = link.submenu && link.submenu.length > 0;
+                    const isActive =
+                      router.pathname === link.href ||
+                      router.pathname.startsWith(link.href + "/");
 
                     return (
-                      <Link
-                        key={link.name}
-                        href={link.href}
-                        className={`px-4 py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] ${
-                          isActive
-                            ? "bg-primary/20 text-white font-medium"
-                            : "text-gray-300 hover:bg-gradient-to-r hover:from-white/5 hover:to-primary/10 hover:text-white"
-                        }`}
-                      >
-                        <div className="flex justify-between items-center">
+                      <div key={link.name}>
+                        <button
+                          onClick={() =>
+                            hasSubmenu
+                              ? handleToggleMobileSubmenu(link.name)
+                              : router.push(link.href)
+                          }
+                          className={`w-full px-4 py-3 rounded-lg transition-all duration-300 hover:scale-[1.02] ${
+                            isActive
+                              ? "bg-primary/20 text-white font-medium"
+                              : "text-gray-300 hover:bg-gradient-to-r hover:from-white/5 hover:to-primary/10 hover:text-white"
+                          } flex justify-between items-center`}
+                        >
                           <span>{link.name}</span>
-                          <motion.svg
-                            className="w-4 h-4 opacity-0 transition-opacity"
-                            whileHover={{ opacity: 1 }}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M9 5l7 7-7 7"
-                            />
-                          </motion.svg>
-                        </div>
-                      </Link>
+                          {hasSubmenu && (
+                            <svg
+                              className={`w-4 h-4 transition-transform ${
+                                mobileSubmenuOpen[link.name] ? "rotate-180" : ""
+                              }`}
+                              fill="none"
+                              stroke="currentColor"
+                              viewBox="0 0 24 24"
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M19 9l-7 7-7-7"
+                              />
+                            </svg>
+                          )}
+                        </button>
+
+                        {/* Mobile submenu */}
+                        {hasSubmenu && mobileSubmenuOpen[link.name] && (
+                          <div className="pl-4 mt-1 mb-2 space-y-1 border-l border-white/10">
+                            {link.submenu?.map((item) => (
+                              <Link
+                                key={item.name}
+                                href={item.href}
+                                target={item.isExternal ? "_blank" : undefined}
+                                rel={
+                                  item.isExternal
+                                    ? "noopener noreferrer"
+                                    : undefined
+                                }
+                                className="flex items-center px-4 py-2 text-sm text-gray-300 hover:text-white transition-colors rounded-lg"
+                              >
+                                <span>{item.name}</span>
+                                {item.isExternal && (
+                                  <svg
+                                    className="w-3 h-3 ml-1"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                  >
+                                    <path
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      strokeWidth={2}
+                                      d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"
+                                    />
+                                  </svg>
+                                )}
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </div>
                     );
                   })}
 
                   <div className="h-px bg-gradient-to-r from-transparent via-white/10 to-transparent my-2"></div>
 
-                  <Link
-                    href="/whitepapers"
-                    className="px-4 py-3 rounded-lg text-gray-300 hover:bg-white/5 hover:text-white transition-colors flex items-center"
-                  >
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-                      />
-                    </svg>
-                    Whitepapers
-                  </Link>
-
-                  <Link
-                    href="/enterprise/contact"
-                    className="px-4 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium transition-colors flex items-center"
-                  >
-                    <svg
-                      className="w-4 h-4 mr-2"
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                      />
-                    </svg>
-                    Enterprise Solutions
-                  </Link>
+                  {/* Language selector - Mobile */}
+                  <div className="px-4 py-3">
+                    <p className="text-sm text-gray-400 mb-2">Language</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {languages.map((lang) => (
+                        <button
+                          key={lang.code}
+                          onClick={() => handleLanguageChange(lang.name)}
+                          className={`px-3 py-2 text-sm rounded-lg ${
+                            currentLanguage === lang.name
+                              ? "bg-primary/30 text-white"
+                              : "bg-dark/50 text-gray-300 hover:bg-dark/70"
+                          }`}
+                        >
+                          {lang.name}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
                 </nav>
 
-                <div className="mt-6 flex items-center justify-between pt-4 border-t border-white/5">
-                  <div className="flex items-center space-x-4">
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
-                      </svg>
-                    </a>
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
-                      </svg>
-                    </a>
-                    <a
-                      href="#"
-                      className="text-gray-400 hover:text-white transition-colors"
-                    >
-                      <svg
-                        className="w-5 h-5"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                      >
-                        <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
-                      </svg>
-                    </a>
-                  </div>
-                  <div className="text-xs text-gray-500">© 2025 Megapayer</div>
+                <div className="mt-6 pt-4 border-t border-white/5">
+                  <Link
+                    href="/presale"
+                    className="block w-full py-3 text-center rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium"
+                  >
+                    Join Presale
+                  </Link>
                 </div>
               </div>
             </div>

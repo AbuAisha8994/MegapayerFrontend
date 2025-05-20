@@ -330,7 +330,7 @@ const HeroBanner = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="mb-6 drop-shadow-2xl"
           >
-            <span className="block text-gradient-gold mb-2 text-xl md:text-2xl shadow-lg">
+            <span className="block text-gradient-gold mb-2 text-xl md:text-2xl">
               Fair Future, Together
             </span>
             <span
