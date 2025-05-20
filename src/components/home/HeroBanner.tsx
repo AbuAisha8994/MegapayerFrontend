@@ -368,9 +368,18 @@ const HeroBanner = () => {
           >
             <Link
               href="#ecosystem"
-              className="neo-brutalism text-white font-bold py-4 px-8 rounded-lg text-lg [box-shadow:_0_10px_20px_-5px_rgba(79,70,229,0.5)]"
+              className="neo-brutalism text-white font-bold py-4 px-8 rounded-lg text-lg 
+                [box-shadow:_0_10px_20px_-5px_rgba(79,70,229,0.5)]
+                transition-all duration-300 hover:scale-105
+                hover:[box-shadow:_0_15px_25px_-5px_rgba(79,70,229,0.65)]
+                hover:bg-gradient-to-br hover:from-primary/80 hover:to-primary/50
+                relative overflow-hidden group"
             >
-              Explore Ecosystem
+              <span className="relative z-10">Explore Ecosystem</span>
+              <span
+                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent 
+                translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"
+              ></span>
             </Link>
             <Link
               href="#learn"

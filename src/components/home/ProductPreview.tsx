@@ -144,7 +144,7 @@ const productData = [
           strokeLinecap="round"
           strokeLinejoin="round"
           strokeWidth={1.5}
-          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"
+          d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2H5a2 2 0 00-2 2v2M7 7h10"
         />
       </svg>
     ),
@@ -364,58 +364,62 @@ const ProductPreview = () => {
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 mb-20">
-      {/* Product Navigation Sidebar */}
-      <div className="lg:col-span-3">
-        <div className="bg-dark/30 backdrop-blur-sm rounded-xl border border-white/10 p-4 sticky top-24 h-[600px] overflow-auto">
-          <h3 className="text-lg font-semibold mb-4 px-2">
+      {/* Product Navigation Sidebar - Improved design and balance */}
+      <div className="lg:col-span-4">
+        <div className="bg-dark/40 backdrop-blur-sm rounded-xl border border-white/10 p-4 sticky top-24 h-[600px] overflow-auto shadow-lg shadow-primary/5">
+          <h3 className="text-xl font-bold mb-6 px-2 text-gradient">
             Ecosystem Products
           </h3>
-          <nav className="space-y-1">
+          <nav className="space-y-1.5">
             {productData.map((product) => (
               <button
                 key={product.id}
-                className={`w-full text-left px-4 py-3 rounded-lg transition-all ${
+                className={`w-full text-left px-4 py-3.5 rounded-lg transition-all duration-300 flex items-center ${
                   activeProduct === product.id
-                    ? "bg-primary/20 text-white"
-                    : "hover:bg-dark/50 text-gray-300"
+                    ? "bg-gradient-to-r from-primary/20 to-primary/10 text-white font-medium"
+                    : "hover:bg-dark/60 text-gray-300 hover:text-white hover:translate-x-1"
                 }`}
                 onClick={() => setActiveProduct(product.id)}
               >
-                {product.title}
+                <span className="w-2 h-2 rounded-full mr-3 bg-primary opacity-70"></span>
+                <span>{product.title}</span>
               </button>
             ))}
           </nav>
         </div>
       </div>
 
-      {/* Product Display */}
-      <div className="lg:col-span-9">
+      {/* Product Display - Enhanced visual balance */}
+      <div className="lg:col-span-8">
         <AnimatePresence mode="wait">
           <motion.div
             key={currentProduct.id}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.3 }}
-            className="bg-dark/30 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden h-[600px] flex flex-col"
+            transition={{ duration: 0.4 }}
+            className="bg-dark/40 backdrop-blur-sm rounded-xl border border-white/10 overflow-hidden h-[600px] flex flex-col shadow-xl shadow-primary/5"
           >
-            {/* Product Header */}
-            <div className="p-6 md:p-8 border-b border-white/10">
+            {/* Product Header - Improved styling */}
+            <div className="p-6 md:p-8 border-b border-white/10 bg-gradient-to-r from-dark/80 to-dark/40">
               <div className="flex flex-col md:flex-row md:items-center md:justify-between">
                 <div>
-                  <h2 className="text-2xl md:text-3xl font-bold mb-2">
-                    {currentProduct.title}
-                  </h2>
-                  <p className="text-primary">{currentProduct.subtitle}</p>
+                  <div className="flex items-center mb-2">
+                    <span className="w-3 h-3 rounded-full bg-primary mr-3"></span>
+                    <h2 className="text-2xl md:text-3xl font-bold text-gradient">
+                      {currentProduct.title}
+                    </h2>
+                  </div>
+                  <p className="text-primary ml-6">{currentProduct.subtitle}</p>
                 </div>
                 <div className="mt-4 md:mt-0">
                   <Link
                     href={`/${currentProduct.id}`}
-                    className="inline-flex items-center px-5 py-2 rounded-lg bg-primary hover:bg-primary-dark transition-colors text-white"
+                    className="inline-flex items-center px-6 py-2.5 rounded-lg bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 text-white group"
                   >
                     <span>Learn More</span>
                     <svg
-                      className="ml-2 w-4 h-4"
+                      className="ml-2 w-4 h-4 transition-transform duration-300 group-hover:translate-x-1"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -432,32 +436,37 @@ const ProductPreview = () => {
               </div>
             </div>
 
-            {/* Product Content */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 p-6 md:p-8 flex-grow overflow-auto">
-              {/* Product Description */}
+            {/* Product Content - Improved layout and balance */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 p-8 flex-grow overflow-auto">
+              {/* Product Description - Enhanced typography and spacing */}
               <div className="space-y-6">
-                <p className="text-gray-300 text-lg">
+                <p className="text-gray-200 text-lg leading-relaxed">
                   {currentProduct.description}
                 </p>
 
                 <div>
-                  <h3 className="text-lg font-semibold mb-3">Key Features:</h3>
-                  <ul className="space-y-2">
+                  <h3 className="text-lg font-semibold mb-4 text-white flex items-center">
+                    <span className="w-1 h-6 bg-primary rounded-full mr-3"></span>
+                    Key Features
+                  </h3>
+                  <ul className="space-y-3 ml-2">
                     {currentProduct.features.map((feature, index) => (
                       <li key={index} className="flex items-start">
-                        <svg
-                          className="w-5 h-5 text-primary mt-0.5 mr-2 flex-shrink-0"
-                          fill="none"
-                          stroke="currentColor"
-                          viewBox="0 0 24 24"
-                        >
-                          <path
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth={2}
-                            d="M5 13l4 4L19 7"
-                          />
-                        </svg>
+                        <div className="p-1 bg-primary/20 rounded-full mt-0.5 mr-3 flex-shrink-0">
+                          <svg
+                            className="w-4 h-4 text-primary"
+                            fill="none"
+                            stroke="currentColor"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              strokeWidth={2}
+                              d="M5 13l4 4L19 7"
+                            />
+                          </svg>
+                        </div>
                         <span className="text-gray-300">{feature}</span>
                       </li>
                     ))}
@@ -465,12 +474,14 @@ const ProductPreview = () => {
                 </div>
               </div>
 
-              {/* Product Visual Representation (using code instead of images) */}
-              <div className="relative min-h-[300px] rounded-lg overflow-hidden bg-gradient-to-br from-primary/10 via-dark to-secondary/10 border border-white/10 p-8 flex items-center justify-center">
-                <div className="relative z-10">{currentProduct.icon}</div>
+              {/* Product Visual - Enhanced with better visual effects */}
+              <div className="relative min-h-[300px] rounded-xl overflow-hidden bg-gradient-to-br from-primary/10 via-dark/80 to-secondary/10 border border-white/10 p-8 flex items-center justify-center shadow-inner">
+                <div className="relative z-10 transform hover:scale-110 transition-transform duration-500">
+                  {currentProduct.icon}
+                </div>
 
-                {/* Animated background */}
-                <div className="absolute inset-0 z-0 opacity-20">
+                {/* Animated background - Enhanced effects */}
+                <div className="absolute inset-0 z-0 opacity-30">
                   <div
                     className="absolute inset-0"
                     style={{
@@ -523,30 +534,30 @@ const ProductPreview = () => {
                   </svg>
                 </div>
 
-                {/* Animated rings */}
+                {/* Improved animated rings with better sizing and positioning */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <motion.div
-                    className="w-40 h-40 rounded-full border"
+                    className="w-44 h-44 rounded-full border-2"
                     style={{ borderColor: currentProduct.color }}
                     animate={{
-                      scale: [1, 1.2, 1],
-                      opacity: [0.1, 0.2, 0.1],
+                      scale: [1, 1.1, 1],
+                      opacity: [0.15, 0.3, 0.15],
                     }}
                     transition={{
-                      duration: 3,
+                      duration: 5,
                       repeat: Infinity,
                       ease: "easeInOut",
                     }}
                   />
                   <motion.div
-                    className="absolute w-60 h-60 rounded-full border"
+                    className="absolute w-64 h-64 rounded-full border"
                     style={{ borderColor: currentProduct.color }}
                     animate={{
-                      scale: [1, 1.1, 1],
-                      opacity: [0.05, 0.1, 0.05],
+                      scale: [1, 1.05, 1],
+                      opacity: [0.1, 0.2, 0.1],
                     }}
                     transition={{
-                      duration: 4,
+                      duration: 7,
                       repeat: Infinity,
                       ease: "easeInOut",
                       delay: 0.5,

@@ -6,7 +6,7 @@ const TokenomicsSection = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
 
-  // Tokenomics data with colors
+  // Tokenomics data with enhanced colors for better visual balance
   const tokenomicsData = [
     { name: "Community & Airdrop", percentage: 10, color: "#4F46E5" }, // Primary
     { name: "Seed Sale", percentage: 15, color: "#10B981" }, // Green
@@ -18,7 +18,7 @@ const TokenomicsSection = () => {
     { name: "DAO/Governance", percentage: 5, color: "#14B8A6" }, // Teal
   ];
 
-  // Calculate SVG coordinates for pie chart
+  // Calculate SVG coordinates for pie chart with improved precision
   const createPieChartCoordinates = () => {
     const radius = 150;
     let startAngle = 0;
@@ -63,20 +63,27 @@ const TokenomicsSection = () => {
 
   return (
     <section className="py-24 relative overflow-hidden">
-      {/* Background gradient effects */}
-      <div className="absolute inset-0 bg-gradient-to-b from-dark/50 via-dark/80 to-dark/50 -z-10"></div>
-      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
-      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/20 to-transparent"></div>
+      {/* Enhanced background effects for better depth */}
+      <div className="absolute inset-0 bg-gradient-to-b from-dark/40 via-dark/80 to-dark/40 -z-10"></div>
+      <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+      <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+
+      {/* Decorative background elements for better visual balance */}
+      <div className="absolute -top-32 -right-32 w-96 h-96 bg-primary/20 rounded-full filter blur-[100px] opacity-30"></div>
+      <div className="absolute -bottom-40 -left-20 w-80 h-80 bg-secondary/20 rounded-full filter blur-[100px] opacity-20"></div>
 
       <div className="container mx-auto px-4" ref={sectionRef}>
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            <span className="text-gradient">Megapayer</span> Tokenomics
+          <div className="inline-block px-6 py-2 border border-primary/30 rounded-full text-primary mb-6">
+            Supply & Distribution
+          </div>
+          <h2 className="text-3xl md:text-4xl font-bold mb-5">
+            <span className="text-gradient">MPC Token</span> Tokenomics
           </h2>
           <p className="text-xl text-gray-300 max-w-3xl mx-auto">
             We're building a fair, community-driven Web3 economy with $MPC.
@@ -84,102 +91,166 @@ const TokenomicsSection = () => {
           </p>
         </motion.div>
 
-        <div className="flex flex-col lg:flex-row items-center justify-center gap-12">
-          {/* Pie Chart (SVG) */}
+        {/* Improved layout with better balance between chart and text */}
+        <div className="flex flex-col lg:flex-row items-center justify-center gap-16">
+          {/* Pie Chart (SVG) - Enhanced with 3D-like effects */}
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={isInView ? { opacity: 1, scale: 1 } : {}}
             transition={{ duration: 0.7, delay: 0.3 }}
-            className="relative w-[300px] h-[300px]"
+            className="relative w-[320px] h-[320px]"
           >
-            <svg width="300" height="300" viewBox="0 0 300 300">
+            <div className="absolute inset-0 rounded-full bg-dark/50 shadow-2xl"></div>
+            <svg
+              width="320"
+              height="320"
+              viewBox="0 0 300 300"
+              className="drop-shadow-xl"
+            >
+              <defs>
+                {/* Add gradient definitions for more beautiful pie segments */}
+                {tokenomicsData.map((segment, i) => (
+                  <radialGradient
+                    key={`grad-${i}`}
+                    id={`grad-${segment.name.replace(/\s+/g, "")}`}
+                    cx="50%"
+                    cy="50%"
+                    r="50%"
+                    fx="50%"
+                    fy="50%"
+                  >
+                    <stop
+                      offset="0%"
+                      stopColor={segment.color}
+                      stopOpacity="0.9"
+                    />
+                    <stop
+                      offset="100%"
+                      stopColor={segment.color}
+                      stopOpacity="0.7"
+                    />
+                  </radialGradient>
+                ))}
+              </defs>
+
               {pieSegments.map((segment, index) => (
                 <motion.path
                   key={segment.name}
                   d={segment.path}
-                  fill={segment.color}
+                  fill={`url(#grad-${segment.name.replace(/\s+/g, "")})`}
+                  stroke="#121212"
+                  strokeWidth="1"
                   initial={{ opacity: 0 }}
-                  animate={isInView ? { opacity: 1 } : {}}
+                  animate={
+                    isInView
+                      ? {
+                          opacity: 1,
+                          y: [5, 0],
+                          x: [5, 0],
+                        }
+                      : {}
+                  }
                   transition={{
                     duration: 0.5,
                     delay: 0.5 + index * 0.1,
                   }}
-                  className="hover:opacity-90 transition-opacity cursor-pointer"
-                  stroke="#121212"
-                  strokeWidth="1"
+                  className="hover:opacity-90 transition-transform duration-300 cursor-pointer hover:scale-105"
+                  whileHover={{ scale: 1.05 }}
                 >
                   <title>{`${segment.name}: ${segment.percentage}%`}</title>
                 </motion.path>
               ))}
-              {/* Center circle for better appearance */}
-              <circle cx="150" cy="150" r="60" fill="#121212" />
+
+              {/* Center circle with enhanced styling */}
+              <circle cx="150" cy="150" r="70" fill="#121212" />
+              <circle cx="150" cy="150" r="67" fill="url(#innerGradient)" />
+
+              <defs>
+                <radialGradient
+                  id="innerGradient"
+                  cx="50%"
+                  cy="50%"
+                  r="50%"
+                  fx="50%"
+                  fy="50%"
+                >
+                  <stop offset="0%" stopColor="#1E1E1E" />
+                  <stop offset="100%" stopColor="#121212" />
+                </radialGradient>
+              </defs>
+
               <text
                 x="150"
                 y="140"
                 textAnchor="middle"
                 fill="white"
-                fontSize="20"
+                fontSize="26"
                 fontWeight="bold"
+                className="drop-shadow-sm"
               >
                 $MPC
               </text>
               <text
                 x="150"
-                y="165"
+                y="170"
                 textAnchor="middle"
                 fill="#a1a1aa"
-                fontSize="12"
+                fontSize="14"
               >
                 100M Supply
               </text>
             </svg>
 
-            {/* Pulsing dots animation around the chart */}
+            {/* Enhanced pulsing dots animation around the chart */}
             {[...Array(8)].map((_, i) => {
               const angle = (i / 8) * Math.PI * 2;
-              const x = Math.cos(angle) * 170 + 150;
-              const y = Math.sin(angle) * 170 + 150;
+              const x = Math.cos(angle) * 175 + 150;
+              const y = Math.sin(angle) * 175 + 150;
 
               return (
                 <motion.div
                   key={`dot-${i}`}
-                  className="absolute w-2 h-2 bg-white rounded-full"
+                  className="absolute w-2 h-2 bg-white rounded-full shadow-glow"
                   style={{ left: x, top: y }}
                   animate={{
                     opacity: [0.2, 0.8, 0.2],
-                    scale: [1, 1.5, 1],
+                    scale: [1, 1.8, 1],
                   }}
                   transition={{
                     duration: 3,
                     repeat: Infinity,
-                    delay: i * 0.3,
+                    delay: i * 0.4,
                   }}
                 />
               );
             })}
           </motion.div>
 
-          {/* Tokenomics breakdown */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 max-w-2xl">
+          {/* Tokenomics breakdown - Enhanced layout and visual hierarchy */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-6 max-w-2xl">
             {tokenomicsData.map((item, index) => (
               <motion.div
                 key={item.name}
-                initial={{ opacity: 0, x: 20 }}
+                initial={{ opacity: 0, x: 30 }}
                 animate={isInView ? { opacity: 1, x: 0 } : {}}
-                transition={{ duration: 0.5, delay: 0.3 + index * 0.1 }}
-                className="flex items-start space-x-3"
+                transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
+                className="flex items-start space-x-4 group"
+                whileHover={{ x: 5 }}
               >
                 <div
-                  className="mt-1 w-4 h-4 rounded-full flex-shrink-0"
-                  style={{ backgroundColor: item.color }}
+                  className="mt-1.5 w-5 h-5 rounded-full flex-shrink-0 shadow-lg transition-transform duration-300 group-hover:scale-125"
+                  style={{
+                    backgroundColor: item.color,
+                    boxShadow: `0 0 10px ${item.color}80`,
+                  }}
                 ></div>
                 <div>
-                  <p className="font-bold text-white flex items-center">
-                    <span>{item.percentage}%</span>
-                    <span className="mx-2 text-gray-400">—</span>
+                  <p className="font-bold text-white flex items-baseline">
+                    <span className="text-xl">{item.percentage}%</span>
+                    <span className="mx-2 text-gray-500">—</span>
                     <span>{item.name}</span>
                   </p>
-                  <p className="text-sm text-gray-400">
+                  <p className="text-sm text-gray-400 mt-1">
                     {item.name === "Community & Airdrop" &&
                       "Rewarding loyal supporters and early adopters."}
                     {item.name === "Seed Sale" &&
@@ -203,19 +274,20 @@ const TokenomicsSection = () => {
           </div>
         </div>
 
+        {/* Enhanced call-to-action with better visual appeal */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           animate={isInView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7, delay: 0.8 }}
-          className="text-center mt-12"
+          className="text-center mt-16"
         >
           <Link
             href="/token/mpc"
-            className="inline-flex items-center px-6 py-3 rounded-lg bg-gradient-to-r from-primary to-secondary text-white font-medium hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
+            className="inline-flex items-center px-8 py-4 rounded-lg bg-gradient-to-r from-primary to-primary-dark text-white font-medium hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
           >
             <span>Learn More About $MPC</span>
             <svg
-              className="ml-2 w-5 h-5"
+              className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
