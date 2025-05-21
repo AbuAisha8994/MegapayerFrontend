@@ -1,9 +1,9 @@
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const ProductIcons = () => {
   return (
     <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-8 mt-12">
-      {/* Blockchain Icon */}
+      {/* Blockchain Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -12,6 +12,7 @@ const ProductIcons = () => {
         className="relative aspect-square bg-dark/30 backdrop-blur-sm rounded-xl border border-primary/20 p-6 flex flex-col items-center justify-center hover:border-primary/40 transition-colors group"
       >
         <div className="absolute -z-10 opacity-20 inset-0 overflow-hidden">
+          {/* Keep background effects but remove letter icon */}
           <svg width="100%" height="100%" viewBox="0 0 100 100">
             <motion.path
               d="M50,10 L20,30 L20,70 L50,90 L80,70 L80,30 L50,10"
@@ -23,19 +24,29 @@ const ProductIcons = () => {
               transition={{ duration: 2, repeat: Infinity, repeatDelay: 2 }}
             />
             <defs>
-              <linearGradient id="blockchainGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+              <linearGradient
+                id="blockchainGradient"
+                x1="0%"
+                y1="0%"
+                x2="100%"
+                y2="100%"
+              >
                 <stop offset="0%" stopColor="#4F46E5" />
                 <stop offset="100%" stopColor="#10B981" />
               </linearGradient>
             </defs>
           </svg>
         </div>
-        <span className="text-5xl font-bold mb-4 text-gradient-primary">M</span>
-        <h3 className="text-lg font-bold mb-1 text-center">Megapayer Blockchain</h3>
-        <p className="text-xs text-gray-400 text-center">Shared Proof of Stake</p>
+
+        <h3 className="text-lg font-bold mb-1 text-center">
+          Megapayer Blockchain
+        </h3>
+        <p className="text-xs text-gray-400 text-center">
+          Shared Proof of Stake
+        </p>
       </motion.div>
 
-      {/* Social Media Icon */}
+      {/* Social Media Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -44,6 +55,7 @@ const ProductIcons = () => {
         className="relative aspect-square bg-dark/30 backdrop-blur-sm rounded-xl border border-primary/20 p-6 flex flex-col items-center justify-center hover:border-primary/40 transition-colors group"
       >
         <div className="absolute -z-10 opacity-20 inset-0 overflow-hidden">
+          {/* Keep background effects but remove letter icon */}
           <svg width="100%" height="100%" viewBox="0 0 100 100">
             <motion.circle
               cx="50"
@@ -65,7 +77,12 @@ const ProductIcons = () => {
               fill="none"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 1, repeat: Infinity, repeatDelay: 3, delay: 0.3 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                repeatDelay: 3,
+                delay: 0.3,
+              }}
             />
             <motion.circle
               cx="70"
@@ -76,16 +93,25 @@ const ProductIcons = () => {
               fill="none"
               initial={{ scale: 0 }}
               animate={{ scale: 1 }}
-              transition={{ duration: 1, repeat: Infinity, repeatDelay: 3, delay: 0.6 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                repeatDelay: 3,
+                delay: 0.6,
+              }}
             />
           </svg>
         </div>
-        <span className="text-5xl font-bold mb-4 text-gradient-secondary">D</span>
-        <h3 className="text-lg font-bold mb-1 text-center">Decentralized Social</h3>
-        <p className="text-xs text-gray-400 text-center">Privacy-First Platform</p>
+
+        <h3 className="text-lg font-bold mb-1 text-center">
+          Decentralized Social
+        </h3>
+        <p className="text-xs text-gray-400 text-center">
+          Privacy-First Platform
+        </p>
       </motion.div>
 
-      {/* P2P Exchange Icon */}
+      {/* P2P Exchange Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -94,6 +120,7 @@ const ProductIcons = () => {
         className="relative aspect-square bg-dark/30 backdrop-blur-sm rounded-xl border border-primary/20 p-6 flex flex-col items-center justify-center hover:border-primary/40 transition-colors group"
       >
         <div className="absolute -z-10 opacity-20 inset-0 overflow-hidden">
+          {/* Keep background effects but remove letter icon */}
           <svg width="100%" height="100%" viewBox="0 0 100 100">
             <motion.path
               d="M30,30 L70,30"
@@ -109,7 +136,12 @@ const ProductIcons = () => {
               strokeWidth="2"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 1, repeat: Infinity, repeatDelay: 2, delay: 0.2 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                repeatDelay: 2,
+                delay: 0.2,
+              }}
             />
             <motion.path
               d="M30,70 L70,70"
@@ -117,16 +149,21 @@ const ProductIcons = () => {
               strokeWidth="2"
               initial={{ pathLength: 0 }}
               animate={{ pathLength: 1 }}
-              transition={{ duration: 1, repeat: Infinity, repeatDelay: 2, delay: 0.4 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                repeatDelay: 2,
+                delay: 0.4,
+              }}
             />
           </svg>
         </div>
-        <span className="text-5xl font-bold mb-4 text-gradient-tertiary">P</span>
+
         <h3 className="text-lg font-bold mb-1 text-center">P2P Exchange</h3>
         <p className="text-xs text-gray-400 text-center">Trustless Trading</p>
       </motion.div>
 
-      {/* DEX Icon */}
+      {/* DEX Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -135,6 +172,7 @@ const ProductIcons = () => {
         className="relative aspect-square bg-dark/30 backdrop-blur-sm rounded-xl border border-primary/20 p-6 flex flex-col items-center justify-center hover:border-primary/40 transition-colors group"
       >
         <div className="absolute -z-10 opacity-20 inset-0 overflow-hidden">
+          {/* Keep background effects but remove letter icon */}
           <svg width="100%" height="100%" viewBox="0 0 100 100">
             <motion.circle
               cx="50"
@@ -168,12 +206,14 @@ const ProductIcons = () => {
             />
           </svg>
         </div>
-        <span className="text-5xl font-bold mb-4 text-gradient-quaternary">M</span>
+
         <h3 className="text-lg font-bold mb-1 text-center">Multi-Chain DEX</h3>
-        <p className="text-xs text-gray-400 text-center">Cross-Chain Liquidity</p>
+        <p className="text-xs text-gray-400 text-center">
+          Cross-Chain Liquidity
+        </p>
       </motion.div>
 
-      {/* Wallet Icon */}
+      {/* Wallet Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -182,6 +222,7 @@ const ProductIcons = () => {
         className="relative aspect-square bg-dark/30 backdrop-blur-sm rounded-xl border border-primary/20 p-6 flex flex-col items-center justify-center hover:border-primary/40 transition-colors group"
       >
         <div className="absolute -z-10 opacity-20 inset-0 overflow-hidden">
+          {/* Keep background effects but remove letter icon */}
           <svg width="100%" height="100%" viewBox="0 0 100 100">
             <motion.rect
               x="20"
@@ -207,16 +248,23 @@ const ProductIcons = () => {
               fill="none"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 1, repeat: Infinity, repeatDelay: 3, delay: 0.3 }}
+              transition={{
+                duration: 1,
+                repeat: Infinity,
+                repeatDelay: 3,
+                delay: 0.3,
+              }}
             />
           </svg>
         </div>
-        <span className="text-5xl font-bold mb-4 text-gradient">U</span>
+
         <h3 className="text-lg font-bold mb-1 text-center">Universal Wallet</h3>
-        <p className="text-xs text-gray-400 text-center">Multi-Chain Security</p>
+        <p className="text-xs text-gray-400 text-center">
+          Multi-Chain Security
+        </p>
       </motion.div>
 
-      {/* Stablecoin Icon */}
+      {/* Stablecoin Card */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -225,6 +273,7 @@ const ProductIcons = () => {
         className="relative aspect-square bg-dark/30 backdrop-blur-sm rounded-xl border border-primary/20 p-6 flex flex-col items-center justify-center hover:border-primary/40 transition-colors group"
       >
         <div className="absolute -z-10 opacity-20 inset-0 overflow-hidden">
+          {/* Keep background effects but remove letter icon */}
           <svg width="100%" height="100%" viewBox="0 0 100 100">
             <motion.circle
               cx="50"
@@ -243,13 +292,22 @@ const ProductIcons = () => {
               strokeWidth="2"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ duration: 0.5, delay: 0.5, repeat: Infinity, repeatDelay: 3 }}
+              transition={{
+                duration: 0.5,
+                delay: 0.5,
+                repeat: Infinity,
+                repeatDelay: 3,
+              }}
             />
           </svg>
         </div>
-        <span className="text-5xl font-bold mb-4 text-gradient-tertiary">M</span>
-        <h3 className="text-lg font-bold mb-1 text-center">Megapayer Stablecoin</h3>
-        <p className="text-xs text-gray-400 text-center">Fully Collateralized</p>
+
+        <h3 className="text-lg font-bold mb-1 text-center">
+          Megapayer Stablecoin
+        </h3>
+        <p className="text-xs text-gray-400 text-center">
+          Fully Collateralized
+        </p>
       </motion.div>
     </div>
   );
