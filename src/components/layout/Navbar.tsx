@@ -137,7 +137,7 @@ const Navbar = () => {
         { name: "Ecosystem Map", href: "/docs/ecosystem" },
         { name: "Roadmap", href: "/docs/roadmap" },
         { name: "Technical Documents", href: "/docs/technical" },
-        { name: "Whitepaper", href: "/docs/whitepaper" },
+        { name: "Whitepaper", href: "/whitepapers" },
         { name: "Validator Guidelines", href: "/docs/validator-guidelines" },
         { name: "Fatwa", href: "/docs/fatwa" },
       ],

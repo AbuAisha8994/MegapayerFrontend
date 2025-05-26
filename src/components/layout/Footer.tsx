@@ -265,12 +265,12 @@ const Footer = () => {
                 Status
               </a>
               <span className="text-gray-600 mx-2">•</span>
-              <a
-                href="#"
+              <Link
+                href="/support"
                 className="text-gray-400 hover:text-white transition-colors px-3 py-1"
               >
                 Support
-              </a>
+              </Link>
             </div>
           </div>
         </div>

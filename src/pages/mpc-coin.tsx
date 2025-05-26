@@ -289,27 +289,7 @@ const MPCCoinPage = () => {
                 </div>
               </div>
 
-              <div className="mt-10 text-center">
-                <Link
-                  href="/docs/tokenomics"
-                  className="btn-primary inline-flex items-center"
-                >
-                  <svg
-                    className="w-5 h-5 mr-2"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M9 5l7 7-7 7"
-                    />
-                  </svg>
-                  Detailed Tokenomics
-                </Link>
-              </div>
+              {/* Detailed Tokenomics button removed */}
             </div>
           </motion.div>
 
@@ -665,63 +645,176 @@ const MPCCoinPage = () => {
                       Next Token Generation Events
                     </h3>
 
-                    <div className="space-y-4">
-                      <div className="flex justify-between items-center p-3 bg-dark/50 rounded-lg border border-white/5">
-                        <div>
-                          <span className="text-white font-medium">
-                            Presale Round 1
-                          </span>
-                          <p className="text-sm text-gray-400">
-                            Private Investors
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-white font-bold">$0.025</span>
-                          <p className="text-xs text-gray-400">May 10, 2025</p>
-                        </div>
-                      </div>
+                    {/* Replaced text-based events with graph visualization */}
+                    <div className="relative h-64 w-full">
+                      {/* SVG Graph */}
+                      <svg className="w-full h-full" viewBox="0 0 400 200">
+                        {/* Graph background grid */}
+                        <g className="opacity-20">
+                          {[...Array(10)].map((_, i) => (
+                            <line
+                              key={`v-line-${i}`}
+                              x1={i * 40}
+                              y1="0"
+                              x2={i * 40}
+                              y2="180"
+                              stroke="#94a3b8"
+                              strokeWidth="1"
+                              strokeDasharray="4,4"
+                            />
+                          ))}
+                          {[...Array(5)].map((_, i) => (
+                            <line
+                              key={`h-line-${i}`}
+                              x1="0"
+                              y1={i * 45}
+                              x2="400"
+                              y2={i * 45}
+                              stroke="#94a3b8"
+                              strokeWidth="1"
+                              strokeDasharray="4,4"
+                            />
+                          ))}
+                        </g>
 
-                      <div className="flex justify-between items-center p-3 bg-dark/50 rounded-lg border border-white/5">
-                        <div>
-                          <span className="text-white font-medium">
-                            Presale Round 2
-                          </span>
-                          <p className="text-sm text-gray-400">
-                            Early Adopters
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-white font-bold">$0.035</span>
-                          <p className="text-xs text-gray-400">June 15, 2025</p>
-                        </div>
-                      </div>
+                        {/* Price trend line */}
+                        <path
+                          d="M20,160 L70,130 L160,100 L250,70 L340,40"
+                          fill="none"
+                          stroke="#4f46e5"
+                          strokeWidth="3"
+                          strokeLinecap="round"
+                          className="drop-shadow-md"
+                        />
 
-                      <div className="flex justify-between items-center p-3 bg-dark/50 rounded-lg border border-white/5">
-                        <div>
-                          <span className="text-white font-medium">
-                            Public Sale
-                          </span>
-                          <p className="text-sm text-gray-400">
-                            General Public
-                          </p>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-white font-bold">$0.050</span>
-                          <p className="text-xs text-gray-400">July 20, 2025</p>
-                        </div>
-                      </div>
+                        {/* Data points with animation */}
+                        {[
+                          {
+                            x: 20,
+                            y: 160,
+                            date: "May 10",
+                            price: "$0.025",
+                            label: "Presale Round 1",
+                          },
+                          {
+                            x: 70,
+                            y: 130,
+                            date: "Jun 15",
+                            price: "$0.035",
+                            label: "Presale Round 2",
+                          },
+                          {
+                            x: 160,
+                            y: 100,
+                            date: "Jul 20",
+                            price: "$0.050",
+                            label: "Public Sale",
+                          },
+                          {
+                            x: 250,
+                            y: 70,
+                            date: "Aug 2025",
+                            price: "TBD",
+                            label: "Exchange Listing",
+                          },
+                          {
+                            x: 340,
+                            y: 40,
+                            date: "Q4 2025",
+                            price: "Target",
+                            label: "Market Growth",
+                          },
+                        ].map((point, i) => (
+                          <g
+                            key={`point-${i}`}
+                            className="animate-pulse"
+                            style={{ animationDelay: `${i * 200}ms` }}
+                          >
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="6"
+                              fill="#4f46e5"
+                              className="drop-shadow-lg"
+                            />
+                            <circle
+                              cx={point.x}
+                              cy={point.y}
+                              r="10"
+                              fill="#4f46e5"
+                              fillOpacity="0.3"
+                            />
 
-                      <div className="flex justify-between items-center p-3 bg-dark/50 rounded-lg border border-white/5">
-                        <div>
-                          <span className="text-white font-medium">
-                            Exchange Listing
-                          </span>
-                          <p className="text-sm text-gray-400">Market Price</p>
-                        </div>
-                        <div className="text-right">
-                          <span className="text-white font-bold">TBD</span>
-                          <p className="text-xs text-gray-400">August 2025</p>
-                        </div>
+                            {/* Price info */}
+                            <text
+                              x={point.x}
+                              y={point.y - 15}
+                              textAnchor="middle"
+                              fontSize="12"
+                              fill="#ffffff"
+                              fontWeight="bold"
+                            >
+                              {point.price}
+                            </text>
+
+                            {/* Date labels */}
+                            <text
+                              x={point.x}
+                              y="195"
+                              textAnchor="middle"
+                              fontSize="11"
+                              fill="#94a3b8"
+                            >
+                              {point.date}
+                            </text>
+
+                            {/* Event labels */}
+                            <text
+                              x={point.x}
+                              y={point.y - 30}
+                              textAnchor="middle"
+                              fontSize="10"
+                              fill="#94a3b8"
+                              fontWeight="medium"
+                            >
+                              {point.label}
+                            </text>
+                          </g>
+                        ))}
+
+                        {/* Y-axis labels */}
+                        <text x="5" y="180" fontSize="10" fill="#94a3b8">
+                          $0.01
+                        </text>
+                        <text x="5" y="135" fontSize="10" fill="#94a3b8">
+                          $0.03
+                        </text>
+                        <text x="5" y="90" fontSize="10" fill="#94a3b8">
+                          $0.05
+                        </text>
+                        <text x="5" y="45" fontSize="10" fill="#94a3b8">
+                          $0.07+
+                        </text>
+
+                        {/* Chart title */}
+                        <text
+                          x="200"
+                          y="15"
+                          fontSize="12"
+                          fill="#ffffff"
+                          fontWeight="bold"
+                          textAnchor="middle"
+                        >
+                          Token Price Progression
+                        </text>
+                      </svg>
+
+                      {/* Gradient overlay for better visual effect */}
+                      <div className="absolute inset-0 bg-gradient-to-r from-dark/10 via-transparent to-dark/10 pointer-events-none"></div>
+
+                      {/* Information tooltip */}
+                      <div className="absolute bottom-0 right-0 bg-dark/80 backdrop-blur-sm px-2 py-1 rounded-md text-xs text-gray-400">
+                        Projected values - subject to change
                       </div>
                     </div>
                   </div>

@@ -78,7 +78,7 @@ const BlockchainPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Megapayer Blockchain | Next-Gen Web3 Infrastructure</title>
+        <title>Megapayer Chain | Next-Gen Web3 Infrastructure</title>
         <meta
           name="description"
           content="Megapayer Chain is a next-generation blockchain infrastructure focused on speed, scalability, and security, powering the future of Web3."
@@ -87,7 +87,7 @@ const BlockchainPage = () => {
 
       {/* Hero Section with 3D Animation */}
       <ProductHero
-        title="Megapayer Blockchain"
+        title="Megapayer Chain"
         subtitle="Powering the Future of Web3"
         description="Megapayer Chain is a next-generation blockchain infrastructure developed with a focus on speed, scalability, and security. It offers a flexible ecosystem for developers, accessible for users, and sustainable for investors."
         animation={
