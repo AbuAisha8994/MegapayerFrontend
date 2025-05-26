@@ -6,7 +6,13 @@ import { useRef } from "react";
 import { useInView } from "framer-motion";
 
 // Animated feature box component
-const FeatureBox = ({ title, children, delay = 0 }) => {
+type FeatureBoxProps = {
+  title: string;
+  children: React.ReactNode;
+  delay?: number;
+};
+
+const FeatureBox = ({ title, children, delay = 0 }: FeatureBoxProps) => {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true, amount: 0.3 });
 
@@ -25,7 +31,7 @@ const FeatureBox = ({ title, children, delay = 0 }) => {
 };
 
 // Check mark list item component
-const CheckItem = ({ children }) => (
+const CheckItem = ({ children }: { children: React.ReactNode }) => (
   <div className="flex items-start mb-4">
     <div className="shrink-0 mt-1 mr-3">
       <div className="p-1 bg-primary/20 rounded-full">

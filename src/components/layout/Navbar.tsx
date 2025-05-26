@@ -10,6 +10,7 @@ type DropdownState = {
 type SubmenuItem = {
   name: string;
   href: string;
+  isExternal?: boolean;
 };
 
 type NavItem = {

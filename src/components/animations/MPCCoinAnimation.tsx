@@ -5,7 +5,7 @@ import * as THREE from "three";
 
 const MPCCoinAnimation = () => {
   const groupRef = useRef<THREE.Group>(null);
-  const coinRef = useRef<THREE.Mesh>(null);
+  const coinRef = useRef<THREE.Group>(null);
   const particlesRef = useRef<THREE.Group>(null);
   const logoRef = useRef<THREE.Group>(null);
   const [sparkles, setSparkles] = useState<
@@ -14,7 +14,11 @@ const MPCCoinAnimation = () => {
 
   // Create sparkle particles on mount
   useEffect(() => {
-    const newSparkles = [];
+    const newSparkles: {
+      position: [number, number, number];
+      size: number;
+      speed: number;
+    }[] = [];
     for (let i = 0; i < 20; i++) {
       const theta = Math.random() * Math.PI * 2;
       const radius = 0.5 + Math.random() * 2;
@@ -23,7 +27,7 @@ const MPCCoinAnimation = () => {
           Math.cos(theta) * radius,
           (Math.random() - 0.5) * 2,
           Math.sin(theta) * radius,
-        ],
+        ] as [number, number, number],
         size: 0.03 + Math.random() * 0.05,
         speed: 0.3 + Math.random() * 0.7,
       });

@@ -11,24 +11,34 @@
     "fix-deps": "npm audit fix"
   },
   "dependencies": {
-    "@react-three/drei": "^9.80.0",
-    "@react-three/fiber": "^8.13.6",
+    "@react-pdf/renderer": "^3.1.14",
+    "@react-three/drei": "^9.88.0",
+    "@react-three/fiber": "^8.15.0",
     "@types/node": "20.4.5",
     "@types/react": "18.2.18",
     "@types/react-dom": "18.2.7",
     "autoprefixer": "^10.4.15",
+    "chrome-aws-lambda": "10.1.0",
     "framer-motion": "^10.15.0",
+    "marked": "^15.0.12",
     "next": "^13.5.6",
     "postcss": "^8.4.31",
+    "puppeteer-core": "10.4.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-markdown": "^8.0.7",
     "tailwindcss": "3.3.3",
-    "three": "^0.155.0",
+    "three": "^0.159.0",
+    "three-mesh-bvh": "^0.8.0",
     "typescript": "5.1.6",
     "web3": "^4.16.0"
   },
   "devDependencies": {
+    "@types/marked": "^5.0.2",
+    "@types/puppeteer": "^5.4.7",
     "@types/three": "^0.154.0"
+  },
+  "resolutions": {
+    "puppeteer-core": "10.4.0"
   }
 }

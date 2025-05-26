@@ -78,7 +78,7 @@ const BlockchainPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Megapayer Chain | Next-Gen Web3 Infrastructure</title>
+        <title>Megapayer Chai | Next-Gen Web3 Infrastructure</title>
         <meta
           name="description"
           content="Megapayer Chain is a next-generation blockchain infrastructure focused on speed, scalability, and security, powering the future of Web3."

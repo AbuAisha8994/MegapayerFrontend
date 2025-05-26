@@ -134,9 +134,12 @@ const ConnectionLine = ({
   const [energyPosition, setEnergyPosition] = useState(0);
 
   useFrame(({ clock }) => {
-    if (ref.current) {
+    if (
+      ref.current &&
+      ref.current.material instanceof THREE.LineBasicMaterial
+    ) {
       // Pulse effect on the line
-      ref.current.material.opacity =
+      (ref.current.material as THREE.LineBasicMaterial).opacity =
         Math.sin(clock.getElapsedTime() * 2) * 0.3 + 0.7;
     }
 

@@ -71,7 +71,7 @@ const MPCCoinPage = () => {
           </motion.div>
 
           <div className="mb-20">
-            <Stats product="mpc-coin" />
+            <Stats product="blockchain" />
           </div>
 
           <motion.div

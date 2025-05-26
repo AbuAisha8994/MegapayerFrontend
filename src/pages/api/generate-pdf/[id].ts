@@ -2,7 +2,8 @@ import { NextApiRequest, NextApiResponse } from "next";
 import fs from "fs";
 import path from "path";
 import { marked } from "marked";
-import puppeteer from "puppeteer";
+import chromium from "chrome-aws-lambda";
+import puppeteerCore from "puppeteer-core";
 
 export default async function handler(
   req: NextApiRequest,
@@ -13,7 +14,7 @@ export default async function handler(
   }
 
   const { id } = req.query;
-  const { title, format } = req.body;
+  const { title } = req.body;
 
   try {
     // Read the markdown content
@@ -29,8 +30,6 @@ export default async function handler(
     }
 
     const markdownContent = fs.readFileSync(markdownPath, "utf-8");
-
-    // Convert markdown to HTML
     const htmlContent = marked(markdownContent);
 
     // Create styled HTML document
@@ -147,7 +146,7 @@ export default async function handler(
         </head>
         <body>
           <div class="header">
-            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI1MCIgeT0iMjUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM0ZjQ2ZTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1lZ2FwYXllcjwvdGV4dD4KPHN2Zz4=" alt="Megapayer Logo" style="height: 40px; margin-bottom: 10px;">
+            <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTAwIiBoZWlnaHQ9IjQwIiB2aWV3Qm94PSIwIDAgMTAwIDQwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8dGV4dCB4PSI1MCIgeT0iMjUiIGZvcnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxNiIgZm9udC13ZWlnaHQ9ImJvbGQiIGZpbGw9IiM0ZjQ2ZTUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPk1lZ2FwYXllcjwvdGV4dD4KPHN2Zz4=" alt="Megapayer Logo" style="height: 40px; margin-bottom: 10px;">
             <div style="font-size: 0.9em; color: #666;">Technical Documentation</div>
           </div>
           ${htmlContent}
@@ -159,17 +158,31 @@ export default async function handler(
       </html>
     `;
 
-    // Generate PDF using Puppeteer
-    const browser = await puppeteer.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
+    // Launch browser with compatible configuration
+    const options = process.env.AWS_LAMBDA_FUNCTION_VERSION
+      ? {
+          args: chromium.args,
+          defaultViewport: chromium.defaultViewport,
+          executablePath: await chromium.executablePath,
+          headless: chromium.headless,
+        }
+      : {
+          args: [],
+          executablePath:
+            process.platform === "win32"
+              ? "C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe"
+              : process.platform === "linux"
+              ? "/usr/bin/google-chrome"
+              : "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+        };
+
+    const browser = await puppeteerCore.launch(options);
 
     const page = await browser.newPage();
     await page.setContent(styledHtml, { waitUntil: "networkidle0" });
 
     const pdf = await page.pdf({
-      format: "A4",
+      format: "a4",
       printBackground: true,
       margin: {
         top: "20mm",
@@ -200,8 +213,12 @@ export default async function handler(
     res.status(200).send(pdf);
   } catch (error) {
     console.error("PDF generation error:", error);
+    const errorMessage =
+      typeof error === "object" && error !== null && "message" in error
+        ? (error as { message: string }).message
+        : String(error);
     res
       .status(500)
-      .json({ message: "Failed to generate PDF", error: error.message });
+      .json({ message: "Failed to generate PDF", error: errorMessage });
   }
 }
