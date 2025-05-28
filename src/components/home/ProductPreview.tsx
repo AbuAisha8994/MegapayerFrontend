@@ -414,7 +414,11 @@ const ProductPreview = () => {
                 </div>
                 <div className="mt-4 md:mt-0">
                   <Link
-                    href={`/${currentProduct.id}`}
+                    href={
+                      currentProduct.id === "nft-marketplace"
+                        ? "/whitepaper/nft-marketplace"
+                        : `/${currentProduct.id}`
+                    }
                     className="inline-flex items-center px-6 py-2.5 rounded-lg bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 text-white group"
                   >
                     <span>Learn More</span>

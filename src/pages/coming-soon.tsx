@@ -1,140 +1,221 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import Head from "next/head";
-import Link from "next/link";
+import { useRouter } from "next/router";
 import { motion } from "framer-motion";
+import Link from "next/link";
 import Layout from "@/components/layout/Layout";
 
 const ComingSoonPage = () => {
+  const router = useRouter();
+  const { product, returnUrl } = router.query;
+
+  // Get product name from query or use default
+  const productName = typeof product === "string" ? product : "This Feature";
+
+  // Reference date for countdown (3 months from now)
+  const targetDate = useRef(new Date());
+  targetDate.current.setMonth(targetDate.current.getMonth() + 3);
+
+  // Countdown state
+  const [countdown, setCountdown] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
+
+  // Email subscription
   const [email, setEmail] = useState("");
-  const [submitted, setSubmitted] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // Update countdown
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const now = new Date().getTime();
+      const distance = targetDate.current.getTime() - now;
+
+      if (distance < 0) {
+        clearInterval(interval);
+        return;
+      }
+
+      setCountdown({
+        days: Math.floor(distance / (1000 * 60 * 60 * 24)),
+        hours: Math.floor(
+          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+        ),
+        minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+        seconds: Math.floor((distance % (1000 * 60)) / 1000),
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  // Handle email subscription
+  const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log("Email submitted:", email);
-      setLoading(false);
-      setSubmitted(true);
-      setEmail("");
-    }, 1500);
+    // Email validation
+    if (!email || !/^\S+@\S+\.\S+$/.test(email)) {
+      setError("Please enter a valid email address");
+      return;
+    }
+
+    // Here you would integrate with your email service
+    console.log("Subscribed email:", email);
+    setIsSubmitted(true);
+    setError("");
   };
 
   return (
     <Layout>
       <Head>
-        <title>Coming Soon | Megapayer Ecosystem Launch 2025</title>
+        <title>Coming Soon | Megapayer</title>
         <meta
           name="description"
-          content="The Megapayer ecosystem is launching soon. Join our waitlist to be the first to experience the future of blockchain technology."
+          content="This feature is coming soon to the Megapayer ecosystem. Sign up to be notified when it launches."
         />
       </Head>
 
-      <div className="min-h-screen flex flex-col items-center justify-center pt-20 pb-20">
-        <div className="container mx-auto px-4 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <div className="relative inline-block mb-8">
-              <div className="text-7xl md:text-9xl font-black text-white opacity-10 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 -z-10">
-                2025
+      <section className="relative min-h-[80vh] flex items-center">
+        {/* Background effects */}
+        <div className="absolute inset-0 overflow-hidden -z-10">
+          <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+          <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>
+
+          {/* Animated dots */}
+          <div className="absolute inset-0">
+            {[...Array(20)].map((_, i) => (
+              <motion.div
+                key={i}
+                className="absolute w-1 h-1 bg-blue-500 rounded-full"
+                style={{
+                  top: `${Math.random() * 100}%`,
+                  left: `${Math.random() * 100}%`,
+                  opacity: Math.random() * 0.5 + 0.2,
+                }}
+                animate={{
+                  y: [0, Math.random() * -100 - 50],
+                  opacity: [0.7, 0],
+                }}
+                transition={{
+                  duration: Math.random() * 10 + 10,
+                  repeat: Infinity,
+                  repeatType: "loop",
+                  delay: Math.random() * 5,
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Gradient overlay */}
+          <div
+            className="absolute inset-0 bg-gradient-radial from-dark/40 to-dark"
+            style={{
+              background:
+                "radial-gradient(circle at center, rgba(15,23,42,0.4) 0%, rgb(15,23,42) 70%)",
+            }}
+          ></div>
+        </div>
+
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="max-w-3xl mx-auto">
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6 }}
+              className="text-center mb-12"
+            >
+              <div className="inline-flex items-center bg-blue-500/10 backdrop-blur-sm px-6 py-2 rounded-full border border-blue-500/20 mb-6">
+                <svg
+                  className="w-5 h-5 text-blue-400 mr-2"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+                <span className="text-blue-400 font-medium">Coming Soon</span>
               </div>
-              <h1 className="text-4xl md:text-6xl font-bold text-gradient mb-6">
-                Coming Soon
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-gradient">
+                We're Building Something Amazing
               </h1>
-            </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.3 }}
-            className="max-w-3xl mx-auto mb-12"
-          >
-            <h2 className="text-2xl md:text-3xl font-semibold mb-6">
-              The Future of Blockchain Technology is Almost Here
-            </h2>
-            <p className="text-xl text-gray-300 mb-6">
-              We're putting the finishing touches on the complete Megapayer
-              ecosystem. Join our waitlist to be among the first to experience
-              our revolutionary platform.
-            </p>
-          </motion.div>
+              <p className="text-xl text-gray-300 mb-8">
+                <span className="text-white font-semibold">{productName}</span>{" "}
+                is currently in development and will be launching soon. Sign up
+                to be notified when we go live.
+              </p>
+            </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-            className="max-w-xl mx-auto mb-16"
-          >
-            <div className="bg-dark/40 backdrop-blur-md rounded-xl border border-white/10 p-8">
-              {!submitted ? (
-                <>
-                  <h3 className="text-xl font-semibold mb-4">
-                    Get Early Access
-                  </h3>
-                  <p className="text-gray-300 mb-6">
-                    Be the first to know when we launch. No spam, just important
-                    updates.
-                  </p>
-                  <form
-                    onSubmit={handleSubmit}
-                    className="flex flex-col sm:flex-row gap-4"
-                  >
+            {/* Countdown Timer */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-8 mb-16"
+            >
+              {[
+                { label: "Days", value: countdown.days },
+                { label: "Hours", value: countdown.hours },
+                { label: "Minutes", value: countdown.minutes },
+                { label: "Seconds", value: countdown.seconds },
+              ].map((item) => (
+                <div
+                  key={item.label}
+                  className="bg-dark/50 backdrop-blur-md border border-blue-500/20 rounded-xl p-4 md:p-6 text-center shadow-lg shadow-blue-500/5"
+                >
+                  <div className="text-3xl md:text-5xl font-bold text-white mb-2">
+                    {String(item.value).padStart(2, "0")}
+                  </div>
+                  <div className="text-sm md:text-base text-gray-400">
+                    {item.label}
+                  </div>
+                </div>
+              ))}
+            </motion.div>
+
+            {/* Email signup */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="max-w-xl mx-auto"
+            >
+              {!isSubmitted ? (
+                <form onSubmit={handleSubscribe} className="mb-8">
+                  <div className="flex flex-col sm:flex-row gap-4">
                     <input
                       type="email"
-                      placeholder="Your email address"
-                      className="flex-1 px-4 py-3 rounded-lg bg-dark/60 border border-white/10 focus:outline-none focus:border-primary transition-colors"
+                      placeholder="Enter your email address"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      required
+                      className="flex-grow px-6 py-4 bg-dark/50 border border-white/10 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500/50 text-white"
                     />
                     <button
                       type="submit"
-                      disabled={loading}
-                      className={`btn-primary whitespace-nowrap ${
-                        loading ? "opacity-70" : ""
-                      }`}
+                      className="px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 text-white font-bold rounded-lg transition-all duration-300"
                     >
-                      {loading ? (
-                        <span className="flex items-center">
-                          <svg
-                            className="animate-spin -ml-1 mr-2 h-4 w-4 text-white"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <circle
-                              className="opacity-25"
-                              cx="12"
-                              cy="12"
-                              r="10"
-                              stroke="currentColor"
-                              strokeWidth="4"
-                            ></circle>
-                            <path
-                              className="opacity-75"
-                              fill="currentColor"
-                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
-                            ></path>
-                          </svg>
-                          Processing...
-                        </span>
-                      ) : (
-                        "Join Waitlist"
-                      )}
+                      Notify Me
                     </button>
-                  </form>
-                </>
+                  </div>
+                  {error && (
+                    <div className="mt-2 text-red-400 text-sm">{error}</div>
+                  )}
+                </form>
               ) : (
-                <div className="text-center py-4">
-                  <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-primary/20 text-primary mb-4">
+                <div className="bg-blue-500/20 border border-blue-500/30 text-white p-6 rounded-lg mb-8">
+                  <div className="flex items-center">
                     <svg
-                      className="w-8 h-8"
+                      className="w-6 h-6 text-blue-400 mr-3"
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
@@ -146,137 +227,123 @@ const ComingSoonPage = () => {
                         d="M5 13l4 4L19 7"
                       />
                     </svg>
+                    <span className="font-medium">
+                      Thanks! We'll notify you when we launch.
+                    </span>
                   </div>
-                  <h3 className="text-xl font-bold mb-2">
-                    You're on the list!
-                  </h3>
-                  <p className="text-gray-300 mb-4">
-                    Thank you for your interest! We'll notify you when we
-                    launch.
-                  </p>
                 </div>
               )}
-            </div>
-          </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ duration: 0.8, delay: 0.9 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto"
-          >
-            <div className="bg-dark/20 backdrop-blur-sm p-6 rounded-lg border border-white/5 hover:border-primary/20 transition-all duration-300">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 mx-auto">
-                <svg
-                  className="w-6 h-6 text-primary"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              <div className="text-center">
+                <Link
+                  href={returnUrl ? returnUrl.toString() : "/"}
+                  className="inline-flex items-center text-gray-300 hover:text-white transition-colors"
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-                  />
-                </svg>
+                  <svg
+                    className="w-5 h-5 mr-2"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                    />
+                  </svg>
+                  <span>
+                    Return to {returnUrl ? "previous page" : "homepage"}
+                  </span>
+                </Link>
               </div>
-              <h3 className="font-semibold mb-2 text-center">
-                Join Alpha Testing
-              </h3>
-              <p className="text-gray-400 text-center text-sm">
-                Early access members will be invited to participate in our alpha
-                testing program.
-              </p>
-            </div>
-
-            <div className="bg-dark/20 backdrop-blur-sm p-6 rounded-lg border border-white/5 hover:border-primary/20 transition-all duration-300">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 mx-auto">
-                <svg
-                  className="w-6 h-6 text-primary"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M7 11.5V14m0-2.5v-6a1.5 1.5 0 113 0m-3 6a1.5 1.5 0 00-3 0v2a7.5 7.5 0 0015 0v-5a1.5 1.5 0 00-3 0m-6-3V11m0-5.5v-1a1.5 1.5 0 013 0v1m0 0V11m0-5.5a1.5 1.5 0 013 0v3m0 0V11"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2 text-center">
-                Exclusive Rewards
-              </h3>
-              <p className="text-gray-400 text-center text-sm">
-                Early adopters will receive exclusive tokens and benefits when
-                the platform launches.
-              </p>
-            </div>
-
-            <div className="bg-dark/20 backdrop-blur-sm p-6 rounded-lg border border-white/5 hover:border-primary/20 transition-all duration-300">
-              <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center mb-4 mx-auto">
-                <svg
-                  className="w-6 h-6 text-primary"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                  />
-                </svg>
-              </div>
-              <h3 className="font-semibold mb-2 text-center">
-                Shape the Product
-              </h3>
-              <p className="text-gray-400 text-center text-sm">
-                Provide feedback that directly influences our development
-                roadmap.
-              </p>
-            </div>
-          </motion.div>
-
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 1.2 }}
-            className="mt-20"
-          >
-            <h3 className="text-xl font-semibold mb-6">
-              Curious about what we're building?
-            </h3>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Link href="/whitepapers" className="btn-secondary">
-                Read Our Whitepapers
-              </Link>
-              <Link
-                href="/"
-                className="text-primary hover:text-primary-light transition-colors inline-flex items-center"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M10 19l-7-7m0 0l7-7m-7 7h18"
-                  />
-                </svg>
-                Back to Homepage
-              </Link>
-            </div>
-          </motion.div>
+            </motion.div>
+          </div>
         </div>
-      </div>
+      </section>
+
+      {/* Features preview */}
+      <section className="py-16 bg-dark/50">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4">What to Expect</h2>
+            <p className="text-gray-300 max-w-3xl mx-auto">
+              We're working hard to bring you these amazing features:
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <div className="bg-dark/40 backdrop-blur-sm border border-white/5 rounded-xl p-6 hover:border-blue-500/20 transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mb-4">
+                <svg
+                  className="w-6 h-6 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Real-Time Analytics</h3>
+              <p className="text-gray-400">
+                Track transactions, blocks, and network metrics with millisecond
+                accuracy as they happen.
+              </p>
+            </div>
+
+            <div className="bg-dark/40 backdrop-blur-sm border border-white/5 rounded-xl p-6 hover:border-blue-500/20 transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mb-4">
+                <svg
+                  className="w-6 h-6 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Multi-Chain Support</h3>
+              <p className="text-gray-400">
+                Explore data across all major blockchains from a single, unified
+                interface.
+              </p>
+            </div>
+
+            <div className="bg-dark/40 backdrop-blur-sm border border-white/5 rounded-xl p-6 hover:border-blue-500/20 transition-all duration-300">
+              <div className="w-12 h-12 rounded-full bg-blue-500/20 flex items-center justify-center mb-4">
+                <svg
+                  className="w-6 h-6 text-blue-400"
+                  fill="none"
+                  stroke="currentColor"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={1.5}
+                    d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"
+                  />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold mb-2">Developer API</h3>
+              <p className="text-gray-400">
+                Integrate blockchain data directly into your applications with
+                our comprehensive API.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
     </Layout>
   );
 };

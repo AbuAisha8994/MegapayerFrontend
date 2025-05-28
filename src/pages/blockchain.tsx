@@ -78,7 +78,7 @@ const BlockchainPage = () => {
   return (
     <Layout>
       <Head>
-        <title>Megapayer Chai | Next-Gen Web3 Infrastructure</title>
+        <title>Megapayer Chain | Next-Gen Web3 Infrastructure</title>
         <meta
           name="description"
           content="Megapayer Chain is a next-generation blockchain infrastructure focused on speed, scalability, and security, powering the future of Web3."
@@ -670,10 +670,10 @@ const BlockchainPage = () => {
                 Start Building
               </Link>
               <Link
-                href="/whitepaper/technology"
+                href="/blockchain"
                 className="bg-transparent border-2 border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
               >
-                Read Whitepaper
+                Learn More
               </Link>
             </div>
           </motion.div>
