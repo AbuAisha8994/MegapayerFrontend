@@ -1,0 +1,672 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Comprehensive Project Overview</title>
+    <style>
+      :root {
+        --primary: #3498db;
+        --primary-dark: #2980b9;
+        --secondary: #2ecc71;
+        --accent: #e74c3c;
+        --light: #ecf0f1;
+        --dark: #34495e;
+        --gray: #95a5a6;
+        --light-gray: #f8f9fa;
+      }
+
+      body {
+        font-family: "Segoe UI", Roboto, Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        line-height: 1.6;
+        background-color: #f9f9f9;
+        color: #333;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--primary),
+          var(--primary-dark)
+        );
+        color: white;
+        padding: 30px 0;
+        text-align: center;
+        border-radius: 0 0 15px 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
+
+      h2 {
+        color: var(--dark);
+        border-bottom: 2px solid var(--primary);
+        padding-bottom: 10px;
+        margin-top: 40px;
+        font-size: 1.8rem;
+      }
+
+      .card {
+        background-color: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        padding: 20px;
+        margin-bottom: 30px;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        font-size: 0.95rem;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        border-radius: 8px;
+        overflow: hidden;
+      }
+
+      th,
+      td {
+        border: 1px solid #eee;
+        padding: 12px 15px;
+        text-align: left;
+        vertical-align: top;
+      }
+
+      th {
+        background-color: var(--primary);
+        color: white;
+        font-weight: 600;
+        text-transform: uppercase;
+        font-size: 0.85rem;
+        letter-spacing: 0.5px;
+      }
+
+      tr:nth-child(even) {
+        background-color: var(--light-gray);
+      }
+
+      tr:hover {
+        background-color: rgba(52, 152, 219, 0.05);
+      }
+
+      .notes {
+        font-size: 0.95rem;
+        margin-top: 15px;
+        padding: 15px;
+        border-left: 4px solid var(--primary);
+        background-color: var(--light-gray);
+        border-radius: 0 8px 8px 0;
+      }
+
+      .budget-note {
+        font-weight: bold;
+        color: var(--accent);
+      }
+
+      .total-row {
+        background-color: rgba(46, 204, 113, 0.1) !important;
+      }
+
+      .total-row td {
+        font-weight: bold;
+        color: var(--dark);
+      }
+
+      /* Timeline Styles */
+      .timeline-container {
+        margin: 40px 0;
+        overflow-x: auto;
+      }
+
+      .timeline {
+        display: flex;
+        width: 100%;
+        padding: 10px 0;
+      }
+
+      .timeline-header {
+        display: flex;
+        width: 100%;
+        border-bottom: 1px solid #ddd;
+        padding-bottom: 10px;
+      }
+
+      .timeline-month {
+        flex: 1;
+        text-align: center;
+        font-weight: bold;
+        padding: 5px;
+        font-size: 0.9rem;
+      }
+
+      .timeline-year {
+        font-weight: bold;
+        background-color: var(--dark);
+        color: white;
+        padding: 5px 15px;
+        margin-right: 10px;
+        border-radius: 20px;
+      }
+
+      .timeline-item {
+        display: flex;
+        width: 100%;
+        margin: 10px 0;
+        align-items: center;
+      }
+
+      .timeline-item-label {
+        width: 250px;
+        font-weight: bold;
+        padding-right: 15px;
+        text-align: right;
+      }
+
+      .timeline-item-months {
+        flex: 1;
+        display: flex;
+      }
+
+      .timeline-cell {
+        flex: 1;
+        height: 35px;
+        margin: 0 2px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.8rem;
+        color: white;
+        font-weight: bold;
+        position: relative;
+      }
+
+      .timeline-cell.active {
+        background: linear-gradient(
+          135deg,
+          rgba(52, 152, 219, 0.1),
+          rgba(52, 152, 219, 0.2)
+        );
+      }
+
+      .timeline-cell.active::after {
+        content: "";
+        position: absolute;
+        width: 15px;
+        height: 15px;
+        background-color: white;
+        border: 3px solid var(--primary);
+        border-radius: 50%;
+        top: -8px;
+        left: 50%;
+        transform: translateX(-50%);
+      }
+
+      .timeline-cell.inactive {
+        background-color: #eee;
+      }
+
+      /* Enhanced Table Styles */
+      td.timeline-cell {
+        position: relative;
+        padding: 15px;
+        transition: all 0.3s ease;
+      }
+
+      td.timeline-cell.active {
+        background: linear-gradient(
+          135deg,
+          rgba(52, 152, 219, 0.1),
+          rgba(52, 152, 219, 0.2)
+        );
+      }
+
+      td.timeline-cell.active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 4px;
+        height: 100%;
+        background: var(--primary);
+      }
+
+      /* Enhanced Chart Styles */
+      .pie-chart {
+        transform: perspective(1000px) rotateX(20deg);
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .pie-chart:hover {
+        transform: perspective(1000px) rotateX(10deg) scale(1.05);
+      }
+
+      .pie-chart::before {
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .chart-item {
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        transition: all 0.3s ease;
+      }
+
+      .chart-item:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+      }
+
+      .legend-item {
+        padding: 8px 12px;
+        background: rgba(255, 255, 255, 0.8);
+        border-radius: 20px;
+        margin: 5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      }
+
+      .legend-item:hover {
+        background: rgba(255, 255, 255, 1);
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      }
+
+      /* Timeline in Table */
+      td[data-timeline] {
+        position: relative;
+      }
+
+      td[data-timeline]::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 3px;
+        background: var(--primary);
+        width: var(--timeline-width, 0%);
+        transition: width 0.3s ease;
+      }
+
+      tr:hover td[data-timeline]::after {
+        width: var(--timeline-width);
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>Comprehensive Project Overview</h1>
+      <p>Budget Allocation and Timeline Planning</p>
+    </header>
+
+    <div class="container">
+      <div class="card">
+        <h2>Project Timeline Visualization</h2>
+        <div class="timeline-container">
+          <div class="timeline-header">
+            <div class="timeline-item-label"></div>
+            <div class="timeline-item-months">
+              <div class="timeline-year">2025</div>
+              <div class="timeline-month">Month 1</div>
+              <div class="timeline-month">Month 2</div>
+              <div class="timeline-month">Month 3</div>
+              <div class="timeline-month">Month 4</div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-label">
+              Blockchain L1 (EVM, AI Contracts)
+            </div>
+            <div class="timeline-item-months">
+              <div
+                class="timeline-cell active"
+                style="background-color: rgba(52, 152, 219, 0.9)"
+              >
+                Design
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: rgba(52, 152, 219, 0.9)"
+              >
+                Core Dev
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: rgba(52, 152, 219, 0.9)"
+              >
+                Testing
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: rgba(52, 152, 219, 0.9)"
+              >
+                Launch
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-label">Explorer & Validator Nodes</div>
+            <div class="timeline-item-months">
+              <div class="timeline-cell inactive"></div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #e74c3c"
+              >
+                Design
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #e74c3c"
+              >
+                Development
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #e74c3c"
+              >
+                Deployment
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-label">
+              Developer IDE & Blockchain Audit
+            </div>
+            <div class="timeline-item-months">
+              <div class="timeline-cell inactive"></div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #2ecc71"
+              >
+                Setup
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #2ecc71"
+              >
+                Testing
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #2ecc71"
+              >
+                Release
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-label">Bridge</div>
+            <div class="timeline-item-months">
+              <div class="timeline-cell inactive"></div>
+              <div class="timeline-cell inactive"></div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #f39c12"
+              >
+                Development
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #f39c12"
+              >
+                Launch
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-label">Multichain Crypto Wallet</div>
+            <div class="timeline-item-months">
+              <div
+                class="timeline-cell active"
+                style="background-color: #9b59b6"
+              >
+                Planning
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #9b59b6"
+              >
+                Core
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #9b59b6"
+              >
+                Services
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #9b59b6"
+              >
+                Integration
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-label">DEX (Multichain)</div>
+            <div class="timeline-item-months">
+              <div
+                class="timeline-cell active"
+                style="background-color: #1abc9c"
+              >
+                Architecture
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #1abc9c"
+              >
+                Smart Contracts
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #1abc9c"
+              >
+                Development
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #1abc9c"
+              >
+                Launch
+              </div>
+            </div>
+          </div>
+
+          <div class="timeline-item">
+            <div class="timeline-item-label">P2P Decentralized Exchange</div>
+            <div class="timeline-item-months">
+              <div class="timeline-cell inactive"></div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #34495e"
+              >
+                Planning
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #34495e"
+              >
+                Development
+              </div>
+              <div
+                class="timeline-cell active"
+                style="background-color: #34495e"
+              >
+                Deployment
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="charts-container">
+          <!-- Update the budget allocation chart legend -->
+          <div class="chart-item">
+            <h3>Budget Allocation</h3>
+            <div class="pie-chart"></div>
+            <div class="chart-legend">
+              <div class="legend-item">
+                <div
+                  class="legend-color"
+                  style="background-color: #3498db"
+                ></div>
+                <span>Blockchain L1 (25%)</span>
+              </div>
+              <div class="legend-item">
+                <div
+                  class="legend-color"
+                  style="background-color: #e74c3c"
+                ></div>
+                <span>Explorer & Validators (15%)</span>
+              </div>
+              <div class="legend-item">
+                <div
+                  class="legend-color"
+                  style="background-color: #2ecc71"
+                ></div>
+                <span>IDE & Audit (10%)</span>
+              </div>
+              <div class="legend-item">
+                <div
+                  class="legend-color"
+                  style="background-color: #f39c12"
+                ></div>
+                <span>Bridge (10%)</span>
+              </div>
+              <div class="legend-item">
+                <div
+                  class="legend-color"
+                  style="background-color: #9b59b6"
+                ></div>
+                <span>Wallet & Services (15%)</span>
+              </div>
+              <div class="legend-item">
+                <div
+                  class="legend-color"
+                  style="background-color: #1abc9c"
+                ></div>
+                <span>DEX (15%)</span>
+              </div>
+              <div class="legend-item">
+                <div
+                  class="legend-color"
+                  style="background-color: #34495e"
+                ></div>
+                <span>P2P Exchange (10%)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Project Task Breakdown</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>Task No.</th>
+              <th>Description</th>
+              <th>Timeline</th>
+              <th>Est. Budget Allocation (USD)</th>
+              <th>Key Focus Areas</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>
+                Blockchain L1 (EVM compatible, AI integrated smart contracts,
+                DeFi, NFT support)
+              </td>
+              <td data-timeline style="--timeline-width: 100%">Month 1-4</td>
+              <td>$175k (25%)</td>
+              <td>
+                EVM compatibility, AI contract generation, DeFi protocols, NFT
+                standards
+              </td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td>Explorer, Validators Node Code</td>
+              <td data-timeline style="--timeline-width: 75%">Month 2-4</td>
+              <td>$105k (15%)</td>
+              <td>
+                Block explorer development, validator node setup, network
+                security
+              </td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td>Developer IDE, Blockchain Code Audit</td>
+              <td data-timeline style="--timeline-width: 75%">Month 2-4</td>
+              <td>$70k (10%)</td>
+              <td>
+                Integrated development environment, comprehensive blockchain
+                code auditing tools
+              </td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td>Bridge</td>
+              <td data-timeline style="--timeline-width: 50%">Month 3-4</td>
+              <td>$70k (10%)</td>
+              <td>Cross-chain interoperability, secure asset transfer</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td>Multichain Crypto Wallet with Web3 Services</td>
+              <td data-timeline style="--timeline-width: 100%">Month 1-4</td>
+              <td>$105k (15%)</td>
+              <td>
+                Multichain support, travel bookings, mobile topup, gift cards
+              </td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td>DEX (Multichain)</td>
+              <td data-timeline style="--timeline-width: 100%">Month 1-4</td>
+              <td>$105k (15%)</td>
+              <td>Liquidity pools, token swaps, yield farming</td>
+            </tr>
+            <tr>
+              <td>7</td>
+              <td>P2P Decentralized Exchange</td>
+              <td data-timeline style="--timeline-width: 75%">Month 2-4</td>
+              <td>$70k (10%)</td>
+              <td>
+                Peer-to-peer trading, escrow system, reputation management
+              </td>
+            </tr>
+            <tr class="total-row">
+              <td colspan="3"><strong>TOTAL</strong></td>
+              <td><strong>$700k (100%)</strong></td>
+              <td>4-month timeline with phased development approach</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>
