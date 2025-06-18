@@ -453,7 +453,7 @@ const BlockchainPage = () => {
                     Build your first smart contract in minutes
                   </div>
                   <Link
-                    href="/build/smart-contracts"
+                    href="/developers/getting-started"
                     className="px-4 py-2 bg-primary/20 hover:bg-primary/30 text-primary rounded-lg text-sm transition-colors"
                   >
                     Try Builder →
@@ -557,7 +557,7 @@ const BlockchainPage = () => {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <Link
-                    href="/developers/sdk"
+                    href="/developers/getting-started"
                     className="bg-dark/40 backdrop-blur-sm hover:bg-dark/60 p-4 rounded-lg flex items-center transition-colors"
                   >
                     <div className="p-2 bg-primary/20 rounded-full mr-3">
@@ -579,7 +579,7 @@ const BlockchainPage = () => {
                   </Link>
 
                   <Link
-                    href="/developers/api"
+                    href="/developers/getting-started"
                     className="bg-dark/40 backdrop-blur-sm hover:bg-dark/60 p-4 rounded-lg flex items-center transition-colors"
                   >
                     <div className="p-2 bg-primary/20 rounded-full mr-3">
@@ -601,7 +601,7 @@ const BlockchainPage = () => {
                   </Link>
 
                   <Link
-                    href="/developers/github"
+                    href="/developers/getting-started"
                     className="bg-dark/40 backdrop-blur-sm hover:bg-dark/60 p-4 rounded-lg flex items-center transition-colors"
                   >
                     <div className="p-2 bg-primary/20 rounded-full mr-3">
@@ -618,7 +618,7 @@ const BlockchainPage = () => {
                   </Link>
 
                   <Link
-                    href="/developers/tutorials"
+                    href="/developers/getting-started"
                     className="bg-dark/40 backdrop-blur-sm hover:bg-dark/60 p-4 rounded-lg flex items-center transition-colors"
                   >
                     <div className="p-2 bg-primary/20 rounded-full mr-3">
