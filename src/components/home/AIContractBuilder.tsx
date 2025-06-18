@@ -173,7 +173,7 @@ const AIContractBuilder = () => {
             </div>
 
             <Link
-              href="/build/ai-contracts"
+              href="/developers/getting-started"
               className="inline-flex items-center px-8 py-3.5 rounded-lg bg-gradient-to-r from-primary to-primary-dark text-white font-medium hover:shadow-xl hover:shadow-primary/20 transition-all duration-300 group"
             >
               <span>Start Building with AI</span>
