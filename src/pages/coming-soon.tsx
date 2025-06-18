@@ -79,7 +79,7 @@ const ComingSoonPage = () => {
         />
       </Head>
 
-      <section className="relative min-h-[80vh] flex items-center">
+      <section className="relative min-h-[80vh] flex items-center pt-[100px]">
         {/* Background effects */}
         <div className="absolute inset-0 overflow-hidden -z-10">
           <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-blue-500/50 to-transparent"></div>

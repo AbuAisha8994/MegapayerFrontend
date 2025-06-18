@@ -81,57 +81,91 @@ const Navbar = () => {
       name: "Products",
       href: "#",
       submenu: [
-        { name: "Megapayer Blockchain", href: "/products/blockchain" },
-        { name: "Decentralized Social", href: "/products/social" },
-        { name: "P2P Exchange", href: "/products/p2p" },
-        { name: "Multi-Chain DEX", href: "/products/dex" },
-        { name: "Universal Wallet", href: "/products/wallet" },
-        { name: "NFT Marketplace", href: "/products/nft" },
-        { name: "Bridge", href: "/products/bridge" },
+        {
+          name: "Megapayer Blockchain",
+          href: "/coming-soon?product=Megapayer%20Blockchain&returnUrl=/",
+        },
+        {
+          name: "Decentralized Social",
+          href: "/coming-soon?product=Decentralized%20Social&returnUrl=/",
+        },
+        { name: "P2P Exchange", href: "/p2p-exchange" },
+        { name: "Multi-Chain DEX", href: "/dex" },
+        {
+          name: "Universal Wallet",
+          href: "/coming-soon?product=Universal%20Wallet&returnUrl=/",
+        },
+        {
+          name: "NFT Marketplace",
+          href: "/coming-soon?product=NFT%20Marketplace&returnUrl=/",
+        },
+        { name: "Bridge", href: "/coming-soon?product=Bridge&returnUrl=/" },
       ],
     },
     {
       name: "Ecosystem",
       href: "#",
       submenu: [
-        { name: "MPC Coin", href: "/ecosystem/coin" },
-        { name: "MPC ID", href: "/ecosystem/id" },
-        { name: "Megapayer Explorer", href: "/ecosystem/explorer" },
-        { name: "Partners & Integrations", href: "/ecosystem/partners" },
+        { name: "MPC Coin", href: "/token/mpc" },
+        { name: "MPC ID", href: "/coming-soon?product=MPC%20ID&returnUrl=/" },
+        { name: "Megapayer Explorer", href: "/explorer" },
+        {
+          name: "Partners & Integrations",
+          href: "/coming-soon?product=Partners%20%26%20Integrations&returnUrl=/",
+        },
       ],
     },
     {
       name: "Developers",
       href: "#",
       submenu: [
-        { name: "Developer SDK / API", href: "/developers/sdk" },
+        { name: "Developer SDK / API", href: "/sdk-api" },
         {
           name: "GitHub",
           href: "https://github.com/megapayer",
           isExternal: true,
         },
-        { name: "Testnet & Faucet", href: "/developers/testnet" },
-        { name: "Node Setup Guide", href: "/developers/node-setup" },
+        { name: "Explorer API", href: "/developers/explorer-api" },
+        {
+          name: "Testnet & Faucet",
+          href: "/coming-soon?product=Testnet%20%26%20Faucet&returnUrl=/",
+        },
+        {
+          name: "Node Setup Guide",
+          href: "/coming-soon?product=Node%20Setup%20Guide&returnUrl=/",
+        },
       ],
     },
     {
       name: "Docs",
       href: "#",
       submenu: [
-        { name: "Whitepaper", href: "/docs/whitepaper" },
-        { name: "Tokenomics", href: "/docs/tokenomics" },
-        { name: "Roadmap", href: "/docs/roadmap" },
-        { name: "Pitch Deck", href: "/docs/pitch-deck" },
-        { name: "Media Kit", href: "/docs/media-kit" },
-        { name: "FAQ", href: "/docs/faq" },
+        { name: "Whitepapers", href: "/whitepapers" },
+        { name: "Tokenomics", href: "/whitepaper/mpc-coin" },
+        { name: "Roadmap", href: "/whitepaper/roadmap" },
+        {
+          name: "Pitch Deck",
+          href: "/coming-soon?product=Pitch%20Deck&returnUrl=/",
+        },
+        {
+          name: "Media Kit",
+          href: "/coming-soon?product=Media%20Kit&returnUrl=/",
+        },
+        { name: "FAQ", href: "/support" },
       ],
     },
     {
       name: "Community",
       href: "#",
       submenu: [
-        { name: "News & Blog", href: "/community/blog" },
-        { name: "Airdrop & Campaigns", href: "/community/airdrop" },
+        {
+          name: "News & Blog",
+          href: "/coming-soon?product=News%20%26%20Blog&returnUrl=/",
+        },
+        {
+          name: "Airdrop & Campaigns",
+          href: "/coming-soon?product=Airdrop%20%26%20Campaigns&returnUrl=/",
+        },
         {
           name: "X (Twitter)",
           href: "https://twitter.com/megapayer",
@@ -143,7 +177,7 @@ const Navbar = () => {
           href: "https://discord.gg/megapayer",
           isExternal: true,
         },
-        { name: "Careers", href: "/community/careers" },
+        { name: "Careers", href: "/coming-soon?product=Careers&returnUrl=/" },
       ],
     },
   ];
