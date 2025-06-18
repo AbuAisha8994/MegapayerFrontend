@@ -385,7 +385,7 @@ const HeroBanner = () => {
               ></span>
             </Link>
             <Link
-              href="/blockchain"
+              href="#ecosystem-products"
               className="cosmic-border bg-dark/40 backdrop-blur-sm hover:bg-dark/60 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 text-lg shadow-lg"
             >
               Learn More

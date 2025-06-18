@@ -669,12 +669,6 @@ const BlockchainPage = () => {
               >
                 Start Building
               </Link>
-              <Link
-                href="/blockchain"
-                className="bg-transparent border-2 border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
-              >
-                Learn More
-              </Link>
             </div>
           </motion.div>
         </div>

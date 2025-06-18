@@ -27,7 +27,10 @@ export default function Home() {
           <Features />
         </section>
 
-        <section className="py-24 bg-gradient-to-b from-dark/95 via-dark/90 to-dark/95">
+        <section
+          className="py-24 bg-gradient-to-b from-dark/95 via-dark/90 to-dark/95"
+          id="ecosystem-products"
+        >
           <div className="container mx-auto px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
