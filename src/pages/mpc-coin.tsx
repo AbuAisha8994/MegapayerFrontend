@@ -619,7 +619,7 @@ const MPCCoinPage = () => {
                   </div>
 
                   <Link
-                    href="/presale"
+                    href="https://sale.megapayer.io"
                     className="btn-primary inline-flex items-center"
                   >
                     <svg
@@ -843,13 +843,13 @@ const MPCCoinPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/presale"
+                href="https://sale.megapayer.io"
                 className="bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
               >
                 Join Presale
               </Link>
               <Link
-                href="/docs/tokenomics"
+                href="/whitepaper/mpc-coin"
                 className="bg-transparent border-2 border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
               >
                 Read Whitepaper

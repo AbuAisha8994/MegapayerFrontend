@@ -141,7 +141,7 @@ const Navbar = () => {
       href: "#",
       submenu: [
         { name: "Whitepapers", href: "/whitepapers" },
-        { name: "Tokenomics", href: "/whitepaper/mpc-coin" },
+        { name: "Tokenomics", href: "/mpc-coin" },
         { name: "Roadmap", href: "/whitepaper/roadmap" },
         {
           name: "Pitch Deck",
