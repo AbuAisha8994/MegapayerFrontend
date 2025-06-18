@@ -93,12 +93,14 @@ const MPCTokenPage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link
-                href="/presale"
+              <a
+                href="https://sale.megapayer.io"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-medium rounded-lg hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
               >
                 Join MPC Presale
-              </Link>
+              </a>
               <a
                 href="#tokenomics"
                 className="px-6 py-3 bg-dark/50 border border-white/10 text-white rounded-lg hover:bg-dark/70 transition-all duration-300"
@@ -545,14 +547,16 @@ const MPCTokenPage = () => {
             </p>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">
-              <Link
-                href="/presale"
+              <a
+                href="https://sale.megapayer.io"
+                target="_blank"
+                rel="noopener noreferrer"
                 className="px-6 py-3 bg-gradient-to-r from-primary to-secondary text-white font-medium rounded-lg hover:shadow-lg hover:shadow-primary/20 transition-all duration-300"
               >
                 Participate in Presale
-              </Link>
+              </a>
               <Link
-                href="/whitepaper"
+                href="/whitepaper/mpc-coin"
                 className="px-6 py-3 bg-dark/50 border border-white/10 text-white rounded-lg hover:bg-dark/70 transition-all duration-300"
               >
                 Read Whitepaper
