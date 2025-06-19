@@ -83,17 +83,17 @@ const Navbar = () => {
       submenu: [
         {
           name: "Megapayer Blockchain",
-          href: "/coming-soon?product=Megapayer%20Blockchain&returnUrl=/",
+          href: "/blockchain",
         },
         {
           name: "Decentralized Social",
-          href: "/coming-soon?product=Decentralized%20Social&returnUrl=/",
+          href: "/social-media",
         },
         { name: "P2P Exchange", href: "/p2p-exchange" },
         { name: "Multi-Chain DEX", href: "/dex" },
         {
           name: "Universal Wallet",
-          href: "/coming-soon?product=Universal%20Wallet&returnUrl=/",
+          href: "/wallet/",
         },
         {
           name: "NFT Marketplace",
@@ -107,7 +107,7 @@ const Navbar = () => {
       href: "#",
       submenu: [
         { name: "MPC Coin", href: "/token/mpc" },
-        { name: "MPC ID", href: "/coming-soon?product=MPC%20ID&returnUrl=/" },
+        { name: "MPC ID", href: "/mpc-id" },
         { name: "Megapayer Explorer", href: "/explorer" },
         {
           name: "Partners & Integrations",
@@ -119,13 +119,13 @@ const Navbar = () => {
       name: "Developers",
       href: "#",
       submenu: [
-        { name: "Developer SDK / API", href: "/sdk-api" },
+        { name: "Developer SDK / API", href: "/developers/getting-started" },
         {
           name: "GitHub",
           href: "https://github.com/megapayer",
           isExternal: true,
         },
-        { name: "Explorer API", href: "/developers/explorer-api" },
+        { name: "Explorer API", href: "/developers/getting-started" },
         {
           name: "Testnet & Faucet",
           href: "/coming-soon?product=Testnet%20%26%20Faucet&returnUrl=/",

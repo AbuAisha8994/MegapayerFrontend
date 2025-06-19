@@ -155,7 +155,7 @@ const Footer = () => {
               </li>
               <li>
                 <Link
-                  href="/nft-marketplace"
+                  href="/coming-soon?product=NFT%20Marketplace&returnUrl=/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   NFT Marketplace
@@ -178,15 +178,15 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/whitepaper/roadmap"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
-                  Documentation
+                  Roadmap
                 </a>
               </li>
               <li>
                 <a
-                  href="#"
+                  href="developers/getting-started"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   API Reference
@@ -194,7 +194,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="developers/getting-started"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Developer Portal
@@ -202,7 +202,7 @@ const Footer = () => {
               </li>
               <li>
                 <a
-                  href="#"
+                  href="/coming-soon?product=News%20%26%20Blog&returnUrl=/"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Community Forum
@@ -216,12 +216,12 @@ const Footer = () => {
             <h3 className="text-white font-semibold mb-4">Company</h3>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/about"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   About Us
-                </a>
+                </Link>
               </li>
               <li>
                 <a

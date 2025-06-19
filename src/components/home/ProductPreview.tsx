@@ -417,6 +417,8 @@ const ProductPreview = () => {
                     href={
                       currentProduct.id === "nft-marketplace"
                         ? "/whitepaper/nft-marketplace"
+                        : currentProduct.id === "bridge"
+                        ? "/coming-soon?product=Bridge&returnUrl=/"
                         : `/${currentProduct.id}`
                     }
                     className="inline-flex items-center px-6 py-2.5 rounded-lg bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 text-white group"
