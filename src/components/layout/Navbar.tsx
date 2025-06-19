@@ -167,6 +167,10 @@ const Navbar = () => {
           href: "/coming-soon?product=Airdrop%20%26%20Campaigns&returnUrl=/",
         },
         {
+          name: "Our Team",
+          href: "/team/",
+        },
+        {
           name: "X (Twitter)",
           href: "https://twitter.com/megapayer",
           isExternal: true,
