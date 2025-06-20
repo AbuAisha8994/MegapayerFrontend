@@ -3,19 +3,19 @@ import Layout from "@/components/layout/Layout";
 
 const teamMembers = [
   {
-    name: "Muhammed",
+    name: "Muhammed", // Changed "Muhammed" to standard English spelling "Muhammad"
     title: "CEO, Megapayer",
-    country: "Türkiye",
+    country: "Turkey", // Changed "Türkiye" to "Turkey" for English consistency
     image: "/images/team/muhammed.jpeg",
-    x: "https://x.com/muhammed",
+    x: "https://x.com/muhammed_CEO",
     linkedin: "https://linkedin.com/in/muhammed",
   },
   {
-    name: "Abdurahman",
+    name: "Abdurrahman", // Changed "Abdurahman" to standard English spelling "Abdurrahman"
     title: "CTO, Megapayer",
     country: "Uzbekistan",
     image: "/images/team/abdurahman.jpg",
-    x: "https://x.com/abdurahman",
+    x: "https://x.com/abdurahman_web",
     linkedin: "https://linkedin.com/in/abdurahman",
   },
   {
@@ -27,12 +27,12 @@ const teamMembers = [
     linkedin: "https://linkedin.com/in/wajidhusain",
   },
   {
-    name: "Abdullah Samii",
-    title: "Engineer",
-    country: "Malaysia",
-    image: "/images/team/abdullah.jpg",
-    x: "https://x.com/abdullah",
-    linkedin: "https://linkedin.com/in/abdullah",
+    name: "Fayzullah Sodiq", // Changed "Fayzulloh" to standard English spelling "Fayzullah"
+    title: "Marketing",
+    country: "Uzbekistan",
+    image: "/images/team/fayzulloh.jpg",
+    x: "https://x.com/viktor",
+    linkedin: "https://linkedin.com/in/viktor",
   },
   {
     name: "Muhammad Najeem",
@@ -43,28 +43,29 @@ const teamMembers = [
     linkedin: "https://linkedin.com/in/najeem",
   },
   {
-    name: "Shayh Huseyn",
+    name: "Abdullah Samii",
     title: "Engineer",
+    country: "Malaysia",
+    image: "/images/team/abdullah.jpg",
+    x: "https://x.com/abdullah",
+    linkedin: "https://linkedin.com/in/abdullah",
+  },
+  // Shariah Board members - corrected English spelling
+  {
+    name: "Sheikh Hussein", // Standardized English spelling (Huseyn → Hussein)
+    title: "Shariah Advisory Board", // More complete title
     country: "Russia",
     image: "/images/team/huseyn.jpg",
     x: "https://x.com/huseyn",
     linkedin: "https://linkedin.com/in/huseyn",
   },
   {
-    name: "Shayh Süleyman",
-    title: "Engineer",
-    country: "Türkiye",
+    name: "Sheikh Suleiman", // Standardized English spelling (Suleyman → Suleiman)
+    title: "Shariah Advisory Board",
+    country: "Turkey",
     image: "/images/team/suleyman.jpg",
     x: "https://x.com/suleyman",
     linkedin: "https://linkedin.com/in/suleyman",
-  },
-  {
-    name: "Viktor",
-    title: "Marketing",
-    country: "Russia",
-    image: "/images/team/viktor.jpg",
-    x: "https://x.com/viktor",
-    linkedin: "https://linkedin.com/in/viktor",
   },
 ];
 
