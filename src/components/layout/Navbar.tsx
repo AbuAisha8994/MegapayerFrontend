@@ -175,10 +175,14 @@ const Navbar = () => {
           href: "https://twitter.com/megapayer",
           isExternal: true,
         },
-        { name: "Telegram", href: "https://t.me/megapayer", isExternal: true },
+        {
+          name: "Telegram",
+          href: "https://t.me/megapayerchat",
+          isExternal: true,
+        },
         {
           name: "Discord",
-          href: "https://discord.gg/megapayer",
+          href: "https://discord.gg/DzJqR2uZKz",
           isExternal: true,
         },
         { name: "Careers", href: "/coming-soon?product=Careers&returnUrl=/" },

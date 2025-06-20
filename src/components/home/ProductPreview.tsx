@@ -419,9 +419,21 @@ const ProductPreview = () => {
                         ? "/whitepaper/nft-marketplace"
                         : currentProduct.id === "bridge"
                         ? "/coming-soon?product=Bridge&returnUrl=/"
+                        : currentProduct.id === "sdk-api"
+                        ? "/coming-soon?product=Developer%20SDK/API&returnUrl=/"
+                        : currentProduct.id === "explorer"
+                        ? "https://scan.megapyer.io"
                         : `/${currentProduct.id}`
                     }
                     className="inline-flex items-center px-6 py-2.5 rounded-lg bg-gradient-to-r from-primary to-primary-dark hover:shadow-lg hover:shadow-primary/20 transition-all duration-300 text-white group"
+                    target={
+                      currentProduct.id === "explorer" ? "_blank" : undefined
+                    }
+                    rel={
+                      currentProduct.id === "explorer"
+                        ? "noopener noreferrer"
+                        : undefined
+                    }
                   >
                     <span>Learn More</span>
                     <svg

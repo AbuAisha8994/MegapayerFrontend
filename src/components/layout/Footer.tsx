@@ -288,13 +288,6 @@ const Footer = () => {
               </Link>
               <span className="text-gray-600 mx-2">•</span>
               <Link
-                href="/status"
-                className="text-gray-400 hover:text-white transition-colors px-3 py-1"
-              >
-                Status
-              </Link>
-              <span className="text-gray-600 mx-2">•</span>
-              <Link
                 href="/support"
                 className="text-gray-400 hover:text-white transition-colors px-3 py-1"
               >

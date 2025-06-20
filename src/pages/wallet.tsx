@@ -529,8 +529,16 @@ const WalletPage = () => {
                   </div>
 
                   <div className="mt-8">
-                    <a
-                      href="#download-options"
+                    <button
+                      onClick={() => {
+                        const downloadSection =
+                          document.getElementById("download-options");
+                        if (downloadSection) {
+                          downloadSection.scrollIntoView({
+                            behavior: "smooth",
+                          });
+                        }
+                      }}
                       className="btn-primary inline-flex items-center"
                     >
                       <svg
@@ -547,7 +555,7 @@ const WalletPage = () => {
                         />
                       </svg>
                       Download the Wallet
-                    </a>
+                    </button>
                   </div>
                 </div>
 
