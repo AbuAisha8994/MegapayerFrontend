@@ -530,7 +530,7 @@ const WalletPage = () => {
 
                   <div className="mt-8">
                     <a
-                      href="#"
+                      href="#download-options"
                       className="btn-primary inline-flex items-center"
                     >
                       <svg
@@ -720,7 +720,10 @@ const WalletPage = () => {
         </div>
       </section>
 
-      <section className="py-20 bg-gradient-to-b from-dark to-dark/80">
+      <section
+        id="download-options"
+        className="py-20 bg-gradient-to-b from-dark to-dark/80"
+      >
         <div className="container mx-auto px-4">
           <motion.div
             initial={{ opacity: 0, y: 50 }}
@@ -738,7 +741,7 @@ const WalletPage = () => {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <a
-                href="#"
+                href="/coming-soon?product=Android%20Wallet%20App&returnUrl=/wallet"
                 className="inline-flex items-center justify-center bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
               >
                 <svg
@@ -751,7 +754,7 @@ const WalletPage = () => {
                 Android App
               </a>
               <a
-                href="#"
+                href="/coming-soon?product=iOS%20Wallet%20App&returnUrl=/wallet"
                 className="inline-flex items-center justify-center bg-primary hover:bg-primary-dark text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
               >
                 <svg
@@ -764,7 +767,7 @@ const WalletPage = () => {
                 iOS App
               </a>
               <a
-                href="#"
+                href="/coming-soon?product=Wallet%20Whitepaper&returnUrl=/wallet"
                 className="inline-flex items-center justify-center bg-transparent border-2 border-white hover:bg-white/10 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300"
               >
                 <svg

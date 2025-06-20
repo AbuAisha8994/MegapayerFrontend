@@ -248,20 +248,20 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/privacy-policy"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#"
+                <Link
+                  href="/terms-of-service"
                   className="text-gray-400 hover:text-white transition-colors"
                 >
                   Terms of Service
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -287,12 +287,12 @@ const Footer = () => {
                 Early Access
               </Link>
               <span className="text-gray-600 mx-2">•</span>
-              <a
-                href="#"
+              <Link
+                href="/status"
                 className="text-gray-400 hover:text-white transition-colors px-3 py-1"
               >
                 Status
-              </a>
+              </Link>
               <span className="text-gray-600 mx-2">•</span>
               <Link
                 href="/support"

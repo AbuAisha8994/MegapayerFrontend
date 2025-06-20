@@ -61,13 +61,7 @@ const DeveloperGettingStartedPage = () => {
               <div className="bg-dark/60 p-4 rounded-lg border border-primary/20">
                 <div className="text-primary font-semibold mb-2">Q3 2025</div>
                 <div className="text-white">
-                  API Documentation & Testing Tools
-                </div>
-              </div>
-              <div className="bg-dark/60 p-4 rounded-lg border border-primary/20">
-                <div className="text-primary font-semibold mb-2">Q4 2025</div>
-                <div className="text-white">
-                  Complete Developer Portal Launch
+                  Comlete Developer Portal Launch
                 </div>
               </div>
             </div>

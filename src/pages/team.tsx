@@ -8,7 +8,7 @@ const teamMembers = [
     country: "Turkey", // Changed "Türkiye" to "Turkey" for English consistency
     image: "/images/team/muhammed.jpeg",
     x: "https://x.com/muhammed_CEO",
-    linkedin: "https://linkedin.com/in/muhammed",
+    linkedin: "https://linkedin.com/in/muhammed-ceo",
   },
   {
     name: "Abdurrahman", // Changed "Abdurahman" to standard English spelling "Abdurrahman"
@@ -31,8 +31,8 @@ const teamMembers = [
     title: "Marketing",
     country: "Uzbekistan",
     image: "/images/team/fayzulloh.jpg",
-    x: "https://x.com/viktor",
-    linkedin: "https://linkedin.com/in/viktor",
+    x: "https://x.com/feiyzulloh",
+    linkedin: "https://linkedin.com/in/feiyzulloh",
   },
   {
     name: "Muhammad Najeem",
@@ -53,7 +53,7 @@ const teamMembers = [
   // Shariah Board members - corrected English spelling
   {
     name: "Sheikh Hussein", // Standardized English spelling (Huseyn → Hussein)
-    title: "Shariah Advisory Board", // More complete title
+    title: "Shariah Advisory", // More complete title
     country: "Russia",
     image: "/images/team/huseyn.jpg",
     x: "https://x.com/huseyn",
@@ -61,7 +61,7 @@ const teamMembers = [
   },
   {
     name: "Sheikh Suleiman", // Standardized English spelling (Suleyman → Suleiman)
-    title: "Shariah Advisory Board",
+    title: "Shariah Advisory",
     country: "Turkey",
     image: "/images/team/suleyman.jpg",
     x: "https://x.com/suleyman",
