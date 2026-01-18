@@ -1,17 +1,24 @@
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
 import Layout from "@/components/layout/Layout";
-import ProductHero from "@/components/products/ProductHero";
-import ExplorerAnimation from "@/components/animations/ExplorerAnimation";
 
 const ExplorerPage = () => {
   const featuresRef = useRef(null);
   const toolsRef = useRef(null);
   const statsRef = useRef(null);
+
+  // Mouse tracking for scanner highlight
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   const isFeaturesInView = useInView(featuresRef, { once: true, amount: 0.3 });
   const isToolsInView = useInView(toolsRef, { once: true, amount: 0.3 });
@@ -19,6 +26,20 @@ const ExplorerPage = () => {
 
   return (
     <Layout>
+      {/* Mouse-Following Glow */}
+      <div
+        className="fixed pointer-events-none z-40 transition-all duration-100"
+        style={{
+          left: mousePos.x - 100,
+          top: mousePos.y - 100,
+          width: '200px',
+          height: '200px',
+          background: 'radial-gradient(circle, rgba(0, 240, 255, 0.12) 0%, transparent 60%)',
+          filter: 'blur(30px)',
+          borderRadius: '50%',
+        }}
+      />
+
       <Head>
         <title>Megapayer Explorer | Blockchain Analytics Platform</title>
         <meta
@@ -27,27 +48,206 @@ const ExplorerPage = () => {
         />
       </Head>
 
-      <ProductHero
-        title="Megapayer Explorer"
-        subtitle="Blockchain Analytics Platform"
-        description="A powerful blockchain explorer and analytics platform that provides real-time data, transaction tracking, and comprehensive network visualization for the entire Megapayer ecosystem."
-        animation={
-          <div className="w-full h-full">
-            <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-              <ambientLight intensity={0.7} />
-              <directionalLight position={[10, 10, 5]} intensity={1} />
-              <OrbitControls
-                enableZoom={false}
-                autoRotate={true}
-                autoRotateSpeed={0.5}
-              />
-              <ExplorerAnimation />
-            </Canvas>
+      {/* Holographic Blockchain Scanner Hero */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden" style={{ background: '#030308' }}>
+        {/* CSS Keyframes */}
+        <style jsx>{`
+          @keyframes grid-pulse {
+            0%, 100% { opacity: 0.1; }
+            50% { opacity: 0.3; }
+          }
+          @keyframes scanner-beam {
+            0% { top: 0; }
+            50% { top: calc(100% - 4px); }
+            100% { top: 0; }
+          }
+          @keyframes digital-rain {
+            0% { background-position: 0 0; }
+            100% { background-position: 0 200px; }
+          }
+          @keyframes cell-flash {
+            0%, 90%, 100% { background: transparent; }
+            95% { background: rgba(0, 240, 255, 0.2); }
+          }
+          @keyframes hex-fade {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 0.15; }
+          }
+        `}</style>
+
+        {/* Data Grid Background */}
+        <div
+          className="absolute inset-0"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 240, 255, 0.08) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 240, 255, 0.08) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px',
+          }}
+        />
+
+        {/* Pulsing Grid Cells */}
+        {[...Array(20)].map((_, i) => (
+          <div
+            key={`cell-${i}`}
+            className="absolute"
+            style={{
+              left: `${5 + (i % 5) * 22}%`,
+              top: `${10 + Math.floor(i / 5) * 22}%`,
+              width: '48px',
+              height: '48px',
+              border: '1px solid rgba(0, 240, 255, 0.15)',
+              animation: `cell-flash ${3 + (i % 5) * 0.4}s ease-in-out ${(i % 7) * 0.5}s infinite`,
+            }}
+          />
+        ))}
+
+        {/* Digital Rain Effect (CSS Gradient Mask) */}
+        <div
+          className="absolute right-0 top-0 w-1/3 h-full opacity-20 pointer-events-none"
+          style={{
+            background: `repeating-linear-gradient(
+              180deg,
+              rgba(0, 240, 255, 0.3) 0px,
+              transparent 2px,
+              transparent 20px
+            )`,
+            animation: 'digital-rain 3s linear infinite',
+            maskImage: 'linear-gradient(to right, transparent, black 30%, black)',
+          }}
+        />
+
+        {/* Hex Code Overlay */}
+        <div
+          className="absolute left-0 top-0 w-1/4 h-full opacity-10 pointer-events-none font-mono text-xs text-cyan-400 overflow-hidden"
+          style={{ animation: 'hex-fade 4s ease-in-out infinite' }}
+        >
+          {['b9a5fb94', 'c4e7d2a1', '3f8bc156', 'a2d41e89', 'f7c3a0b5', '6e29d8c4', '8ab7f123', 'd5c9e6a7', '1f4b8c2d', '9e3a7d56', 'c8f21b45', '2d6e9a73', 'a1b4c7d8', '5f8e2c91', 'e3d6a9b2', '7c4f1d85', 'b2e8c45a', '4a9d3f67', 'f1c8b2e4', '6d3a5c98', '8e7b4f21', '3c5a9d76', 'a4f2c8b1', '5b1e7d43', 'c9a3f586', '2f6c4a89', 'd8b5e172', '7a4c9f35', 'e621ad84', '9f8c2b57'].map((hex, i) => (
+            <div key={`hex-${i}`} className="whitespace-nowrap" style={{ marginTop: `${i * 25}px`, marginLeft: `${(i % 3) * 20}px` }}>
+              0x{hex}...
+            </div>
+          ))}
+        </div>
+
+        {/* Scanner Beam */}
+        <div
+          className="absolute left-0 right-0 h-1 z-10 pointer-events-none"
+          style={{
+            background: 'linear-gradient(90deg, transparent, #00f0ff 20%, #8a2be2 50%, #00f0ff 80%, transparent)',
+            boxShadow: '0 0 30px #00f0ff, 0 0 60px #8a2be2',
+            animation: 'scanner-beam 4s ease-in-out infinite',
+          }}
+        />
+
+        {/* Scanner Highlight Zone (follows beam) */}
+        <div
+          className="absolute left-0 right-0 h-20 z-5 pointer-events-none"
+          style={{
+            background: 'linear-gradient(180deg, rgba(0, 240, 255, 0.05), transparent)',
+            animation: 'scanner-beam 4s ease-in-out infinite',
+          }}
+        />
+
+        {/* Center Content - Glassmorphism Search */}
+        <div className="relative z-20 w-full max-w-4xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.7 }}
+            className="text-center mb-10"
+          >
+            <div className="inline-flex items-center bg-cyan-500/10 backdrop-blur-sm px-6 py-2 rounded-full border border-cyan-500/30 mb-6">
+              <span className="text-cyan-400 font-mono text-sm">BLOCKCHAIN SCANNER v2.0</span>
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-white">
+              <span style={{
+                background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>Megapayer</span> Explorer
+            </h1>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Real-time blockchain analytics, transaction tracking, and network visualization
+            </p>
+          </motion.div>
+
+          {/* Glassmorphism Search Box */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.3 }}
+            className="relative"
+          >
+            <div
+              className="p-1 rounded-2xl"
+              style={{
+                background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.3), rgba(138, 43, 226, 0.3))',
+              }}
+            >
+              <div
+                className="rounded-xl p-6"
+                style={{
+                  background: 'rgba(5, 5, 15, 0.8)',
+                  backdropFilter: 'blur(20px)',
+                }}
+              >
+                <div className="relative">
+                  <input
+                    type="text"
+                    className="w-full bg-black/50 border border-cyan-500/30 rounded-xl px-6 py-4 text-white placeholder-gray-500 focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20 font-mono"
+                    placeholder="Search by Address / Txn Hash / Block / Token..."
+                  />
+                  <button
+                    className="absolute right-2 top-1/2 -translate-y-1/2 px-6 py-2 rounded-lg font-medium text-white"
+                    style={{
+                      background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                    }}
+                  >
+                    Scan
+                  </button>
+                </div>
+
+                {/* Quick Stats */}
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
+                  <div className="text-center p-3 rounded-lg bg-white/5">
+                    <div className="text-2xl font-bold text-white">13.8M</div>
+                    <div className="text-xs text-cyan-400 font-mono">TRANSACTIONS</div>
+                  </div>
+                  <div className="text-center p-3 rounded-lg bg-white/5">
+                    <div className="text-2xl font-bold text-white">$4.1B</div>
+                    <div className="text-xs text-purple-400 font-mono">MARKET CAP</div>
+                  </div>
+                  <div className="text-center p-3 rounded-lg bg-white/5">
+                    <div className="text-2xl font-bold text-green-400">12 GWEI</div>
+                    <div className="text-xs text-gray-400 font-mono">GAS PRICE</div>
+                  </div>
+                  <div className="text-center p-3 rounded-lg bg-white/5">
+                    <div className="text-2xl font-bold text-white">8.1M</div>
+                    <div className="text-xs text-cyan-400 font-mono">LATEST BLOCK</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Status Indicator */}
+          <div className="flex justify-center items-center gap-2 mt-6 text-gray-500 font-mono text-sm">
+            <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
+            <span>Network Active • 156 TPS</span>
           </div>
-        }
-        color="#0EA5E9"
-        secondaryColor="#0284C7"
-      />
+        </div>
+
+        {/* Corner Decorations */}
+        <div className="absolute top-8 left-8 text-cyan-400/50 font-mono text-xs">
+          <div>SCAN: ACTIVE</div>
+          <div>MODE: REALTIME</div>
+        </div>
+        <div className="absolute top-8 right-8 text-purple-400/50 font-mono text-xs text-right">
+          <div>BLOCKS: SYNCED</div>
+          <div>LATENCY: &lt;100ms</div>
+        </div>
+      </section>
 
       {/* Key Features Section */}
       <section

@@ -2,6 +2,15 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
+import { useLanguage, SUPPORTED_LANGUAGES, getLanguageFlag, getLanguageDisplayName } from "@/context/LanguageContext";
+import { Language } from "@/types/i18n";
+
+// Available languages structure for UI display
+const availableLanguages = SUPPORTED_LANGUAGES.map((code) => ({
+  code,
+  name: getLanguageDisplayName(code),
+  flag: getLanguageFlag(code),
+}));
 
 // Define navigation item types with submenu support
 type SubMenuItem = {
@@ -17,32 +26,18 @@ type NavItem = {
   isExternal?: boolean;
 };
 
-// Language options
-type Language = {
-  code: string;
-  name: string;
-  flag: string;
-};
 
-const languages: Language[] = [
-  { code: "en", name: "English", flag: "🇬🇧" },
-  { code: "tr", name: "Türkçe", flag: "🇹🇷" },
-  { code: "uz", name: "O'zbek", flag: "🇺🇿" },
-  { code: "ru", name: "Русский", flag: "🇷🇺" },
-  { code: "ar", name: "العربية", flag: "🇸🇦" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
-];
 
 const Navbar = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState<string | null>(null);
   const [isLangMenuOpen, setIsLangMenuOpen] = useState(false);
-  const [currentLang, setCurrentLang] = useState("en");
   const [dropdownTimeout, setDropdownTimeout] = useState<NodeJS.Timeout | null>(
     null
   );
   const router = useRouter();
+  const { language, setLanguage, t } = useLanguage();
 
   // Handle scroll effects
   useEffect(() => {
@@ -63,22 +58,20 @@ const Navbar = () => {
   }, [router.pathname]);
 
   // Handle language change
-  const handleLanguageChange = (langCode: string) => {
-    setCurrentLang(langCode);
+  const handleLanguageChange = (langCode: Language) => {
+    setLanguage(langCode);
     setIsLangMenuOpen(false);
-    // Here you would normally implement language switching logic
-    // For example, using i18n library or context
   };
 
   // Get current language display
   const getCurrentLanguage = () => {
-    const lang = languages.find((l) => l.code === currentLang);
-    return lang ? `${lang.flag} ${lang.code.toUpperCase()}` : "🇬🇧 EN";
+    const lang = availableLanguages.find((l) => l.code === language);
+    return lang ? `${lang.flag} ${lang.code.toUpperCase()}` : "🇺🇸 EN";
   };
 
   const navigationLinks: NavItem[] = [
     {
-      name: "Products",
+      name: t.navbar.products,
       href: "#",
       submenu: [
         {
@@ -103,7 +96,7 @@ const Navbar = () => {
       ],
     },
     {
-      name: "Ecosystem",
+      name: t.navbar.ecosystem,
       href: "#",
       submenu: [
         { name: "MPC Coin", href: "/token/mpc" },
@@ -116,7 +109,7 @@ const Navbar = () => {
       ],
     },
     {
-      name: "Developers",
+      name: t.navbar.developers,
       href: "#",
       submenu: [
         { name: "Developer SDK / API", href: "/developers/getting-started" },
@@ -137,7 +130,7 @@ const Navbar = () => {
       ],
     },
     {
-      name: "Docs",
+      name: t.navbar.docs,
       href: "#",
       submenu: [
         { name: "Whitepapers", href: "/whitepapers" },
@@ -155,7 +148,7 @@ const Navbar = () => {
       ],
     },
     {
-      name: "Community",
+      name: t.navbar.community,
       href: "#",
       submenu: [
         {
@@ -225,87 +218,20 @@ const Navbar = () => {
 
   return (
     <header
-      className={`fixed w-full z-50 transition-all duration-300 ${
-        isScrolled
-          ? "bg-dark/80 backdrop-blur-lg py-3 shadow-xl shadow-black/20"
-          : "bg-transparent py-5"
-      }`}
+      className={`fixed top-0 w-full z-50 transition-all duration-300 bg-black/80 backdrop-blur-md border-b border-white/10 ${isScrolled ? "py-3" : "py-4"}`}
     >
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center">
-          {/* Logo - Keep existing code */}
-          <Link href="/" className="flex items-center group">
-            <div className="relative h-10 w-40 overflow-visible">
-              {/* Cosmic background effects */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-primary via-violet-500 to-secondary opacity-75 blur-md rounded-full group-hover:opacity-100 transition-opacity duration-700"></div>
-
-              {/* Orbiting particles */}
-              <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full">
-                <motion.div
-                  className="absolute w-1.5 h-1.5 rounded-full bg-primary"
-                  animate={{
-                    x: [0, 10, 0, -10, 0],
-                    y: [0, -10, 0, 10, 0],
-                  }}
-                  transition={{
-                    duration: 6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                />
-                <motion.div
-                  className="absolute w-1 h-1 rounded-full bg-secondary"
-                  animate={{
-                    x: [0, -15, 0, 15, 0],
-                    y: [0, 5, 0, -5, 0],
-                  }}
-                  transition={{
-                    duration: 8,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 0.5,
-                  }}
-                />
-              </div>
-
-              {/* Logo content */}
-              <div className="absolute inset-0 flex items-center">
-                <div className="relative flex items-center bg-dark/70 backdrop-blur-sm rounded-full px-3 py-1 border border-white/10 shadow-lg shadow-primary/20 group-hover:border-primary/30 transition-all duration-300">
-                  {/* M symbol with cosmic effect */}
-                  <div className="relative mr-2">
-                    <span className="text-3xl font-black text-white">M</span>
-                    <motion.div
-                      className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-primary rounded-full"
-                      animate={{
-                        opacity: [1, 0.3, 1],
-                        scale: [1, 1.3, 1],
-                      }}
-                      transition={{
-                        duration: 3,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                    <motion.div
-                      className="absolute -inset-1 bg-primary/20 rounded-full blur-sm"
-                      animate={{
-                        opacity: [0.3, 0.8, 0.3],
-                      }}
-                      transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut",
-                      }}
-                    />
-                  </div>
-                  <div className="flex items-center">
-                    <span className="text-lg font-bold tracking-wider text-white">
-                      EGAPAYER
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
+          {/* Logo - Simple Icon + Text */}
+          <Link href="/" className="flex items-center gap-3 group">
+            <img
+              src="/logo-white.png"
+              alt="Megapayer Logo"
+              className="h-10 w-10 object-contain"
+            />
+            <span className="text-xl font-bold text-white tracking-wide">
+              MEGAPAYER
+            </span>
           </Link>
 
           {/* Desktop navigation - Updated with improved hover behavior */}
@@ -316,11 +242,10 @@ const Navbar = () => {
                   onClick={() => handleDropdownToggle(item.name)}
                   onMouseEnter={() => handleDropdownEnter(item.name)}
                   onMouseLeave={() => handleDropdownLeave(item.name)}
-                  className={`px-3 py-2 text-sm rounded-lg transition-colors duration-300 flex items-center ${
-                    openDropdown === item.name
-                      ? "text-white font-medium"
-                      : "text-gray-300 hover:text-white"
-                  }`}
+                  className={`px-3 py-2 text-sm rounded-lg transition-colors duration-300 flex items-center ${openDropdown === item.name
+                    ? "text-white font-medium"
+                    : "text-gray-300 hover:text-white"
+                    }`}
                 >
                   {item.name}
                   <svg
@@ -344,11 +269,10 @@ const Navbar = () => {
                   <div
                     onMouseEnter={() => handleDropdownEnter(item.name)}
                     onMouseLeave={() => handleDropdownLeave(item.name)}
-                    className={`absolute left-0 mt-2 w-64 rounded-xl bg-dark/90 backdrop-blur-md border border-white/10 shadow-2xl transition-all duration-300 p-2 ${
-                      openDropdown === item.name
-                        ? "opacity-100 visible translate-y-0"
-                        : "opacity-0 invisible translate-y-2 pointer-events-none"
-                    }`}
+                    className={`absolute left-0 mt-2 w-64 rounded-xl bg-dark/90 backdrop-blur-md border border-white/10 shadow-2xl transition-all duration-300 p-2 ${openDropdown === item.name
+                      ? "opacity-100 visible translate-y-0"
+                      : "opacity-0 invisible translate-y-2 pointer-events-none"
+                      }`}
                   >
                     {item.submenu.map((subItem) => (
                       <Link
@@ -395,9 +319,8 @@ const Navbar = () => {
               >
                 <span className="mr-1">{getCurrentLanguage()}</span>
                 <svg
-                  className={`w-3 h-3 transition-transform ${
-                    isLangMenuOpen ? "rotate-180" : ""
-                  }`}
+                  className={`w-3 h-3 transition-transform ${isLangMenuOpen ? "rotate-180" : ""
+                    }`}
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -421,15 +344,14 @@ const Navbar = () => {
                     transition={{ duration: 0.2 }}
                     className="absolute right-0 mt-2 w-40 rounded-xl overflow-hidden bg-dark/95 backdrop-blur-md border border-white/10 shadow-2xl z-50"
                   >
-                    {languages.map((lang) => (
+                    {availableLanguages.map((lang) => (
                       <button
                         key={lang.code}
                         onClick={() => handleLanguageChange(lang.code)}
-                        className={`w-full text-left px-4 py-3 flex items-center text-sm hover:bg-white/5 transition-colors ${
-                          currentLang === lang.code
-                            ? "text-white font-medium bg-primary/10"
-                            : "text-gray-300"
-                        }`}
+                        className={`w-full text-left px-4 py-3 flex items-center text-sm hover:bg-white/5 transition-colors ${language === lang.code
+                          ? "text-white font-medium bg-primary/10"
+                          : "text-gray-300"
+                          }`}
                       >
                         <span className="mr-3 text-base">{lang.flag}</span>
                         <span>{lang.name}</span>
@@ -445,7 +367,7 @@ const Navbar = () => {
               href="/app"
               className="hidden sm:block text-sm px-5 py-2 rounded-lg bg-gradient-to-r from-primary to-secondary hover:from-primary-dark hover:to-secondary-dark text-white transition-all duration-300 shadow-lg shadow-primary/20 hover:shadow-xl hover:shadow-primary/30 transform hover:-translate-y-0.5 font-medium"
             >
-              Launch App
+              {t.navbar.launch_app}
             </Link>
 
             {/* Mobile menu toggle */}
@@ -456,23 +378,20 @@ const Navbar = () => {
             >
               <div className="w-6 h-6 flex flex-col justify-center items-center">
                 <span
-                  className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                    isMobileMenuOpen
-                      ? "rotate-45 translate-y-1"
-                      : "-translate-y-0.5"
-                  }`}
+                  className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
+                    ? "rotate-45 translate-y-1"
+                    : "-translate-y-0.5"
+                    }`}
                 />
                 <span
-                  className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${
-                    isMobileMenuOpen ? "opacity-0" : "opacity-100"
-                  }`}
+                  className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm my-0.5 ${isMobileMenuOpen ? "opacity-0" : "opacity-100"
+                    }`}
                 />
                 <span
-                  className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${
-                    isMobileMenuOpen
-                      ? "-rotate-45 -translate-y-1"
-                      : "translate-y-0.5"
-                  }`}
+                  className={`bg-white block transition-all duration-300 ease-out h-0.5 w-6 rounded-sm ${isMobileMenuOpen
+                    ? "-rotate-45 -translate-y-1"
+                    : "translate-y-0.5"
+                    }`}
                 />
               </div>
             </button>
@@ -502,9 +421,8 @@ const Navbar = () => {
                       >
                         <span className="font-medium">{item.name}</span>
                         <svg
-                          className={`w-5 h-5 transition-transform ${
-                            openDropdown === item.name ? "rotate-180" : ""
-                          }`}
+                          className={`w-5 h-5 transition-transform ${openDropdown === item.name ? "rotate-180" : ""
+                            }`}
                           fill="none"
                           stroke="currentColor"
                           viewBox="0 0 24 24"
@@ -562,15 +480,14 @@ const Navbar = () => {
                       Select Language
                     </p>
                     <div className="grid grid-cols-3 gap-2">
-                      {languages.map((lang) => (
+                      {availableLanguages.map((lang) => (
                         <button
                           key={lang.code}
                           onClick={() => handleLanguageChange(lang.code)}
-                          className={`px-3 py-2 flex flex-col items-center justify-center rounded hover:bg-white/5 transition-colors ${
-                            currentLang === lang.code
-                              ? "bg-primary/10 text-white font-medium border border-primary/30"
-                              : "text-gray-300"
-                          }`}
+                          className={`px-3 py-2 flex flex-col items-center justify-center rounded hover:bg-white/5 transition-colors ${language === lang.code
+                            ? "bg-primary/10 text-white font-medium border border-primary/30"
+                            : "text-gray-300"
+                            }`}
                         >
                           <span className="text-lg mb-1">{lang.flag}</span>
                           <span className="text-xs uppercase">{lang.code}</span>
@@ -597,7 +514,7 @@ const Navbar = () => {
                         d="M13 10V3L4 14h7v7l9-11h-7z"
                       />
                     </svg>
-                    Launch App
+                    {t.navbar.launch_app}
                   </Link>
                 </nav>
 

@@ -1,325 +1,472 @@
-import { useRef } from "react";
 import Head from "next/head";
-import { motion, useInView } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls } from "@react-three/drei";
-import Layout from "@/components/layout/Layout";
-import ProductHero from "@/components/products/ProductHero";
-import P2PAnimation from "@/components/animations/P2PAnimation";
 import Link from "next/link";
+import { motion } from "framer-motion";
+import Layout from "@/components/layout/Layout";
 
 const P2PExchangePage = () => {
-  const p2pFeaturesRef = useRef(null);
-
-  const isP2PFeaturesInView = useInView(p2pFeaturesRef, {
-    once: true,
-    amount: 0.3,
-  });
+  const securityFeatures = [
+    {
+      title: "Escrow Protection",
+      description: "Smart contract escrow holds funds securely until both parties fulfill obligations. Zero counterparty risk.",
+      icon: "🛡️",
+    },
+    {
+      title: "Dispute Resolution",
+      description: "Decentralized arbitration system resolves conflicts fairly with community validators.",
+      icon: "⚖️",
+    },
+    {
+      title: "Verified Merchants",
+      description: "Reputation system and verified badges ensure you trade with trusted counterparties.",
+      icon: "✓",
+    },
+  ];
 
   return (
     <Layout>
       <Head>
-        <title>Megapayer P2P Exchange | Peer-to-Peer Trading Platform</title>
+        <title>Megapayer P2P Exchange | Zero-Fee Peer-to-Peer Trading</title>
         <meta
           name="description"
-          content="Experience direct peer-to-peer trading with Megapayer's P2P Exchange. Our platform provides smart contract escrow protection and supports hundreds of payment methods worldwide."
+          content="Experience direct peer-to-peer trading with Megapayer's P2P Exchange. Smart contract escrow protection and instant settlement."
         />
       </Head>
 
-      <ProductHero
-        title="P2P Exchange"
-        subtitle="Human-to-Human Trading Platform"
-        description="Connect directly with other traders worldwide. Our P2P platform facilitates secure, trustless peer-to-peer transactions with built-in escrow protection and dispute resolution."
-        animation={
-          <div className="w-full h-full">
-            <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-              <ambientLight intensity={0.5} />
-              <directionalLight position={[10, 10, 5]} intensity={1} />
-              <OrbitControls enableZoom={false} autoRotate={false} />
-              <P2PAnimation />
-            </Canvas>
-          </div>
+      {/* CSS Animations */}
+      <style jsx global>{`
+        @keyframes pulse-shield {
+          0%, 100% { transform: scale(1); opacity: 0.8; }
+          50% { transform: scale(1.1); opacity: 1; }
         }
-        color="#f97316"
-        secondaryColor="#f59e0b"
-      />
+        @keyframes rotate-shield {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+        @keyframes send-asset-left {
+          0% { transform: translateX(0); opacity: 1; }
+          50% { transform: translateX(80px); opacity: 1; }
+          51% { opacity: 0; }
+          100% { transform: translateX(80px); opacity: 0; }
+        }
+        @keyframes send-asset-right {
+          0% { transform: translateX(0); opacity: 1; }
+          50% { transform: translateX(-80px); opacity: 1; }
+          51% { opacity: 0; }
+          100% { transform: translateX(-80px); opacity: 0; }
+        }
+        @keyframes receive-asset-left {
+          0%, 50% { opacity: 0; transform: translateX(0); }
+          51% { opacity: 1; transform: translateX(80px); }
+          100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes receive-asset-right {
+          0%, 50% { opacity: 0; transform: translateX(0); }
+          51% { opacity: 1; transform: translateX(-80px); }
+          100% { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes glow-pulse {
+          0%, 100% { box-shadow: 0 0 20px rgba(0, 255, 157, 0.4); }
+          50% { box-shadow: 0 0 40px rgba(0, 255, 157, 0.8); }
+        }
+        .neon-title {
+          text-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(138, 43, 226, 0.3);
+        }
+      `}</style>
 
-      {/* P2P Exchange Section */}
-      <section id="p2p-exchange" className="py-20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            viewport={{ once: true }}
-            className="text-center max-w-4xl mx-auto mb-16"
-          >
-            <div className="inline-flex items-center bg-orange-500/10 backdrop-blur-sm px-6 py-2 rounded-full border border-orange-500/20 mb-6">
-              <svg
-                className="w-5 h-5 text-orange-500 mr-2"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+      {/* HERO SECTION */}
+      <section className="relative min-h-screen flex items-center overflow-hidden" style={{ background: '#050505' }}>
+        {/* Spotlight Glow - Top Right */}
+        <div
+          className="absolute -top-20 -right-20 w-[600px] h-[600px] rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(138, 43, 226, 0.2) 0%, transparent 50%)',
+            filter: 'blur(80px)',
+          }}
+        />
+
+        <div className="container mx-auto px-4 max-w-[1440px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* LEFT: Value Proposition */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7 }}
+            >
+              <div className="inline-block px-4 py-2 border border-green-500/30 rounded-full text-green-400 text-sm mb-6">
+                Trustless P2P Trading
+              </div>
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-white neon-title leading-tight">
+                Zero-Fee
+                <br />
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  Peer-to-Peer
+                </span>
+                <br />
+                Trading
+              </h1>
+
+              <p className="text-xl text-gray-400 mb-4 max-w-lg">
+                Escrow-protected transactions with instant settlement.
+              </p>
+              <p className="text-lg text-gray-500 mb-10 max-w-lg">
+                Connect directly with traders worldwide. Smart contract escrow ensures
+                secure, trustless transactions with built-in dispute resolution.
+              </p>
+
+              <div className="flex flex-wrap gap-4">
+                {/* Neon Gradient Border Button */}
+                <Link
+                  href="/p2p-exchange/coming-soon"
+                  className="relative px-8 py-4 font-bold rounded-xl overflow-hidden group"
+                >
+                  <div
+                    className="absolute inset-0 rounded-xl"
+                    style={{
+                      background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                      padding: '2px',
+                    }}
+                  />
+                  <div
+                    className="absolute inset-[2px] rounded-[10px] bg-[#050505] group-hover:bg-transparent transition-all duration-300"
+                  />
+                  <span className="relative z-10 text-white">
+                    Start Trading
+                  </span>
+                </Link>
+
+                <Link
+                  href="/whitepaper/p2p-exchange"
+                  className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
+                >
+                  Read Whitepaper
+                </Link>
+              </div>
+
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-6 mt-12">
+                {[
+                  { value: "0%", label: "Trading Fees" },
+                  { value: "200+", label: "Payment Methods" },
+                  { value: "24/7", label: "Support" },
+                ].map((stat, i) => (
+                  <div key={i}>
+                    <div
+                      className="text-2xl md:text-3xl font-black mb-1"
+                      style={{ color: '#00ff9d' }}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="text-sm text-gray-500">{stat.label}</div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* RIGHT: Escrow Shield Simulation */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.7, delay: 0.2 }}
+              className="relative h-[500px] flex items-center justify-center"
+            >
+              {/* Background Glow */}
+              <div
+                className="absolute w-[300px] h-[300px] rounded-full"
+                style={{
+                  background: 'radial-gradient(circle, rgba(0, 255, 157, 0.15) 0%, transparent 60%)',
+                  filter: 'blur(40px)',
+                }}
+              />
+
+              {/* Buyer Node - Left */}
+              <div className="absolute left-[10%] top-1/2 -translate-y-1/2">
+                <div
+                  className="w-20 h-20 rounded-full flex items-center justify-center text-2xl"
+                  style={{
+                    background: 'rgba(0, 240, 255, 0.1)',
+                    border: '3px solid #00f0ff',
+                    boxShadow: '0 0 30px rgba(0, 240, 255, 0.5)',
+                  }}
+                >
+                  👤
+                </div>
+                <div className="text-center mt-3 text-cyan-400 font-semibold text-sm">BUYER</div>
+
+                {/* Asset sending to center */}
+                <div
+                  className="absolute top-1/2 left-full ml-4 w-3 h-3 rounded-full bg-cyan-400"
+                  style={{
+                    animation: 'send-asset-left 3s ease-in-out infinite',
+                    boxShadow: '0 0 10px #00f0ff',
+                  }}
                 />
-              </svg>
-              <span className="text-orange-500 font-medium">
-                Peer-to-Peer Platform
-              </span>
-            </div>
-            <h2 className="text-4xl font-bold mb-6">
-              P2P Exchange:{" "}
-              <span className="text-orange-500">Human-to-Human Trading</span>
-            </h2>
-            <p className="text-xl text-gray-300">
-              Connect directly with other traders worldwide. Our P2P platform
-              facilitates secure, trustless peer-to-peer transactions with
-              built-in escrow protection and dispute resolution.
-            </p>
-          </motion.div>
+                {/* Asset receiving from center */}
+                <div
+                  className="absolute top-1/2 left-full ml-4 w-3 h-3 rounded-full bg-green-400"
+                  style={{
+                    animation: 'receive-asset-left 3s ease-in-out infinite',
+                    boxShadow: '0 0 10px #00ff9d',
+                  }}
+                />
+              </div>
 
-          <motion.div
-            ref={p2pFeaturesRef}
-            initial={{ opacity: 0, y: 30 }}
-            animate={
-              isP2PFeaturesInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }
-            }
-            transition={{ duration: 0.5 }}
-            className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-20"
-          >
-            <div className="bg-dark/30 backdrop-blur-md p-8 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 border border-orange-500/10">
-              <div className="w-16 h-16 rounded-full bg-orange-500/20 flex items-center justify-center mx-auto mb-6">
-                <svg
-                  className="w-8 h-8 text-orange-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+              {/* Escrow Shield - Center */}
+              <div className="relative">
+                {/* Rotating outer ring */}
+                <div
+                  className="absolute -inset-8 rounded-full border-2 border-dashed"
+                  style={{
+                    borderColor: 'rgba(138, 43, 226, 0.3)',
+                    animation: 'rotate-shield 20s linear infinite',
+                  }}
+                />
+
+                {/* Shield container */}
+                <div
+                  className="w-32 h-32 rounded-full flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0, 255, 157, 0.2), rgba(138, 43, 226, 0.2))',
+                    border: '3px solid #00ff9d',
+                    animation: 'glow-pulse 2s ease-in-out infinite',
+                  }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4">Direct Negotiation</h3>
-              <p className="text-gray-300">
-                Set your own prices and terms. Negotiate directly with
-                counterparts to find the best deals that work for both parties.
-              </p>
-            </div>
+                  <div className="text-5xl">🛡️</div>
+                </div>
 
-            <div className="bg-dark/30 backdrop-blur-md p-8 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 border border-orange-500/10">
-              <div className="w-16 h-16 rounded-full bg-orange-500/20 flex items-center justify-center mx-auto mb-6">
-                <svg
-                  className="w-8 h-8 text-orange-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
+                <div className="text-center mt-4">
+                  <span
+                    className="text-sm font-bold px-3 py-1 rounded-full"
+                    style={{
+                      background: 'rgba(0, 255, 157, 0.2)',
+                      color: '#00ff9d',
+                      border: '1px solid rgba(0, 255, 157, 0.3)',
+                    }}
+                  >
+                    ESCROW
+                  </span>
+                </div>
+              </div>
+
+              {/* Seller Node - Right */}
+              <div className="absolute right-[10%] top-1/2 -translate-y-1/2">
+                <div
+                  className="w-20 h-20 rounded-full flex items-center justify-center text-2xl"
+                  style={{
+                    background: 'rgba(0, 255, 157, 0.1)',
+                    border: '3px solid #00ff9d',
+                    boxShadow: '0 0 30px rgba(0, 255, 157, 0.5)',
+                  }}
                 >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-                  />
-                </svg>
+                  💼
+                </div>
+                <div className="text-center mt-3 font-semibold text-sm" style={{ color: '#00ff9d' }}>SELLER</div>
+
+                {/* Asset sending to center */}
+                <div
+                  className="absolute top-1/2 right-full mr-4 w-3 h-3 rounded-full bg-green-400"
+                  style={{
+                    animation: 'send-asset-right 3s ease-in-out infinite',
+                    boxShadow: '0 0 10px #00ff9d',
+                  }}
+                />
+                {/* Asset receiving from center */}
+                <div
+                  className="absolute top-1/2 right-full mr-4 w-3 h-3 rounded-full bg-cyan-400"
+                  style={{
+                    animation: 'receive-asset-right 3s ease-in-out infinite',
+                    boxShadow: '0 0 10px #00f0ff',
+                  }}
+                />
               </div>
-              <h3 className="text-xl font-bold mb-4">Smart Contract Escrow</h3>
-              <p className="text-gray-300">
-                Automated escrow system holds funds securely until both parties
-                fulfill their obligations. No counterparty risk.
-              </p>
-            </div>
 
-            <div className="bg-dark/30 backdrop-blur-md p-8 rounded-xl text-center transform hover:scale-105 transition-transform duration-300 border border-orange-500/10">
-              <div className="w-16 h-16 rounded-full bg-orange-500/20 flex items-center justify-center mx-auto mb-6">
-                <svg
-                  className="w-8 h-8 text-orange-500"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-4">Integrated Chat System</h3>
-              <p className="text-gray-300">
-                Communicate securely with trading partners through encrypted
-                messaging. Build trust and clarify terms before trading.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* P2P How it Works */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20">
-            <div className="bg-orange-500/5 backdrop-blur-md p-8 rounded-xl border border-orange-500/20">
-              <h3 className="text-2xl font-bold mb-6 text-orange-500">
-                How P2P Trading Works
-              </h3>
-              <div className="space-y-6">
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center mt-1">
-                    <span className="text-lg font-bold text-orange-500">1</span>
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="text-lg font-semibold mb-2">
-                      Post or Browse Offers
-                    </h4>
-                    <p className="text-gray-300">
-                      Create your own trading advertisement or browse existing
-                      offers from other users worldwide.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center mt-1">
-                    <span className="text-lg font-bold text-orange-500">2</span>
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="text-lg font-semibold mb-2">
-                      Initiate Trade
-                    </h4>
-                    <p className="text-gray-300">
-                      Start a trade request and automatically lock the seller's
-                      cryptocurrency in smart contract escrow.
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center mt-1">
-                    <span className="text-lg font-bold text-orange-500">3</span>
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="text-lg font-semibold mb-2">Make Payment</h4>
-                    <p className="text-gray-300">
-                      Send payment using your preferred method (bank transfer,
-                      cash, digital payment, etc.)
-                    </p>
-                  </div>
-                </div>
-
-                <div className="flex items-start">
-                  <div className="flex-shrink-0 w-10 h-10 rounded-full bg-orange-500/20 flex items-center justify-center mt-1">
-                    <span className="text-lg font-bold text-orange-500">4</span>
-                  </div>
-                  <div className="ml-4">
-                    <h4 className="text-lg font-bold mb-2">
-                      Release & Complete
-                    </h4>
-                    <p className="text-gray-300">
-                      After payment confirmation, cryptocurrency is
-                      automatically released from escrow to the buyer.
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-8">
-              <h3 className="text-2xl font-bold mb-6">
-                Global Payment Methods
-              </h3>
-              <p className="text-gray-300 mb-6">
-                Trade using hundreds of payment methods across different
-                countries and regions. Our P2P platform supports local payment
-                systems worldwide.
-              </p>
-
-              <div className="grid grid-cols-2 gap-4 mb-6">
-                <div className="bg-dark/50 p-4 rounded-lg border border-white/10">
-                  <h4 className="font-semibold mb-2">Digital Payments</h4>
-                  <ul className="text-sm text-gray-300 space-y-1">
-                    <li>• PayPal</li>
-                    <li>• Wise (TransferWise)</li>
-                    <li>• Revolut</li>
-                    <li>• Alipay</li>
-                  </ul>
-                </div>
-                <div className="bg-dark/50 p-4 rounded-lg border border-white/10">
-                  <h4 className="font-semibold mb-2">Bank Transfers</h4>
-                  <ul className="text-sm text-gray-300 space-y-1">
-                    <li>• SEPA</li>
-                    <li>• ACH</li>
-                    <li>• Wire Transfer</li>
-                    <li>• Local Banks</li>
-                  </ul>
-                </div>
-                <div className="bg-dark/50 p-4 rounded-lg border border-white/10">
-                  <h4 className="font-semibold mb-2">Mobile Money</h4>
-                  <ul className="text-sm text-gray-300 space-y-1">
-                    <li>• M-Pesa</li>
-                    <li>• GCash</li>
-                    <li>• bKash</li>
-                    <li>• Orange Money</li>
-                  </ul>
-                </div>
-                <div className="bg-dark/50 p-4 rounded-lg border border-white/10">
-                  <h4 className="font-semibold mb-2">Gift Cards</h4>
-                  <ul className="text-sm text-gray-300 space-y-1">
-                    <li>• Amazon</li>
-                    <li>• iTunes</li>
-                    <li>• Google Play</li>
-                    <li>• Steam</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
+              {/* Connection lines */}
+              <div
+                className="absolute top-1/2 left-[25%] w-[20%] h-px"
+                style={{ background: 'linear-gradient(90deg, #00f0ff, transparent)' }}
+              />
+              <div
+                className="absolute top-1/2 right-[25%] w-[20%] h-px"
+                style={{ background: 'linear-gradient(90deg, transparent, #00ff9d)' }}
+              />
+            </motion.div>
           </div>
         </div>
       </section>
 
-      {/* Call to Action */}
-      <section className="py-20 bg-gradient-to-b from-dark to-dark/80">
-        <div className="container mx-auto px-4">
+      {/* SECURITY GRID */}
+      <section className="py-24" style={{ background: '#0a0a14' }}>
+        <div className="container mx-auto px-4 max-w-[1440px]">
           <motion.div
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center max-w-4xl mx-auto"
+            className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-8">
+            <h2 className="text-4xl font-bold mb-6 text-white">
+              Military-Grade <span style={{
+                background: 'linear-gradient(135deg, #00ff9d, #8a2be2)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>Security</span>
+            </h2>
+            <p className="text-xl text-gray-400 max-w-2xl mx-auto">
+              Every transaction protected by smart contract escrow and decentralized verification.
+            </p>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {securityFeatures.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+                className="p-8 rounded-2xl text-center"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.03)',
+                  backdropFilter: 'blur(20px)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
+                }}
+              >
+                <div
+                  className="w-20 h-20 mx-auto mb-6 rounded-2xl flex items-center justify-center text-4xl"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0, 255, 157, 0.1), rgba(138, 43, 226, 0.1))',
+                    border: '1px solid rgba(0, 255, 157, 0.3)',
+                    boxShadow: '0 0 30px rgba(0, 255, 157, 0.2)',
+                  }}
+                >
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-4 text-white">{feature.title}</h3>
+                <p className="text-gray-400">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* HOW IT WORKS */}
+      <section className="py-24" style={{ background: '#050505' }}>
+        <div className="container mx-auto px-4 max-w-[1440px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+            {/* Steps */}
+            <motion.div
+              initial={{ opacity: 0, x: -30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+              className="p-8 rounded-2xl"
+              style={{
+                background: 'rgba(0, 255, 157, 0.03)',
+                border: '1px solid rgba(0, 255, 157, 0.15)',
+              }}
+            >
+              <h3 className="text-2xl font-bold mb-8" style={{ color: '#00ff9d' }}>
+                How P2P Trading Works
+              </h3>
+              <div className="space-y-6">
+                {[
+                  { step: "1", title: "Post or Browse Offers", desc: "Create your trading ad or browse existing offers worldwide." },
+                  { step: "2", title: "Initiate Trade", desc: "Start a trade and lock crypto in smart contract escrow." },
+                  { step: "3", title: "Make Payment", desc: "Send payment using your preferred method." },
+                  { step: "4", title: "Release & Complete", desc: "Crypto is automatically released to buyer after confirmation." },
+                ].map((item, i) => (
+                  <div key={i} className="flex items-start gap-4">
+                    <div
+                      className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0"
+                      style={{
+                        background: 'rgba(0, 255, 157, 0.15)',
+                        color: '#00ff9d',
+                        border: '1px solid rgba(0, 255, 157, 0.3)',
+                      }}
+                    >
+                      {item.step}
+                    </div>
+                    <div>
+                      <h4 className="text-lg font-semibold text-white mb-1">{item.title}</h4>
+                      <p className="text-gray-500 text-sm">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Payment Methods */}
+            <motion.div
+              initial={{ opacity: 0, x: 30 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.6 }}
+              viewport={{ once: true }}
+            >
+              <h3 className="text-2xl font-bold mb-6 text-white">Global Payment Methods</h3>
+              <p className="text-gray-400 mb-8">
+                Trade using 200+ payment methods across different countries and regions.
+              </p>
+              <div className="grid grid-cols-2 gap-4">
+                {[
+                  { title: "Digital Payments", items: ["PayPal", "Wise", "Revolut", "Alipay"] },
+                  { title: "Bank Transfers", items: ["SEPA", "ACH", "Wire", "Local Banks"] },
+                  { title: "Mobile Money", items: ["M-Pesa", "GCash", "bKash", "Orange"] },
+                  { title: "Gift Cards", items: ["Amazon", "iTunes", "Google Play", "Steam"] },
+                ].map((category, i) => (
+                  <div
+                    key={i}
+                    className="p-4 rounded-xl"
+                    style={{
+                      background: 'rgba(255, 255, 255, 0.02)',
+                      border: '1px solid rgba(255, 255, 255, 0.08)',
+                    }}
+                  >
+                    <h4 className="font-semibold text-white mb-2">{category.title}</h4>
+                    <ul className="text-sm text-gray-500 space-y-1">
+                      {category.items.map((item, j) => (
+                        <li key={j}>• {item}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+              </div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA */}
+      <section className="py-24" style={{ background: '#0a0a14' }}>
+        <div className="container mx-auto px-4 max-w-[1440px]">
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="text-center max-w-3xl mx-auto"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
               Ready to Start P2P Trading?
             </h2>
-            <p className="text-xl text-gray-300 mb-10">
-              Join thousands of users already trading on Megapayer's P2P
-              Exchange platform.
+            <p className="text-xl text-gray-400 mb-10">
+              Join the most secure peer-to-peer trading platform in Web3.
             </p>
-            <div className="flex justify-center">
-              <Link
-                href="/p2p-exchange/coming-soon"
-                className="bg-orange-500 hover:bg-orange-600 text-white font-bold py-3 px-8 rounded-lg transition-colors duration-300 flex items-center justify-center"
-              >
-                <svg
-                  className="w-5 h-5 mr-2"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-                Try P2P Exchange
-              </Link>
-            </div>
+            <Link
+              href="/p2p-exchange/coming-soon"
+              className="inline-block px-10 py-4 font-bold rounded-xl text-white"
+              style={{
+                background: 'linear-gradient(135deg, #00ff9d, #8a2be2)',
+                boxShadow: '0 0 30px rgba(0, 255, 157, 0.3)',
+              }}
+            >
+              Start Trading Now
+            </Link>
           </motion.div>
         </div>
       </section>

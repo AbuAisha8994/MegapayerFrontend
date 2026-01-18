@@ -1,6 +1,28 @@
+import { useRef, useCallback } from 'react';
 import { motion } from 'framer-motion';
 
 const Features = () => {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+
+  // Lightweight mouse tracking - uses transform for GPU acceleration
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (!containerRef.current || !glowRef.current) return;
+    const rect = containerRef.current.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    // Direct transform update - bypasses React re-render for max performance
+    glowRef.current.style.transform = `translate(${x - 175}px, ${y - 175}px)`;
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    if (glowRef.current) glowRef.current.style.opacity = '1';
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (glowRef.current) glowRef.current.style.opacity = '0';
+  }, []);
+
   const features = [
     {
       id: 'decentralized',
@@ -65,64 +87,118 @@ const Features = () => {
   ];
 
   return (
-    <div className="container mx-auto px-4">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="text-center mb-12"
+    <div
+      ref={containerRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative overflow-hidden"
+    >
+      {/* Glassmorphism Container - NO backdrop-blur for performance */}
+      <div
+        className="relative mx-4 md:mx-8 rounded-3xl border border-white/10"
+        style={{ background: 'rgba(0, 0, 0, 0.6)' }}
       >
-        <h2 className="text-3xl md:text-4xl font-bold mb-6">Why Choose <span className="text-gradient">Megapayer</span></h2>
-        <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-          Our comprehensive ecosystem is built to provide everything you need for the future of decentralized finance.
-        </p>
-      </motion.div>
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        {features.map((feature, index) => (
+        {/* Mouse-following Neon Glow - GPU accelerated */}
+        <div
+          ref={glowRef}
+          className="absolute w-[350px] h-[350px] rounded-full pointer-events-none transition-opacity duration-300"
+          style={{
+            background: 'radial-gradient(circle, rgba(139, 92, 246, 0.12) 0%, rgba(6, 182, 212, 0.08) 40%, transparent 70%)',
+            opacity: 0,
+            willChange: 'transform',
+          }}
+        />
+
+        {/* Content */}
+        <div className="relative z-10 py-16 px-6 md:px-12">
+          {/* Section Header */}
           <motion.div
-            key={feature.id}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: index * 0.1 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="bg-dark/30 backdrop-blur-sm p-6 rounded-xl border border-white/10 hover:border-primary/30 transition-all duration-300 group"
+            className="text-center mb-12"
           >
-            <div className="w-16 h-16 rounded-xl bg-primary/10 text-primary flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-all duration-300">
-              {feature.icon}
-            </div>
-            <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-            <p className="text-gray-300">{feature.description}</p>
+            <h2 className="text-3xl md:text-4xl font-bold mb-6">
+              Why Choose{' '}
+              <span
+                style={{
+                  background: 'linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%)',
+                  WebkitBackgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                }}
+              >
+                Megapayer
+              </span>
+            </h2>
+            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
+              Our comprehensive ecosystem is built to provide everything you need for the future of decentralized finance.
+            </p>
           </motion.div>
-        ))}
+
+          {/* Features Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.id}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: index * 0.08 }}
+                viewport={{ once: true }}
+                className="group p-6 rounded-2xl border border-white/5 hover:border-purple-500/30 transition-all duration-300"
+                style={{ background: 'rgba(255, 255, 255, 0.02)' }}
+              >
+                <div
+                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-cyan-400 group-hover:text-purple-400 transition-colors duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%)',
+                    border: '1px solid rgba(6, 182, 212, 0.2)',
+                  }}
+                >
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-bold mb-3 text-white">{feature.title}</h3>
+                <p className="text-gray-400 leading-relaxed">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+
+          {/* Stats Section */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6 }}
+            viewport={{ once: true }}
+            className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4"
+          >
+            {[
+              { value: '6+', label: 'Integrated Products' },
+              { value: '30+', label: 'Supported Blockchains' },
+              { value: '99.9%', label: 'Uptime Guarantee' },
+              { value: '2025', label: 'Full Launch Year' },
+            ].map((stat, index) => (
+              <div
+                key={index}
+                className="text-center p-5 rounded-xl border border-white/5 hover:border-cyan-500/20 transition-colors duration-300"
+                style={{ background: 'rgba(255, 255, 255, 0.02)' }}
+              >
+                <div
+                  className="text-3xl md:text-4xl font-black mb-1"
+                  style={{
+                    background: 'linear-gradient(135deg, #06b6d4 0%, #8b5cf6 100%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  {stat.value}
+                </div>
+                <p className="text-gray-500 text-sm">{stat.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        </div>
       </div>
-      
-      {/* Stats Section */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, delay: 0.2 }}
-        viewport={{ once: true }}
-        className="mt-20 grid grid-cols-1 md:grid-cols-4 gap-8"
-      >
-        <div className="text-center">
-          <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">6+</div>
-          <p className="text-gray-400">Integrated Products</p>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">30+</div>
-          <p className="text-gray-400">Supported Blockchains</p>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">99.9%</div>
-          <p className="text-gray-400">Uptime Guarantee</p>
-        </div>
-        <div className="text-center">
-          <div className="text-4xl md:text-5xl font-bold text-gradient mb-2">2025</div>
-          <p className="text-gray-400">Full Launch Year</p>
-        </div>
-      </motion.div>
     </div>
   );
 };
