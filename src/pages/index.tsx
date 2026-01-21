@@ -8,8 +8,10 @@ import AIContractBuilder from "@/components/home/AIContractBuilder";
 import Roadmap from "@/components/home/Roadmap";
 import TokenomicsSection from "@/components/home/TokenomicsSection";
 import CallToAction from "@/components/home/CallToAction";
+import { useLanguage } from "@/context/LanguageContext";
 
 export default function Home() {
+  const { t } = useLanguage();
   return (
     <Layout>
       <Head>
@@ -40,11 +42,10 @@ export default function Home() {
               className="text-center mb-16"
             >
               <h2 className="text-3xl md:text-4xl font-bold mb-6">
-                <span className="text-gradient">Ecosystem</span> Products
+                {t.products.title}
               </h2>
               <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-                Our integrated ecosystem provides everything you need for the
-                future of decentralized finance.
+                {t.products.subtitle}
               </p>
             </motion.div>
 

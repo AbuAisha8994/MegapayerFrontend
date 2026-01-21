@@ -1,32 +1,8 @@
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 const Footer = () => {
-  const footerLinks = {
-    products: [
-      { name: "Blockchain", href: "/blockchain" },
-      { name: "Social Media", href: "/social-media" },
-      { name: "P2P Exchange", href: "/p2p-exchange" },
-      { name: "Multi-Chain DEX", href: "/dex" },
-      { name: "Universal Wallet", href: "/wallet" },
-      { name: "Stablecoin", href: "/stablecoin" },
-      { name: "MPC Coin", href: "/mpc-coin" },
-      { name: "NFT Marketplace", href: "/coming-soon?product=NFT%20Marketplace" },
-    ],
-    resources: [
-      { name: "Whitepapers", href: "/whitepapers" },
-      { name: "Roadmap", href: "/whitepaper/roadmap" },
-      { name: "API Reference", href: "/developers/getting-started" },
-      { name: "Developer Portal", href: "/developers/getting-started" },
-      { name: "Community", href: "/coming-soon?product=Community" },
-    ],
-    company: [
-      { name: "About Us", href: "/about" },
-      { name: "Our Team", href: "/team" },
-      { name: "Enterprise", href: "/enterprise/contact" },
-      { name: "Privacy Policy", href: "/privacy-policy" },
-      { name: "Terms of Service", href: "/terms-of-service" },
-    ],
-  };
+  const { t } = useLanguage();
 
   return (
     <footer className="relative overflow-hidden" style={{ background: '#030306' }}>
@@ -136,7 +112,7 @@ const Footer = () => {
               </span>
             </Link>
             <p className="text-gray-500 text-sm mb-6 font-mono">
-              Building the future of decentralized technology.
+              {t.footer_section.brand_desc}
             </p>
 
             {/* Social Icons */}
@@ -164,83 +140,44 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Products */}
-          <div
-            className="p-6 rounded-2xl"
-            style={{
-              background: 'rgba(255, 255, 255, 0.02)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.03)',
-            }}
-          >
-            <h3 className="text-white font-mono font-bold mb-4 text-sm tracking-wider">PRODUCTS</h3>
-            <ul className="space-y-2">
-              {footerLinks.products.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="footer-link text-gray-500 text-sm">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Resources */}
-          <div
-            className="p-6 rounded-2xl"
-            style={{
-              background: 'rgba(255, 255, 255, 0.02)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.03)',
-            }}
-          >
-            <h3 className="text-white font-mono font-bold mb-4 text-sm tracking-wider">RESOURCES</h3>
-            <ul className="space-y-2">
-              {footerLinks.resources.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="footer-link text-gray-500 text-sm">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Company */}
-          <div
-            className="p-6 rounded-2xl"
-            style={{
-              background: 'rgba(255, 255, 255, 0.02)',
-              backdropFilter: 'blur(8px)',
-              border: '1px solid rgba(255, 255, 255, 0.03)',
-            }}
-          >
-            <h3 className="text-white font-mono font-bold mb-4 text-sm tracking-wider">COMPANY</h3>
-            <ul className="space-y-2">
-              {footerLinks.company.map((link) => (
-                <li key={link.name}>
-                  <Link href={link.href} className="footer-link text-gray-500 text-sm">
-                    {link.name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {/* Dynamic Columns */}
+          {t.footer_section.columns.map((col, index) => (
+            <div
+              key={index}
+              className="p-6 rounded-2xl"
+              style={{
+                background: 'rgba(255, 255, 255, 0.02)',
+                backdropFilter: 'blur(8px)',
+                border: '1px solid rgba(255, 255, 255, 0.03)',
+              }}
+            >
+              <h3 className="text-white font-mono font-bold mb-4 text-sm tracking-wider">{col.title}</h3>
+              <ul className="space-y-2">
+                {col.items.map((item, i) => (
+                  <li key={i}>
+                    <Link href={item.href} className="footer-link text-gray-500 text-sm">
+                      {item.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
         </div>
 
         {/* Bottom Bar */}
         <div className="mt-12 pt-6 border-t border-white/5">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <span className="text-gray-600 font-mono text-sm">
-              © 2025 Megapayer. All rights reserved.
+              © {t.footer_section.bottom.rights}
             </span>
             <div className="flex items-center gap-4 mt-4 md:mt-0">
               <Link href="/coming-soon" className="footer-link text-gray-500 text-sm">
-                Early Access
+                {t.footer_section.bottom.early}
               </Link>
               <span className="text-gray-700">•</span>
               <Link href="/support" className="footer-link text-gray-500 text-sm">
-                Support
+                {t.footer_section.bottom.support}
               </Link>
             </div>
           </div>

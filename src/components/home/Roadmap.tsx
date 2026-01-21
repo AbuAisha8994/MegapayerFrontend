@@ -1,16 +1,10 @@
 import { useRef, useCallback, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-
-// Roadmap data
-const roadmapData = [
-  { quarter: "Q2 2025", title: "Launch", items: ["Seed Sale", "Airdrop", "Community"] },
-  { quarter: "Q3 2025", title: "Products", items: ["Wallet", "DEX", "NFT Beta"] },
-  { quarter: "Q4 2025", title: "Mainnet", items: ["CEX Listing", "NFT Live", "P2P"] },
-  { quarter: "Q1 2026", title: "Scale", items: ["Mobile", "Bridge", "Partners"] },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 const Roadmap = () => {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
@@ -186,30 +180,21 @@ const Roadmap = () => {
           className="text-center mb-20"
         >
           <div className="inline-block px-5 py-2 border border-cyan-500/40 rounded-full text-cyan-400 text-sm mb-6">
-            🚀 2025-2026 Journey
+            🚀 {t.roadmap.badge}
           </div>
           <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
-            Megapayer{" "}
-            <span
-              style={{
-                background: 'linear-gradient(135deg, #06b6d4, #8b5cf6, #ec4899)',
-                WebkitBackgroundClip: 'text',
-                WebkitTextFillColor: 'transparent',
-              }}
-            >
-              Roadmap
-            </span>
+            {t.roadmap.title}
           </h2>
           <p className="text-gray-500 max-w-xl mx-auto">
-            Building the future of decentralized finance, one block at a time.
+            {t.roadmap.subtitle}
           </p>
         </motion.div>
 
         {/* Floating Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
-          {roadmapData.map((item, index) => (
+          {t.roadmap.items.map((item, index) => (
             <motion.div
-              key={item.quarter}
+              key={index}
               initial={{ opacity: 0, y: 40 }}
               whileInView={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.15 }}
@@ -217,7 +202,7 @@ const Roadmap = () => {
               className="group relative"
             >
               {/* Connection line */}
-              {index < roadmapData.length - 1 && (
+              {index < t.roadmap.items.length - 1 && (
                 <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-px bg-gradient-to-r from-cyan-500/50 to-purple-500/50" />
               )}
 
@@ -236,8 +221,8 @@ const Roadmap = () => {
 
                 <div className="relative z-10">
                   <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 ${item.quarter.includes('2025')
-                      ? 'bg-cyan-500/20 text-cyan-400'
-                      : 'bg-purple-500/20 text-purple-400'
+                    ? 'bg-cyan-500/20 text-cyan-400'
+                    : 'bg-purple-500/20 text-purple-400'
                     }`}>
                     {item.quarter}
                   </span>
@@ -245,10 +230,10 @@ const Roadmap = () => {
                   <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
 
                   <ul className="space-y-2">
-                    {item.items.map((task, i) => (
+                    {item.bullets.map((bullet, i) => (
                       <li key={i} className="flex items-center text-sm text-gray-400">
                         <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 mr-2" />
-                        {task}
+                        {bullet}
                       </li>
                     ))}
                   </ul>
@@ -270,7 +255,7 @@ const Roadmap = () => {
             href="/whitepaper/roadmap"
             className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/60 transition-all group"
           >
-            View Full Roadmap
+            {t.roadmap.button}
             <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
             </svg>

@@ -75,35 +75,34 @@ const Navbar = () => {
       href: "#",
       submenu: [
         {
-          name: "Megapayer Blockchain",
+          name: t.navbar.blockchain,
           href: "/blockchain",
         },
         {
-          name: "Decentralized Social",
+          name: t.navbar.social,
           href: "/social-media",
         },
-        { name: "P2P Exchange", href: "/p2p-exchange" },
-        { name: "Multi-Chain DEX", href: "/dex" },
+        { name: t.navbar.p2p, href: "/p2p-exchange" },
+        { name: t.navbar.dex, href: "/dex" },
         {
-          name: "Universal Wallet",
+          name: t.navbar.wallet,
           href: "/wallet/",
         },
         {
-          name: "NFT Marketplace",
+          name: t.navbar.nft,
           href: "/coming-soon?product=NFT%20Marketplace&returnUrl=/",
         },
-        { name: "Bridge", href: "/coming-soon?product=Bridge&returnUrl=/" },
+        { name: t.navbar.bridge, href: "/coming-soon?product=Bridge&returnUrl=/" },
       ],
     },
     {
       name: t.navbar.ecosystem,
       href: "#",
       submenu: [
-        { name: "MPC Coin", href: "/token/mpc" },
-        { name: "MPC ID", href: "/mpc-id" },
-        { name: "Megapayer Explorer", href: "/explorer" },
+        { name: t.navbar.token, href: "/token/mpc" },
+        { name: t.navbar.explorer, href: "/explorer" },
         {
-          name: "Partners & Integrations",
+          name: t.navbar.partners,
           href: "/coming-soon?product=Partners%20%26%20Integrations&returnUrl=/",
         },
       ],
@@ -112,19 +111,18 @@ const Navbar = () => {
       name: t.navbar.developers,
       href: "#",
       submenu: [
-        { name: "Developer SDK / API", href: "/developers/getting-started" },
+        { name: t.navbar.sdk_api, href: "/developers/getting-started" },
         {
-          name: "GitHub",
+          name: t.navbar.github,
           href: "https://github.com/megapayer",
           isExternal: true,
         },
-        { name: "Explorer API", href: "/developers/getting-started" },
         {
-          name: "Testnet & Faucet",
+          name: t.navbar.testnet,
           href: "/coming-soon?product=Testnet%20%26%20Faucet&returnUrl=/",
         },
         {
-          name: "Node Setup Guide",
+          name: t.navbar.node_setup,
           href: "/coming-soon?product=Node%20Setup%20Guide&returnUrl=/",
         },
       ],
@@ -133,52 +131,52 @@ const Navbar = () => {
       name: t.navbar.docs,
       href: "#",
       submenu: [
-        { name: "Whitepapers", href: "/whitepapers" },
-        { name: "Tokenomics", href: "/mpc-coin" },
-        { name: "Roadmap", href: "/whitepaper/roadmap" },
+        { name: t.navbar.whitepapers, href: "/whitepapers" },
+        { name: t.navbar.tokenomics, href: "/mpc-coin" },
+        { name: t.navbar.roadmap, href: "/whitepaper/roadmap" },
         {
-          name: "Pitch Deck",
+          name: t.navbar.pitch_deck,
           href: "/coming-soon?product=Pitch%20Deck&returnUrl=/",
         },
         {
-          name: "Media Kit",
+          name: t.navbar.media_kit,
           href: "/coming-soon?product=Media%20Kit&returnUrl=/",
         },
-        { name: "FAQ", href: "/support" },
+        { name: t.navbar.faq, href: "/support" },
       ],
     },
     {
       name: t.navbar.community,
       href: "#",
       submenu: [
+        //{
+        //  name: t.navbar.news_blog,
+        //  href: "/coming-soon?product=News%20%26%20Blog&returnUrl=/",
+        //},
         {
-          name: "News & Blog",
-          href: "/coming-soon?product=News%20%26%20Blog&returnUrl=/",
+          name: t.navbar.airdrop,
+          href: "/airdrop",
         },
+        //{
+        //  name: t.navbar.team,
+        //  href: "/team/",
+        //},
         {
-          name: "Airdrop & Campaigns",
-          href: "/coming-soon?product=Airdrop%20%26%20Campaigns&returnUrl=/",
-        },
-        {
-          name: "Our Team",
-          href: "/team/",
-        },
-        {
-          name: "X (Twitter)",
+          name: t.navbar.twitter,
           href: "https://twitter.com/megapayer",
           isExternal: true,
         },
         {
-          name: "Telegram",
+          name: t.navbar.telegram,
           href: "https://t.me/megapayerchat",
           isExternal: true,
         },
         {
-          name: "Discord",
+          name: t.navbar.discord,
           href: "https://discord.gg/DzJqR2uZKz",
           isExternal: true,
         },
-        { name: "Careers", href: "/coming-soon?product=Careers&returnUrl=/" },
+        { name: t.navbar.careers, href: "/coming-soon?product=Careers&returnUrl=/" },
       ],
     },
   ];

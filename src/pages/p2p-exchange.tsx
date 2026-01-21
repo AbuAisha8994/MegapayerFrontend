@@ -2,25 +2,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
+import { useLanguage } from "@/context/LanguageContext";
 
 const P2PExchangePage = () => {
-  const securityFeatures = [
-    {
-      title: "Escrow Protection",
-      description: "Smart contract escrow holds funds securely until both parties fulfill obligations. Zero counterparty risk.",
-      icon: "🛡️",
-    },
-    {
-      title: "Dispute Resolution",
-      description: "Decentralized arbitration system resolves conflicts fairly with community validators.",
-      icon: "⚖️",
-    },
-    {
-      title: "Verified Merchants",
-      description: "Reputation system and verified badges ensure you trade with trusted counterparties.",
-      icon: "✓",
-    },
-  ];
+  const { t } = useLanguage();
+
+  // Security feature icons
+  const securityIcons = ["🛡️", "⚖️", "✓"];
 
   return (
     <Layout>
@@ -93,11 +81,11 @@ const P2PExchangePage = () => {
               transition={{ duration: 0.7 }}
             >
               <div className="inline-block px-4 py-2 border border-green-500/30 rounded-full text-green-400 text-sm mb-6">
-                Trustless P2P Trading
+                {t.p2p_page.hero.badge}
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-white neon-title leading-tight">
-                Zero-Fee
+                {t.p2p_page.hero.title.split(' ')[0]}
                 <br />
                 <span
                   style={{
@@ -106,18 +94,12 @@ const P2PExchangePage = () => {
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  Peer-to-Peer
+                  {t.p2p_page.hero.title.split(' ').slice(1).join(' ')}
                 </span>
-                <br />
-                Trading
               </h1>
 
-              <p className="text-xl text-gray-400 mb-4 max-w-lg">
-                Escrow-protected transactions with instant settlement.
-              </p>
-              <p className="text-lg text-gray-500 mb-10 max-w-lg">
-                Connect directly with traders worldwide. Smart contract escrow ensures
-                secure, trustless transactions with built-in dispute resolution.
+              <p className="text-xl text-gray-400 mb-10 max-w-lg">
+                {t.p2p_page.hero.desc}
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -137,7 +119,7 @@ const P2PExchangePage = () => {
                     className="absolute inset-[2px] rounded-[10px] bg-[#050505] group-hover:bg-transparent transition-all duration-300"
                   />
                   <span className="relative z-10 text-white">
-                    Start Trading
+                    {t.p2p_page.hero.buttons.primary}
                   </span>
                 </Link>
 
@@ -145,16 +127,16 @@ const P2PExchangePage = () => {
                   href="/whitepaper/p2p-exchange"
                   className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
                 >
-                  Read Whitepaper
+                  {t.p2p_page.hero.buttons.secondary}
                 </Link>
               </div>
 
               {/* Stats */}
               <div className="grid grid-cols-3 gap-6 mt-12">
                 {[
-                  { value: "0%", label: "Trading Fees" },
-                  { value: "200+", label: "Payment Methods" },
-                  { value: "24/7", label: "Support" },
+                  { value: t.p2p_page.stats.fees.val, label: t.p2p_page.stats.fees.label },
+                  { value: t.p2p_page.stats.methods.val, label: t.p2p_page.stats.methods.label },
+                  { value: t.p2p_page.stats.support.val, label: t.p2p_page.stats.support.label },
                 ].map((stat, i) => (
                   <div key={i}>
                     <div
@@ -311,21 +293,22 @@ const P2PExchangePage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold mb-6 text-white">
-              Military-Grade <span style={{
+              {t.p2p_page.security.title.split(' ').slice(0, -1).join(' ')}{' '}
+              <span style={{
                 background: 'linear-gradient(135deg, #00ff9d, #8a2be2)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>Security</span>
+              }}>{t.p2p_page.security.title.split(' ').slice(-1)}</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Every transaction protected by smart contract escrow and decentralized verification.
+              {t.p2p_page.security.subtitle}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {securityFeatures.map((feature, index) => (
+            {t.p2p_page.security.cards.map((feature, index) => (
               <motion.div
-                key={feature.title}
+                key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -345,10 +328,10 @@ const P2PExchangePage = () => {
                     boxShadow: '0 0 30px rgba(0, 255, 157, 0.2)',
                   }}
                 >
-                  {feature.icon}
+                  {securityIcons[index] || "🔒"}
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-white">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <p className="text-gray-400">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -372,15 +355,10 @@ const P2PExchangePage = () => {
               }}
             >
               <h3 className="text-2xl font-bold mb-8" style={{ color: '#00ff9d' }}>
-                How P2P Trading Works
+                {t.p2p_page.how_works.title}
               </h3>
               <div className="space-y-6">
-                {[
-                  { step: "1", title: "Post or Browse Offers", desc: "Create your trading ad or browse existing offers worldwide." },
-                  { step: "2", title: "Initiate Trade", desc: "Start a trade and lock crypto in smart contract escrow." },
-                  { step: "3", title: "Make Payment", desc: "Send payment using your preferred method." },
-                  { step: "4", title: "Release & Complete", desc: "Crypto is automatically released to buyer after confirmation." },
-                ].map((item, i) => (
+                {t.p2p_page.how_works.steps.map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-lg flex-shrink-0"
@@ -408,17 +386,12 @@ const P2PExchangePage = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-2xl font-bold mb-6 text-white">Global Payment Methods</h3>
+              <h3 className="text-2xl font-bold mb-6 text-white">{t.p2p_page.payments.title}</h3>
               <p className="text-gray-400 mb-8">
-                Trade using 200+ payment methods across different countries and regions.
+                {t.p2p_page.payments.subtitle}
               </p>
               <div className="grid grid-cols-2 gap-4">
-                {[
-                  { title: "Digital Payments", items: ["PayPal", "Wise", "Revolut", "Alipay"] },
-                  { title: "Bank Transfers", items: ["SEPA", "ACH", "Wire", "Local Banks"] },
-                  { title: "Mobile Money", items: ["M-Pesa", "GCash", "bKash", "Orange"] },
-                  { title: "Gift Cards", items: ["Amazon", "iTunes", "Google Play", "Steam"] },
-                ].map((category, i) => (
+                {t.p2p_page.payments.categories.map((category, i) => (
                   <div
                     key={i}
                     className="p-4 rounded-xl"
@@ -452,10 +425,10 @@ const P2PExchangePage = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-              Ready to Start P2P Trading?
+              {t.p2p_page.cta.title}
             </h2>
             <p className="text-xl text-gray-400 mb-10">
-              Join the most secure peer-to-peer trading platform in Web3.
+              {t.p2p_page.cta.subtitle}
             </p>
             <Link
               href="/p2p-exchange/coming-soon"
@@ -465,7 +438,7 @@ const P2PExchangePage = () => {
                 boxShadow: '0 0 30px rgba(0, 255, 157, 0.3)',
               }}
             >
-              Start Trading Now
+              {t.p2p_page.cta.button}
             </Link>
           </motion.div>
         </div>

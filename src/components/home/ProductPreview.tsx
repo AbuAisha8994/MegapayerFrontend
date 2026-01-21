@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 // ==========================================
 // PRODUCT ICONS (SVG) - Clean, minimal
@@ -78,45 +79,45 @@ const LargeIcon = ({ icon, color }: { icon: keyof typeof icons; color: string })
   </div>
 );
 
-// ==========================================
-// PRODUCT DATA - Exactly 12 products
-// ==========================================
-const products = [
-  // Row 1-2: Blockchain (2x2) + 4 products (1x1)
-  { id: "blockchain", title: "Megapayer Blockchain", desc: "Next-gen Layer-1 with Shared Proof of Stake", href: "/blockchain", icon: "blockchain" as const, color: "#06b6d4", size: "2x2", gridArea: "1 / 1 / 3 / 3" },
-  { id: "dex", title: "Multi-Chain DEX", desc: "Cross-chain swaps", href: "/dex", icon: "dex" as const, color: "#8b5cf6", size: "1x1", gridArea: "1 / 3 / 2 / 4" },
-  { id: "social", title: "Decentralized Social", desc: "Own your content", href: "/social-media", icon: "social" as const, color: "#ec4899", size: "1x1", gridArea: "1 / 4 / 2 / 5" },
-  { id: "p2p", title: "P2P Exchange", desc: "Peer-to-peer trading", href: "/p2p-exchange", icon: "p2p" as const, color: "#22c55e", size: "1x1", gridArea: "2 / 3 / 3 / 4" },
-  { id: "stablecoin", title: "MPUSD Stablecoin", desc: "1:1 USD backed", href: "/stablecoin", icon: "stablecoin" as const, color: "#10b981", size: "1x1", gridArea: "2 / 4 / 3 / 5" },
-
-  // Row 3: Wallet (2x1) + 2 products (1x1)
-  { id: "wallet", title: "Universal Wallet", desc: "Secure multi-chain asset management", href: "/wallet", icon: "wallet" as const, color: "#8b5cf6", size: "2x1", gridArea: "3 / 1 / 4 / 3" },
-  { id: "mpcCoin", title: "MPC Coin", desc: "Governance token", href: "/mpc-coin", icon: "mpcCoin" as const, color: "#a855f7", size: "1x1", gridArea: "3 / 3 / 4 / 4" },
-  { id: "mpcId", title: "MPC ID", desc: "Digital identity", href: "/mpc-id", icon: "mpcId" as const, color: "#14b8a6", size: "1x1", gridArea: "3 / 4 / 4 / 5" },
-
-  // Row 4: 4 products (1x1)
-  { id: "nft", title: "NFT Marketplace", desc: "Create & trade NFTs", href: "/whitepaper/nft-marketplace", icon: "nft" as const, color: "#f472b6", size: "1x1", gridArea: "4 / 1 / 5 / 2" },
-  { id: "sdk", title: "Developer SDK", desc: "Build on Megapayer", href: "/coming-soon?product=SDK", icon: "sdk" as const, color: "#fbbf24", size: "1x1", gridArea: "4 / 2 / 5 / 3" },
-  { id: "explorer", title: "Block Explorer", desc: "Track transactions", href: "https://scan.megapayer.io", icon: "explorer" as const, color: "#06b6d4", size: "1x1", gridArea: "4 / 3 / 5 / 4" },
-  { id: "bridge", title: "Cross-Chain Bridge", desc: "Transfer assets", href: "/coming-soon?product=Bridge", icon: "bridge" as const, color: "#8b5cf6", size: "1x1", gridArea: "4 / 4 / 5 / 5" },
+// Product config (layout & styling only - titles/descs come from translations)
+const productConfig = [
+  { id: "blockchain", href: "/blockchain", icon: "blockchain" as const, color: "#06b6d4", size: "2x2", gridArea: "1 / 1 / 3 / 3" },
+  { id: "dex", href: "/dex", icon: "dex" as const, color: "#8b5cf6", size: "1x1", gridArea: "1 / 3 / 2 / 4" },
+  { id: "social", href: "/social-media", icon: "social" as const, color: "#ec4899", size: "1x1", gridArea: "1 / 4 / 2 / 5" },
+  { id: "p2p", href: "/p2p-exchange", icon: "p2p" as const, color: "#22c55e", size: "1x1", gridArea: "2 / 3 / 3 / 4" },
+  { id: "stablecoin", href: "/stablecoin", icon: "stablecoin" as const, color: "#10b981", size: "1x1", gridArea: "2 / 4 / 3 / 5" },
+  { id: "wallet", href: "/wallet", icon: "wallet" as const, color: "#8b5cf6", size: "2x1", gridArea: "3 / 1 / 4 / 3" },
+  { id: "mpcCoin", href: "/mpc-coin", icon: "mpcCoin" as const, color: "#a855f7", size: "1x1", gridArea: "3 / 3 / 4 / 4" },
+  { id: "mpcId", href: "/mpc-id", icon: "mpcId" as const, color: "#14b8a6", size: "1x1", gridArea: "3 / 4 / 4 / 5" },
+  { id: "nft", href: "/whitepaper/nft-marketplace", icon: "nft" as const, color: "#f472b6", size: "1x1", gridArea: "4 / 1 / 5 / 2" },
+  { id: "sdk", href: "/coming-soon?product=SDK", icon: "sdk" as const, color: "#fbbf24", size: "1x1", gridArea: "4 / 2 / 5 / 3" },
+  { id: "explorer", href: "https://scan.megapayer.io", icon: "explorer" as const, color: "#06b6d4", size: "1x1", gridArea: "4 / 3 / 5 / 4" },
+  { id: "bridge", href: "/coming-soon?product=Bridge", icon: "bridge" as const, color: "#8b5cf6", size: "1x1", gridArea: "4 / 4 / 5 / 5" },
 ];
 
 // ==========================================
 // PRODUCT CARD COMPONENT
 // ==========================================
-const ProductCard = ({ product }: { product: typeof products[0] }) => {
-  const isLarge = product.size === "2x2";
-  const isWide = product.size === "2x1";
+interface ProductCardProps {
+  config: typeof productConfig[0];
+  title: string;
+  desc: string;
+  learnMore: string;
+}
+
+const ProductCard = ({ config, title, desc, learnMore }: ProductCardProps) => {
+  const isLarge = config.size === "2x2";
+  const isWide = config.size === "2x1";
 
   return (
     <Link
-      href={product.href}
-      target={product.href.startsWith('http') ? '_blank' : undefined}
+      href={config.href}
+      target={config.href.startsWith('http') ? '_blank' : undefined}
       className="group relative overflow-hidden rounded-2xl p-6 flex flex-col bg-zinc-900/60 border border-white/[0.06] hover:border-white/[0.12] transition-all duration-300"
-      style={{ gridArea: product.gridArea }}
+      style={{ gridArea: config.gridArea }}
     >
       {/* Background large icon (Layer 1) */}
-      <LargeIcon icon={product.icon} color={product.color} />
+      <LargeIcon icon={config.icon} color={config.color} />
 
       {/* Content (Layer 2) - always on top */}
       <div className="relative z-10 flex flex-col h-full">
@@ -124,27 +125,27 @@ const ProductCard = ({ product }: { product: typeof products[0] }) => {
         <div
           className="w-12 h-12 rounded-xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110"
           style={{
-            backgroundColor: `${product.color}15`,
-            color: product.color,
+            backgroundColor: `${config.color}15`,
+            color: config.color,
           }}
         >
-          {icons[product.icon]}
+          {icons[config.icon]}
         </div>
 
         {/* Title */}
         <h3 className={`font-bold text-white mb-2 group-hover:text-cyan-300 transition-colors ${isLarge ? 'text-2xl' : isWide ? 'text-xl' : 'text-lg'}`}>
-          {product.title}
+          {title}
         </h3>
 
         {/* Description */}
         <p className={`text-gray-500 leading-relaxed ${isLarge ? 'text-base max-w-xs' : 'text-sm'}`}>
-          {product.desc}
+          {desc}
         </p>
 
         {/* Arrow indicator for large cards */}
         {(isLarge || isWide) && (
           <div className="mt-auto pt-4 flex items-center text-gray-600 group-hover:text-cyan-400 transition-colors">
-            <span className="text-sm font-medium">Learn more</span>
+            <span className="text-sm font-medium">{learnMore}</span>
             <svg className="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
@@ -156,7 +157,7 @@ const ProductCard = ({ product }: { product: typeof products[0] }) => {
       <div
         className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none"
         style={{
-          background: `radial-gradient(circle at 50% 0%, ${product.color}08 0%, transparent 60%)`,
+          background: `radial-gradient(circle at 50% 0%, ${config.color}08 0%, transparent 60%)`,
         }}
       />
     </Link>
@@ -167,6 +168,8 @@ const ProductCard = ({ product }: { product: typeof products[0] }) => {
 // MAIN COMPONENT
 // ==========================================
 const ProductPreview = () => {
+  const { t } = useLanguage();
+
   return (
     <div className="w-full">
       {/* 
@@ -183,8 +186,14 @@ const ProductPreview = () => {
           gridTemplateRows: 'repeat(4, minmax(140px, auto))',
         }}
       >
-        {products.map((product) => (
-          <ProductCard key={product.id} product={product} />
+        {productConfig.map((config, index) => (
+          <ProductCard
+            key={config.id}
+            config={config}
+            title={t.products.items[index]?.title || config.id}
+            desc={t.products.items[index]?.desc || ''}
+            learnMore={t.hero.cta_secondary}
+          />
         ))}
       </div>
     </div>

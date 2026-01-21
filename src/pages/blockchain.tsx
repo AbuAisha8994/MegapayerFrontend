@@ -3,8 +3,10 @@ import Head from "next/head";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import Layout from "@/components/layout/Layout";
+import { useLanguage } from "@/context/LanguageContext";
 
 const BlockchainPage = () => {
+  const { t } = useLanguage();
   const featuresRef = useRef(null);
   const architectureRef = useRef(null);
   const developerRef = useRef(null);
@@ -13,49 +15,8 @@ const BlockchainPage = () => {
   const isArchitectureInView = useInView(architectureRef, { once: true, amount: 0.3 });
   const isDeveloperInView = useInView(developerRef, { once: true, amount: 0.3 });
 
-  // Features data
-  const features = [
-    {
-      icon: "⚡",
-      title: "High-Speed Transactions",
-      description: "Optimized block times and transaction confirmation speeds. Minimum latency, maximum performance.",
-    },
-    {
-      icon: "🧠",
-      title: "AI-Powered Development",
-      description: "Developers can create smart contracts and integrate projects into the chain by simply giving commands.",
-    },
-    {
-      icon: "🌍",
-      title: "Web3-Friendly Infrastructure",
-      description: "Optimized for NFT, DApp, and DeFi projects with built-in tools and resources.",
-    },
-    {
-      icon: "♻️",
-      title: "Low Transaction Fees",
-      description: "Transaction fees are kept low while maintaining a balanced revenue model for validators and stakers through SPoS.",
-    },
-  ];
-
-  // Architecture benefits
-  const architectureBenefits = [
-    {
-      title: "Security First",
-      description: "Multi-layered security protocols and constant monitoring protect against threats while maintaining decentralization.",
-    },
-    {
-      title: "Scalability Solutions",
-      description: "Layer-2 integration and dynamic sharding enable the network to handle millions of transactions per day.",
-    },
-    {
-      title: "Cross-Chain Compatibility",
-      description: "Built-in bridges and protocols allow seamless interaction with multiple blockchain networks.",
-    },
-    {
-      title: "Energy Efficiency",
-      description: "Our Shared Proof of Stake consensus uses a fraction of the energy compared to traditional Proof of Work systems.",
-    },
-  ];
+  // Feature icons
+  const featureIcons = ["⚡", "🧠", "🌍", "♻️"];
 
   return (
     <Layout>
@@ -137,11 +98,11 @@ const BlockchainPage = () => {
               transition={{ duration: 0.6 }}
             >
               <div className="inline-block px-4 py-2 border border-cyan-500/30 rounded-full text-cyan-400 text-sm mb-6">
-                Next-Generation Infrastructure
+                {t.blockchain_page.hero.badge}
               </div>
 
               <h1 className="text-5xl md:text-7xl font-black mb-6 neon-title">
-                <span className="text-white">Megapayer</span>
+                <span className="text-white">{t.blockchain_page.hero.title.split(' ')[0]}</span>
                 <br />
                 <span
                   style={{
@@ -150,14 +111,12 @@ const BlockchainPage = () => {
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  Chain
+                  {t.blockchain_page.hero.title.split(' ').slice(1).join(' ') || 'Chain'}
                 </span>
               </h1>
 
               <p className="text-xl text-gray-400 mb-8 leading-relaxed">
-                A next-generation blockchain infrastructure developed with a focus on speed,
-                scalability, and security. Flexible for developers, accessible for users,
-                sustainable for investors.
+                {t.blockchain_page.hero.desc}
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -165,13 +124,13 @@ const BlockchainPage = () => {
                   href="/developers/getting-started"
                   className="px-8 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-cyan-500/25 transition-all"
                 >
-                  Start Building
+                  {t.blockchain_page.hero.btn_primary}
                 </Link>
                 <Link
                   href="/whitepapers"
                   className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
                 >
-                  Read Whitepaper
+                  {t.blockchain_page.hero.btn_secondary}
                 </Link>
               </div>
             </motion.div>
@@ -184,10 +143,10 @@ const BlockchainPage = () => {
               className="grid grid-cols-4 gap-6 mt-16"
             >
               {[
-                { value: "3s", label: "Block Time" },
-                { value: "10K+", label: "TPS" },
-                { value: "$0.001", label: "Avg Fee" },
-                { value: "99.99%", label: "Uptime" },
+                { value: "3s", label: t.blockchain_page.hero.stats.block_time },
+                { value: "10K+", label: t.blockchain_page.hero.stats.tps },
+                { value: "$0.001", label: t.blockchain_page.hero.stats.fee },
+                { value: "99.99%", label: t.blockchain_page.hero.stats.uptime },
               ].map((stat, i) => (
                 <div key={i} className="text-center">
                   <div
@@ -219,20 +178,20 @@ const BlockchainPage = () => {
             className="text-center max-w-4xl mx-auto mb-16"
           >
             <h2 className="text-4xl font-bold mb-6 text-white">
-              Key <span style={{
+              {t.blockchain_page.features.title.split(' ')[0]}{' '}
+              <span style={{
                 background: 'linear-gradient(135deg, #06b6d4, #8b5cf6)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>Features</span>
+              }}>{t.blockchain_page.features.title.split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="text-xl text-gray-400">
-              Our blockchain technology is designed to meet the demands of
-              modern decentralized applications while ensuring exceptional user experience.
+              {t.blockchain_page.features.subtitle}
             </p>
           </motion.div>
 
           <div ref={featuresRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {features.map((feature, index) => (
+            {t.blockchain_page.features.cards.map((feature, index) => (
               <motion.div
                 key={index}
                 initial={{ opacity: 0, y: 30 }}
@@ -241,9 +200,9 @@ const BlockchainPage = () => {
                 className="p-8 rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all duration-300"
                 style={{ background: 'rgba(255,255,255,0.02)' }}
               >
-                <div className="text-4xl mb-6">{feature.icon}</div>
+                <div className="text-4xl mb-6">{featureIcons[index] || "✨"}</div>
                 <h3 className="text-xl font-bold mb-4 text-white">{feature.title}</h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <p className="text-gray-400">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -265,12 +224,10 @@ const BlockchainPage = () => {
                   background: 'linear-gradient(135deg, #06b6d4, #8b5cf6)',
                   WebkitBackgroundClip: 'text',
                   WebkitTextFillColor: 'transparent',
-                }}>Shared Proof of Stake</span> (SPoS)
+                }}>{t.blockchain_page.spos.title}</span>
               </h2>
               <p className="text-xl text-gray-400 mb-8">
-                Megapayer Chain's security and efficiency are ensured by our
-                specially designed SPoS consensus model that balances
-                decentralization with performance.
+                {t.blockchain_page.spos.desc}
               </p>
 
               <div
@@ -280,13 +237,9 @@ const BlockchainPage = () => {
                   border: '1px solid rgba(6, 182, 212, 0.2)',
                 }}
               >
-                <h3 className="text-xl font-semibold mb-4 text-cyan-400">How SPoS Works</h3>
+                <h3 className="text-xl font-semibold mb-4 text-cyan-400">{t.blockchain_page.spos.how_works_title}</h3>
                 <ul className="space-y-4">
-                  {[
-                    "Validators are selected based on reputation, stake amount, and historical performance",
-                    "Block rewards are distributed across validators and delegators using a fair allocation algorithm",
-                    "Network governance includes both token holders and validators in a weighted voting system",
-                  ].map((item, i) => (
+                  {t.blockchain_page.spos.how_works_items.map((item, i) => (
                     <li key={i} className="flex items-start">
                       <div className="p-1 bg-cyan-500/20 rounded-full mr-3 mt-1.5">
                         <svg className="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -306,16 +259,16 @@ const BlockchainPage = () => {
               animate={isArchitectureInView ? { opacity: 1, x: 0 } : {}}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <h3 className="text-2xl font-bold mb-6 text-white">Architectural Benefits</h3>
+              <h3 className="text-2xl font-bold mb-6 text-white">{t.blockchain_page.spos.benefits_title}</h3>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                {architectureBenefits.map((benefit, index) => (
+                {t.blockchain_page.spos.benefits_items.map((benefit, index) => (
                   <div
                     key={index}
                     className="p-6 rounded-xl border border-white/10"
                     style={{ background: 'rgba(255,255,255,0.02)' }}
                   >
                     <h4 className="text-lg font-semibold mb-3 text-white">{benefit.title}</h4>
-                    <p className="text-gray-400 text-sm">{benefit.description}</p>
+                    <p className="text-gray-400 text-sm">{benefit.desc}</p>
                   </div>
                 ))}
               </div>
@@ -334,14 +287,15 @@ const BlockchainPage = () => {
             className="text-center max-w-4xl mx-auto mb-16"
           >
             <h2 className="text-4xl font-bold mb-6 text-white">
-              Developer <span style={{
+              {t.blockchain_page.dev.title.split(' ')[0]}{' '}
+              <span style={{
                 background: 'linear-gradient(135deg, #06b6d4, #8b5cf6)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>Infrastructure</span>
+              }}>{t.blockchain_page.dev.title.split(' ').slice(1).join(' ')}</span>
             </h2>
             <p className="text-xl text-gray-400">
-              The smart contract development process is simplified for developers of all experience levels.
+              {t.blockchain_page.dev.subtitle}
             </p>
           </motion.div>
 
@@ -355,16 +309,12 @@ const BlockchainPage = () => {
               style={{ background: 'rgba(255,255,255,0.02)' }}
             >
               <div className="p-6" style={{ background: 'rgba(6, 182, 212, 0.05)' }}>
-                <h3 className="text-2xl font-bold mb-2 text-white">AI-Powered Development</h3>
-                <p className="text-gray-400">Using just text commands, users can create:</p>
+                <h3 className="text-2xl font-bold mb-2 text-white">{t.blockchain_page.dev.ai_title}</h3>
+                <p className="text-gray-400">{t.blockchain_page.dev.ai_desc}</p>
               </div>
 
               <div className="p-6 space-y-6">
-                {[
-                  { title: "Tokens", desc: "Easily create MPC-20 standard tokens with customizable parameters." },
-                  { title: "NFT Collections", desc: "Launch NFT collections with metadata storage solutions." },
-                  { title: "Decentralized Applications", desc: "Build complete DApps with front-end templates." },
-                ].map((item, i) => (
+                {t.blockchain_page.dev.ai_items.map((item, i) => (
                   <div key={i} className="flex items-start">
                     <div className="p-2 bg-cyan-500/20 rounded-full mr-4 mt-1">
                       <div className="w-2 h-2 rounded-full bg-cyan-400" />
@@ -405,7 +355,7 @@ const BlockchainPage = () => {
                     <div className="w-3 h-3 bg-green-500 rounded-full" />
                   </div>
                   <div className="flex-1 text-center text-sm text-gray-500 font-mono">
-                    AI Smart Contract Generator
+                    {t.blockchain_page.dev.code_window.title}
                   </div>
                 </div>
 
@@ -415,7 +365,7 @@ const BlockchainPage = () => {
                   <div className="text-cyan-400 mb-4">» Create a staking contract with 7% APY</div>
                   <div className="text-purple-400">» Generating smart contract...</div>
                   <div className="mt-4 p-4 rounded bg-black/50">
-                    <div className="text-gray-500">// Generated by Megapayer AI</div>
+                    <div className="text-gray-500">{t.blockchain_page.dev.code_window.comment}</div>
                     <div><span className="text-purple-400">pragma</span> solidity ^0.8.17;</div>
                     <div className="mt-2"><span className="text-purple-400">contract</span> StakingContract {"{"}</div>
                     <div className="pl-4"><span className="text-cyan-400">uint256</span> public APY = 7;</div>
@@ -460,17 +410,16 @@ const BlockchainPage = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-              Ready to Build on Megapayer Chain?
+              {t.blockchain_page.cta.title}
             </h2>
             <p className="text-xl text-gray-400 mb-10">
-              Join thousands of developers building the future of Web3 on our
-              next-generation blockchain infrastructure.
+              {t.blockchain_page.cta.subtitle}
             </p>
             <Link
               href="/developers/getting-started"
               className="inline-block px-10 py-4 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-xl hover:shadow-lg hover:shadow-purple-500/25 transition-all"
             >
-              Start Building
+              {t.blockchain_page.cta.button}
             </Link>
           </motion.div>
         </div>

@@ -4,9 +4,11 @@ import { motion } from "framer-motion";
 import Head from "next/head";
 import Layout from "@/components/layout/Layout";
 import CountdownTimer from "@/components/common/CountdownTimer";
+import { useLanguage } from "@/context/LanguageContext";
 
 const ComingSoonPage = () => {
   const router = useRouter();
+  const { t } = useLanguage();
   const { product, returnUrl } = router.query;
   const [productName, setProductName] = useState("This Feature");
 
@@ -79,28 +81,27 @@ const ComingSoonPage = () => {
                     d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                   />
                 </svg>
-                <span className="text-blue-400">Coming Soon</span>
+                <span className="text-blue-400">{t.coming_soon.badge}</span>
               </div>
 
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-                We're Building{" "}
+                {t.coming_soon.title_prefix}{" "}
                 <span className="text-gradient">{productName}</span>
               </h1>
 
               <p className="text-xl text-gray-300 mb-10">
-                {productName} is currently in development and will be launching
-                soon. Sign up to be notified when we go live.
+                {productName} {t.coming_soon.desc_suffix}
               </p>
 
               {/* Countdown Timer */}
               <div className="mb-12">
-                <CountdownTimer targetDate={launchDate} />
+                <CountdownTimer targetDate={launchDate} labels={t.coming_soon.countdown} />
               </div>
 
               {/* Email notification form */}
               <div className="bg-dark/50 backdrop-blur-sm border border-white/10 p-8 rounded-xl shadow-xl mb-8">
                 <h3 className="text-xl font-semibold text-white mb-4">
-                  Get Notified When We Launch
+                  {t.coming_soon.notify.title}
                 </h3>
                 <form
                   onSubmit={handleSubscribe}
@@ -108,7 +109,7 @@ const ComingSoonPage = () => {
                 >
                   <input
                     type="email"
-                    placeholder="Enter your email"
+                    placeholder={t.coming_soon.notify.placeholder}
                     className="flex-grow bg-dark/50 text-white border border-white/20 rounded-lg px-4 py-3 focus:outline-none focus:border-primary"
                     required
                   />
@@ -116,7 +117,7 @@ const ComingSoonPage = () => {
                     type="submit"
                     className="bg-gradient-to-r from-primary to-secondary text-white font-semibold px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-300 sm:flex-shrink-0"
                   >
-                    Notify Me
+                    {t.coming_soon.notify.button}
                   </button>
                 </form>
               </div>
@@ -139,7 +140,7 @@ const ComingSoonPage = () => {
                       d="M10 19l-7-7m0 0l7-7m-7 7h18"
                     />
                   </svg>
-                  Return to previous page
+                  {t.coming_soon.back}
                 </button>
               )}
             </motion.div>

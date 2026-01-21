@@ -2,40 +2,13 @@ import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
+import { useLanguage } from "@/context/LanguageContext";
 
 const SocialMediaPage = () => {
-  const features = [
-    {
-      title: "Privacy-First Design",
-      description: "User data is encrypted and cryptographically protected. Users decide exactly what is shared.",
-      icon: "🔒",
-    },
-    {
-      title: "Content Ownership",
-      description: "All content is cryptographically signed and verifiable on-chain. True ownership.",
-      icon: "📜",
-    },
-    {
-      title: "Direct Monetization",
-      description: "Creators monetize through subscriptions, tips, or NFTs with minimal fees.",
-      icon: "💎",
-    },
-    {
-      title: "Censorship Resistance",
-      description: "Content cannot be arbitrarily removed. Community governance determines policies.",
-      icon: "🛡️",
-    },
-    {
-      title: "DAO Governance",
-      description: "Platform policies determined by community voting and decentralized governance.",
-      icon: "🗳️",
-    },
-    {
-      title: "Creator Economy",
-      description: "Build sustainable businesses with direct audience relationships.",
-      icon: "🚀",
-    },
-  ];
+  const { t } = useLanguage();
+
+  // Feature icons
+  const featureIcons = ["🔒", "📜", "💎", "🛡️", "🗳️", "🚀"];
 
   return (
     <Layout>
@@ -109,11 +82,11 @@ const SocialMediaPage = () => {
               transition={{ duration: 0.7 }}
             >
               <div className="inline-block px-4 py-2 border border-cyan-500/30 rounded-full text-cyan-400 text-sm mb-6">
-                Decentralized Social Layer
+                {t.social_page.hero.badge}
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-white neon-text leading-tight">
-                Censorship-Resistant
+                {t.social_page.hero.title.split(' ').slice(0, -2).join(' ')}
                 <br />
                 <span
                   style={{
@@ -122,14 +95,12 @@ const SocialMediaPage = () => {
                     WebkitTextFillColor: 'transparent',
                   }}
                 >
-                  Social Layer
+                  {t.social_page.hero.title.split(' ').slice(-2).join(' ')}
                 </span>
               </h1>
 
               <p className="text-xl text-gray-400 mb-10 leading-relaxed max-w-lg">
-                A revolutionary social network that puts users in control through
-                blockchain-based content ownership and privacy-preserving technology.
-                Own your data, monetize your content, connect freely.
+                {t.social_page.hero.description}
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -149,7 +120,7 @@ const SocialMediaPage = () => {
                     className="absolute inset-[2px] rounded-[10px] bg-[#050505] group-hover:bg-transparent transition-all duration-300"
                   />
                   <span className="relative z-10 text-white group-hover:text-white">
-                    Join Waitlist
+                    {t.social_page.hero.buttons.primary}
                   </span>
                 </Link>
 
@@ -157,7 +128,7 @@ const SocialMediaPage = () => {
                   href="/whitepaper/social-media"
                   className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
                 >
-                  Read Whitepaper
+                  {t.social_page.hero.buttons.secondary}
                 </Link>
               </div>
             </motion.div>
@@ -200,7 +171,7 @@ const SocialMediaPage = () => {
                     🎨
                   </div>
                   <div>
-                    <div className="text-white font-semibold text-sm">crypto_artist</div>
+                    <div className="text-white font-semibold text-sm">{t.social_page.hero.demo_cards.card1.user}</div>
                     <div className="text-gray-500 text-xs">@artist.mpc</div>
                   </div>
                   {/* Encrypted Badge */}
@@ -209,7 +180,7 @@ const SocialMediaPage = () => {
                     <span>Encrypted</span>
                   </div>
                 </div>
-                <p className="text-gray-300 text-sm mb-3">Just minted my latest collection on Megapayer! 🚀 True ownership finally.</p>
+                <p className="text-gray-300 text-sm mb-3">{t.social_page.hero.demo_cards.card1.text}</p>
                 <div className="flex gap-4 text-gray-500 text-xs">
                   <span>❤️ 2.4k</span>
                   <span>💬 89</span>
@@ -239,7 +210,7 @@ const SocialMediaPage = () => {
                     💻
                   </div>
                   <div>
-                    <div className="text-white font-semibold text-sm">dev_whale</div>
+                    <div className="text-white font-semibold text-sm">{t.social_page.hero.demo_cards.card3.user}</div>
                     <div className="text-gray-500 text-xs">@whale.mpc</div>
                   </div>
                   <div className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">
@@ -247,7 +218,7 @@ const SocialMediaPage = () => {
                     <span>Encrypted</span>
                   </div>
                 </div>
-                <p className="text-gray-300 text-sm">No algorithms, no censorship. This is how social should be.</p>
+                <p className="text-gray-300 text-sm">{t.social_page.hero.demo_cards.card3.text}</p>
               </div>
 
               {/* Floating Card 3 */}
@@ -272,7 +243,7 @@ const SocialMediaPage = () => {
                     🎵
                   </div>
                   <div>
-                    <div className="text-white font-semibold text-sm">music_dao</div>
+                    <div className="text-white font-semibold text-sm">{t.social_page.hero.demo_cards.card2.user}</div>
                     <div className="text-gray-500 text-xs">@music.mpc</div>
                   </div>
                   <div className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">
@@ -280,7 +251,7 @@ const SocialMediaPage = () => {
                     <span>Encrypted</span>
                   </div>
                 </div>
-                <p className="text-gray-300 text-sm">Earning directly from fans. No middlemen. 💰</p>
+                <p className="text-gray-300 text-sm">{t.social_page.hero.demo_cards.card2.text}</p>
                 <div className="flex gap-4 text-gray-500 text-xs mt-3">
                   <span>❤️ 5.1k</span>
                   <span>💬 234</span>
@@ -302,21 +273,23 @@ const SocialMediaPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold mb-6 text-white">
-              Take <span style={{
+              {t.social_page.features.title.split(' ').slice(0, 2).join(' ')}{' '}
+              <span style={{
                 background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>Control</span> of Your Social Experience
+              }}>{t.social_page.features.title.split(' ').slice(2, 3).join(' ')}</span>{' '}
+              {t.social_page.features.title.split(' ').slice(3).join(' ')}
             </h2>
             <p className="text-xl text-gray-400 max-w-3xl mx-auto">
-              Traditional platforms exploit your data. Our decentralized approach restores power to users and creators.
+              {t.social_page.features.subtitle}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {features.map((feature, index) => (
+            {t.social_page.features.cards.map((feature, index) => (
               <motion.div
-                key={feature.title}
+                key={index}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -331,12 +304,12 @@ const SocialMediaPage = () => {
                     border: '1px solid rgba(0, 240, 255, 0.2)',
                   }}
                 >
-                  {feature.icon}
+                  {featureIcons[index] || "✨"}
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors">
                   {feature.title}
                 </h3>
-                <p className="text-gray-400">{feature.description}</p>
+                <p className="text-gray-400">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
@@ -354,11 +327,10 @@ const SocialMediaPage = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-              Ready to Join the Future of Social?
+              {t.social_page.cta.title}
             </h2>
             <p className="text-xl text-gray-400 mb-10">
-              Own your content, protect your privacy, and connect directly with your
-              audience in a truly decentralized social ecosystem.
+              {t.social_page.cta.subtitle}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
@@ -369,13 +341,13 @@ const SocialMediaPage = () => {
                   boxShadow: '0 0 30px rgba(0, 240, 255, 0.3)',
                 }}
               >
-                Join Waitlist
+                {t.social_page.cta.buttons.primary}
               </Link>
               <Link
                 href="/whitepaper/social-media"
                 className="px-10 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
               >
-                Read Whitepaper
+                {t.social_page.cta.buttons.secondary}
               </Link>
             </div>
           </motion.div>

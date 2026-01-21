@@ -3,8 +3,10 @@ import Head from "next/head";
 import Link from "next/link";
 import { motion, useInView } from "framer-motion";
 import Layout from "@/components/layout/Layout";
+import { useLanguage } from "@/context/LanguageContext";
 
 const WalletPage = () => {
+  const { t } = useLanguage();
   const neuralRef = useRef(null);
   const securityRef = useRef(null);
   const [tiltX, setTiltX] = useState(0);
@@ -38,6 +40,9 @@ const WalletPage = () => {
     { name: "Polygon", symbol: "MATIC", color: "#8247E5" },
     { name: "Arbitrum", symbol: "ARB", color: "#28A0F0" },
   ];
+
+  // Security feature icons
+  const securityIcons = ["🔐", "👁️", "✍️"];
 
   return (
     <Layout>
@@ -109,22 +114,21 @@ const WalletPage = () => {
               transition={{ duration: 0.7 }}
             >
               <div className="inline-block px-4 py-2 border border-cyan-500/30 rounded-full text-cyan-400 text-sm mb-6">
-                Universal Crypto Wallet
+                {t.wallet_page.hero.badge}
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">
                 <span
                   className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500"
                 >
-                  One Wallet.
+                  {t.wallet_page.hero.title.split('.')[0]}.
                 </span>
                 <br />
-                <span className="text-white neon-title">Infinite Chains.</span>
+                <span className="text-white neon-title">{t.wallet_page.hero.title.split('.')[1]?.trim() || 'Infinite Chains.'}</span>
               </h1>
 
               <p className="text-xl text-gray-400 mb-10 max-w-lg">
-                Manage your Bitcoin, Ethereum, Solana, and 50+ chains in one
-                non-custodial fortress. Your keys, your crypto, your control.
+                {t.wallet_page.hero.desc}
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -143,7 +147,7 @@ const WalletPage = () => {
                     className="absolute inset-[2px] rounded-[10px] bg-[#050505] group-hover:bg-transparent transition-all duration-300"
                   />
                   <span className="relative z-10 text-white flex items-center gap-2">
-                    <span>📥</span> Download Now
+                    <span>📥</span> {t.wallet_page.hero.buttons.primary}
                   </span>
                 </Link>
 
@@ -151,7 +155,7 @@ const WalletPage = () => {
                   href="/whitepaper/wallet"
                   className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
                 >
-                  View Security Audit
+                  {t.wallet_page.hero.buttons.secondary}
                 </Link>
               </div>
             </motion.div>
@@ -264,10 +268,10 @@ const WalletPage = () => {
                 background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>Unified Key</span> Management
+              }}>{t.wallet_page.key_mgmt.title.split(' ').slice(0, 2).join(' ')}</span> {t.wallet_page.key_mgmt.title.split(' ').slice(2).join(' ')}
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              One master seed secures all your assets across every blockchain
+              {t.wallet_page.key_mgmt.subtitle}
             </p>
           </motion.div>
 
@@ -327,14 +331,14 @@ const WalletPage = () => {
           </motion.div>
 
           <p className="text-center text-gray-500 mt-8">
-            Universal Key Derivation System (UKDS) - One seed, all blockchains
+            {t.wallet_page.key_mgmt.caption}
           </p>
         </div>
       </section>
 
       {/* SECTION 3: SUPPORTED CHAINS - Infinite Marquee */}
       <section className="py-16 overflow-hidden" style={{ background: '#050505' }}>
-        <h3 className="text-center text-2xl font-bold text-white mb-12">50+ Supported Blockchains</h3>
+        <h3 className="text-center text-2xl font-bold text-white mb-12">{t.wallet_page.ticker_title}</h3>
 
         {/* Row 1 - Left scroll */}
         <div className="relative mb-6">
@@ -397,35 +401,19 @@ const WalletPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold mb-6 text-white">
-              Enterprise-Grade <span style={{
+              {t.wallet_page.security.title.split(' ').slice(0, -1).join(' ')} <span style={{
                 background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>Security</span>
+              }}>{t.wallet_page.security.title.split(' ').slice(-1)}</span>
             </h2>
           </motion.div>
 
           {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {[
-              {
-                title: "Quantum Secure",
-                desc: "Post-quantum cryptography ready. Future-proof key derivation resistant to quantum computing attacks.",
-                icon: "🔐",
-              },
-              {
-                title: "Biometric Auth",
-                desc: "Face ID, Touch ID, and advanced biometric security with on-device secure enclave.",
-                icon: "👁️",
-              },
-              {
-                title: "Multi-Signature",
-                desc: "Require multiple approvers for high-value transactions. Perfect for organizations.",
-                icon: "✍️",
-              },
-            ].map((feature, i) => (
+            {t.wallet_page.security.cards.map((feature, i) => (
               <motion.div
-                key={feature.title}
+                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 animate={isSecurityInView ? { opacity: 1, y: 0 } : {}}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
@@ -444,7 +432,7 @@ const WalletPage = () => {
                     boxShadow: '0 0 30px rgba(0, 240, 255, 0.15)',
                   }}
                 >
-                  {feature.icon}
+                  {securityIcons[i] || "🔒"}
                 </div>
                 <h3 className="text-2xl font-bold mb-4 text-white">{feature.title}</h3>
                 <p className="text-gray-400">{feature.desc}</p>
@@ -465,10 +453,10 @@ const WalletPage = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-              Take Control of Your Digital Assets
+              {t.wallet_page.cta.title}
             </h2>
             <p className="text-xl text-gray-400 mb-10">
-              Download Megapayer Universal Wallet and experience the future of self-custody.
+              {t.wallet_page.cta.subtitle}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
@@ -495,7 +483,7 @@ const WalletPage = () => {
                 href="/whitepaper/wallet"
                 className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
               >
-                Read Whitepaper
+                {t.wallet_page.cta.buttons.web}
               </Link>
             </div>
           </motion.div>

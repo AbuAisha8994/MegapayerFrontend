@@ -2,8 +2,14 @@ import Head from "next/head";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
+import { useLanguage } from "@/context/LanguageContext";
 
 const DEXPage = () => {
+  const { t } = useLanguage();
+
+  // Feature icons
+  const featureIcons = ["🔄", "💧", "⚡"];
+
   return (
     <Layout>
       <Head>
@@ -65,22 +71,21 @@ const DEXPage = () => {
               transition={{ duration: 0.7 }}
             >
               <div className="inline-block px-4 py-2 border border-purple-500/30 rounded-full text-purple-400 text-sm mb-6">
-                Multi-Chain DEX
+                {t.dex_page.hero.badge}
               </div>
 
               <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 leading-tight">
                 <span
                   className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-purple-500"
                 >
-                  Swap Without
+                  {t.dex_page.hero.subtitle.split(' ')[0]} {t.dex_page.hero.subtitle.split(' ')[1]}
                 </span>
                 <br />
-                <span className="text-white neon-title">Limits</span>
+                <span className="text-white neon-title">{t.dex_page.hero.subtitle.split(' ').slice(2).join(' ') || t.dex_page.hero.subtitle.split(' ')[2] || 'Limits'}</span>
               </h1>
 
               <p className="text-xl text-gray-400 mb-10 max-w-lg">
-                Seamlessly trade assets across 30+ blockchains with zero friction.
-                Non-custodial security means you always control your private keys.
+                {t.dex_page.hero.desc}
               </p>
 
               <div className="flex flex-wrap gap-4">
@@ -100,7 +105,7 @@ const DEXPage = () => {
                     className="absolute inset-[2px] rounded-[10px] bg-[#050505] group-hover:bg-transparent transition-all duration-300"
                   />
                   <span className="relative z-10 text-white">
-                    Launch DEX
+                    {t.dex_page.cta.buttons.primary}
                   </span>
                 </Link>
 
@@ -108,7 +113,7 @@ const DEXPage = () => {
                   href="/whitepaper/dex"
                   className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
                 >
-                  View Tutorials
+                  {t.dex_page.cta.buttons.secondary}
                 </Link>
               </div>
             </motion.div>
@@ -208,10 +213,10 @@ const DEXPage = () => {
         <div className="container mx-auto px-4 max-w-[1440px]">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { value: "$2.4B+", label: "Total Liquidity" },
-              { value: "$180M", label: "24h Volume" },
-              { value: "30+", label: "Supported Chains" },
-              { value: "0.1%", label: "Trading Fee" },
+              { value: t.dex_page.stats.liquidity.val, label: t.dex_page.stats.liquidity.label },
+              { value: t.dex_page.stats.volume.val, label: t.dex_page.stats.volume.label },
+              { value: t.dex_page.stats.chains.val, label: t.dex_page.stats.chains.label },
+              { value: t.dex_page.stats.fee.val, label: t.dex_page.stats.fee.label },
             ].map((stat, i) => (
               <motion.div
                 key={i}
@@ -253,37 +258,22 @@ const DEXPage = () => {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold mb-6 text-white">
-              Trade Across <span style={{
+              {t.dex_page.hero.title.split(' ').slice(0, 2).join(' ')}{' '}
+              <span style={{
                 background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>All Blockchains</span>
+              }}>{t.dex_page.hero.title.split(' ').slice(2).join(' ')}</span>
             </h2>
             <p className="text-xl text-gray-400 max-w-2xl mx-auto">
-              Megapayer DEX breaks down barriers between blockchains, allowing seamless asset transfers.
+              {t.dex_page.hero.desc}
             </p>
           </motion.div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "Cross-Chain Swaps",
-                desc: "Trade directly between any supported blockchain without intermediaries.",
-                icon: "🔄",
-              },
-              {
-                title: "Liquidity Pools",
-                desc: "Earn passive income by providing liquidity with competitive APY rates.",
-                icon: "💧",
-              },
-              {
-                title: "Low Latency",
-                desc: "Advanced bridging ensures transactions complete in seconds.",
-                icon: "⚡",
-              },
-            ].map((feature, i) => (
+            {t.dex_page.features.cards.map((feature, i) => (
               <motion.div
-                key={feature.title}
+                key={i}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: i * 0.1 }}
@@ -302,7 +292,7 @@ const DEXPage = () => {
                     boxShadow: '0 0 20px rgba(0, 240, 255, 0.15)',
                   }}
                 >
-                  {feature.icon}
+                  {featureIcons[i] || "✨"}
                 </div>
                 <h3 className="text-xl font-bold mb-4 text-white">{feature.title}</h3>
                 <p className="text-gray-400">{feature.desc}</p>
@@ -323,17 +313,12 @@ const DEXPage = () => {
               transition={{ duration: 0.6 }}
               viewport={{ once: true }}
             >
-              <h3 className="text-3xl font-bold mb-6 text-white">Non-Custodial Security</h3>
+              <h3 className="text-3xl font-bold mb-6 text-white">{t.dex_page.security.title}</h3>
               <p className="text-gray-400 mb-8">
-                Unlike centralized exchanges, Megapayer DEX ensures you always maintain ownership of your private keys.
+                {t.dex_page.security.desc}
               </p>
               <ul className="space-y-4">
-                {[
-                  "Connect MetaMask, Trust Wallet, or Ledger",
-                  "All transactions require your explicit approval",
-                  "No account registration or KYC required",
-                  "Open-source contracts audited by top security firms",
-                ].map((item, i) => (
+                {t.dex_page.security.items.map((item, i) => (
                   <li key={i} className="flex items-start gap-3">
                     <div
                       className="w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 mt-0.5"
@@ -362,15 +347,10 @@ const DEXPage = () => {
               }}
             >
               <h3 className="text-2xl font-bold mb-8" style={{ color: '#8a2be2' }}>
-                Cross-Chain Advantages
+                {t.dex_page.advantages.title}
               </h3>
               <div className="space-y-6">
-                {[
-                  { step: "1", title: "Access All Markets", desc: "Trade any token from any blockchain in one interface." },
-                  { step: "2", title: "Price Arbitrage", desc: "Capitalize on price differences between chains." },
-                  { step: "3", title: "Lower Fees", desc: "Automatic routing through most cost-effective chains." },
-                  { step: "4", title: "Diversified Portfolio", desc: "Spread investments across multiple blockchains." },
-                ].map((item, i) => (
+                {t.dex_page.advantages.items.map((item, i) => (
                   <div key={i} className="flex items-start gap-4">
                     <div
                       className="w-10 h-10 rounded-full flex items-center justify-center font-bold flex-shrink-0"
@@ -379,7 +359,7 @@ const DEXPage = () => {
                         color: '#8a2be2',
                       }}
                     >
-                      {item.step}
+                      {i + 1}
                     </div>
                     <div>
                       <h4 className="text-lg font-semibold text-white mb-1">{item.title}</h4>
@@ -404,10 +384,10 @@ const DEXPage = () => {
             className="text-center max-w-3xl mx-auto"
           >
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
-              Ready to Trade Cross-Chain?
+              {t.dex_page.cta.title}
             </h2>
             <p className="text-xl text-gray-400 mb-10">
-              Experience the next generation of decentralized trading with Megapayer DEX.
+              {t.dex_page.cta.subtitle}
             </p>
             <div className="flex flex-wrap gap-4 justify-center">
               <Link
@@ -418,13 +398,13 @@ const DEXPage = () => {
                   boxShadow: '0 0 30px rgba(0, 240, 255, 0.3)',
                 }}
               >
-                Launch DEX
+                {t.dex_page.cta.buttons.primary}
               </Link>
               <Link
                 href="/dex/coming-soon"
                 className="px-10 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
               >
-                View Tutorials
+                {t.dex_page.cta.buttons.secondary}
               </Link>
             </div>
           </motion.div>

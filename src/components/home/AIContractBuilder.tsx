@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
 // Terminal messages for infinite loop
 const terminalMessages = [
@@ -11,6 +12,7 @@ const terminalMessages = [
 ];
 
 const AIContractBuilder = () => {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
@@ -114,22 +116,13 @@ const AIContractBuilder = () => {
             className="text-center mb-16"
           >
             <div className="inline-block px-6 py-2 border border-purple-500/30 rounded-full text-purple-400 mb-6">
-              Featured Capability
+              {t.ai_section.badge}
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6">
-              AI-Powered{" "}
-              <span
-                style={{
-                  background: 'linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%)',
-                  WebkitBackgroundClip: 'text',
-                  WebkitTextFillColor: 'transparent',
-                }}
-              >
-                Smart Contract Builder
-              </span>
+              {t.ai_section.title}
             </h2>
             <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              No code? No problem. Just describe what you need — let our AI build it for you.
+              {t.ai_section.subtitle}
             </p>
           </motion.div>
 
@@ -142,11 +135,7 @@ const AIContractBuilder = () => {
               className="space-y-8"
             >
               <div className="space-y-6">
-                {[
-                  { title: "Natural Language to Solidity", desc: "Convert plain English into production-ready smart contracts with secure, audited code patterns." },
-                  { title: "Auto Security Checks", desc: "Every contract is automatically analyzed for common vulnerabilities and optimized for gas efficiency." },
-                  { title: "One-Click Deployment", desc: "Deploy your AI-generated contracts to Megapayer or any EVM-compatible blockchain with a single click." },
-                ].map((item, i) => (
+                {t.ai_section.features.map((item, i) => (
                   <div key={i} className="flex items-start">
                     <div className="flex-shrink-0 p-1.5 bg-purple-500/20 rounded-full mt-1.5 mr-4">
                       <svg className="w-5 h-5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -165,7 +154,7 @@ const AIContractBuilder = () => {
                 href="/developers/getting-started"
                 className="inline-flex items-center px-8 py-3.5 rounded-lg bg-gradient-to-r from-purple-600 to-purple-700 text-white font-medium hover:from-purple-500 hover:to-purple-600 transition-all duration-300 group"
               >
-                <span>Start Building with AI</span>
+                <span>{t.ai_section.button}</span>
                 <svg className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>

@@ -2,36 +2,13 @@ import { useRef, useState, useCallback } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
+import { useLanguage } from "@/context/LanguageContext";
 
-// Token distribution data
-const tokenData = [
-  {
-    name: "Community & Ecosystem",
-    percentage: 35,
-    color: "#06b6d4",
-    items: ["Airdrop", "Staking Rewards", "Liquidity Mining", "Ecosystem Grants"]
-  },
-  {
-    name: "Investors",
-    percentage: 28,
-    color: "#8b5cf6",
-    items: ["Seed Round", "Series A/B", "Public Sale"]
-  },
-  {
-    name: "Team & Development",
-    percentage: 19,
-    color: "#ec4899",
-    items: ["Team & Advisors", "Development Fund"]
-  },
-  {
-    name: "Governance & Liquidity",
-    percentage: 18,
-    color: "#22c55e",
-    items: ["Treasury/DAO", "Liquidity (DEX+CEX)"]
-  },
-];
+// Colors for each item (preserved from original design)
+const itemColors = ["#06b6d4", "#8b5cf6", "#ec4899", "#22c55e"];
 
 const TokenomicsSection = () => {
+  const { t } = useLanguage();
   const sectionRef = useRef<HTMLDivElement>(null);
   const glowRef = useRef<HTMLDivElement>(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.3 });
@@ -55,10 +32,10 @@ const TokenomicsSection = () => {
 
   // Ring configurations - BIGGER & THICKER for larger center
   const rings = [
-    { size: 340, width: 8, color: tokenData[0].color, direction: 1, speed: 35 },
-    { size: 270, width: 7, color: tokenData[1].color, direction: -1, speed: 28 },
-    { size: 200, width: 6, color: tokenData[2].color, direction: 1, speed: 22 },
-    { size: 130, width: 5, color: tokenData[3].color, direction: -1, speed: 16 },
+    { size: 340, width: 8, color: itemColors[0], direction: 1, speed: 35 },
+    { size: 270, width: 7, color: itemColors[1], direction: -1, speed: 28 },
+    { size: 200, width: 6, color: itemColors[2], direction: 1, speed: 22 },
+    { size: 130, width: 5, color: itemColors[3], direction: -1, speed: 16 },
   ];
 
   return (
@@ -137,17 +114,17 @@ const TokenomicsSection = () => {
             className="text-center mb-16"
           >
             <div className="inline-block px-5 py-2 border border-purple-500/30 rounded-full text-purple-400 text-sm mb-6">
-              Supply & Distribution
+              {t.tokenomics.badge}
             </div>
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
               <span style={{
                 background: 'linear-gradient(135deg, #06b6d4, #8b5cf6)',
                 WebkitBackgroundClip: 'text',
                 WebkitTextFillColor: 'transparent',
-              }}>MPC Token</span> Tokenomics
+              }}>{t.tokenomics.title.split(' ')[0]} {t.tokenomics.title.split(' ')[1]}</span> {t.tokenomics.title.split(' ').slice(2).join(' ')}
             </h2>
             <p className="text-gray-400 max-w-xl mx-auto">
-              The economic engine powering the Megapayer ecosystem.
+              {t.tokenomics.subtitle}
             </p>
           </motion.div>
 
@@ -218,9 +195,9 @@ const TokenomicsSection = () => {
 
             {/* RIGHT: Data List */}
             <div className="space-y-5 flex-1 max-w-md">
-              {tokenData.map((item, index) => (
+              {t.tokenomics.items.map((item, index) => (
                 <motion.div
-                  key={item.name}
+                  key={index}
                   initial={{ opacity: 0, x: 50 }}
                   animate={isInView ? { opacity: 1, x: 0 } : {}}
                   transition={{ duration: 0.5, delay: 0.4 + index * 0.1 }}
@@ -229,7 +206,7 @@ const TokenomicsSection = () => {
                   className="relative pl-5 py-4 cursor-pointer group rounded-r-xl transition-all duration-300"
                   style={{
                     background: hoveredRing === index ? 'rgba(255,255,255,0.04)' : 'transparent',
-                    borderLeft: `4px solid ${item.color}`,
+                    borderLeft: `4px solid ${itemColors[index]}`,
                   }}
                 >
                   {/* Hover glow */}
@@ -237,7 +214,7 @@ const TokenomicsSection = () => {
                     <div
                       className="absolute left-0 top-0 bottom-0 w-1 rounded-full"
                       style={{
-                        boxShadow: `0 0 15px ${item.color}, 0 0 30px ${item.color}`,
+                        boxShadow: `0 0 15px ${itemColors[index]}, 0 0 30px ${itemColors[index]}`,
                       }}
                     />
                   )}
@@ -245,21 +222,21 @@ const TokenomicsSection = () => {
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex-1">
                       <h4 className="text-white font-semibold text-lg mb-1">
-                        {item.name}
+                        {item.title}
                       </h4>
                       <div className="text-sm text-gray-500">
-                        {item.items.join(' • ')}
+                        {item.desc}
                       </div>
                     </div>
 
                     <div
                       className="text-4xl md:text-5xl font-black transition-all duration-300"
                       style={{
-                        color: item.color,
-                        textShadow: hoveredRing === index ? `0 0 30px ${item.color}` : 'none',
+                        color: itemColors[index],
+                        textShadow: hoveredRing === index ? `0 0 30px ${itemColors[index]}` : 'none',
                       }}
                     >
-                      {item.percentage}%
+                      {item.percent}
                     </div>
                   </div>
                 </motion.div>
@@ -278,7 +255,7 @@ const TokenomicsSection = () => {
               href="/token/mpc"
               className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-purple-500/10 to-cyan-500/10 text-purple-400 border border-purple-500/30 hover:border-purple-400/60 transition-all group"
             >
-              Learn More About $MPC
+              {t.tokenomics.button}
               <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
               </svg>

@@ -3,15 +3,20 @@ import { motion } from "framer-motion";
 
 interface CountdownTimerProps {
   targetDate: Date;
+  labels?: { d: string; h: string; m: string; s: string };
 }
 
-const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
+const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate, labels }) => {
   const [timeLeft, setTimeLeft] = useState({
     days: 0,
     hours: 0,
     minutes: 0,
     seconds: 0,
   });
+
+  // Default labels if not provided
+  const defaultLabels = { d: 'Days', h: 'Hours', m: 'Minutes', s: 'Seconds' };
+  const countdownLabels = labels || defaultLabels;
 
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -37,17 +42,17 @@ const CountdownTimer: React.FC<CountdownTimerProps> = ({ targetDate }) => {
   }, [targetDate]);
 
   const timeBlocks = [
-    { value: timeLeft.days, label: "Days" },
-    { value: timeLeft.hours, label: "Hours" },
-    { value: timeLeft.minutes, label: "Minutes" },
-    { value: timeLeft.seconds, label: "Seconds" },
+    { value: timeLeft.days, label: countdownLabels.d },
+    { value: timeLeft.hours, label: countdownLabels.h },
+    { value: timeLeft.minutes, label: countdownLabels.m },
+    { value: timeLeft.seconds, label: countdownLabels.s },
   ];
 
   return (
     <div className="flex space-x-4 sm:space-x-8 justify-center">
-      {timeBlocks.map((block) => (
+      {timeBlocks.map((block, index) => (
         <motion.div
-          key={block.label}
+          key={index}
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
