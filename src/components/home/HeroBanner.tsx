@@ -1,272 +1,215 @@
-import { useRef, useState, useEffect } from "react";
-import { Canvas, useFrame } from "@react-three/fiber";
-import {
-  OrbitControls,
-  Sphere,
-  MeshDistortMaterial,
-  Stars,
-} from "@react-three/drei";
+import { useRef, useEffect, useCallback, useState } from "react";
 import { motion } from "framer-motion";
-import * as THREE from "three";
 import Link from "next/link";
+import { useLanguage } from "@/context/LanguageContext";
 
-// Enhanced animated sphere with more visual appeal
-const AnimatedSphere = () => {
-  const meshRef = useRef<THREE.Mesh>(null);
+// Neural Network Canvas - Mouse responsive constellation effect
+const NeuralNetworkCanvas = () => {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const nodesRef = useRef<Array<{
+    x: number;
+    y: number;
+    baseX: number;
+    baseY: number;
+    radius: number;
+    color: string;
+    pulsePhase: number;
+  }>>([]);
+  const animationRef = useRef<number>(0);
 
-  useFrame(({ clock }: { clock: THREE.Clock }) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.x = clock.getElapsedTime() * 0.2;
-      meshRef.current.rotation.y = clock.getElapsedTime() * 0.3;
+  // Initialize nodes
+  const initializeNetwork = useCallback((width: number, height: number) => {
+    const nodeCount = Math.min(80, Math.floor((width * height) / 15000));
+    const nodes: typeof nodesRef.current = [];
+    const colors = ["#06b6d4", "#8b5cf6", "#3b82f6", "#a855f7", "#22d3ee"];
 
-      // Add pulsing effect
-      const pulse = Math.sin(clock.getElapsedTime() * 0.5) * 0.05 + 1;
-      meshRef.current.scale.set(pulse, pulse, pulse);
+    for (let i = 0; i < nodeCount; i++) {
+      const x = Math.random() * width;
+      const y = Math.random() * height;
+      nodes.push({
+        x,
+        y,
+        baseX: x,
+        baseY: y,
+        radius: Math.random() * 2 + 1,
+        color: colors[Math.floor(Math.random() * colors.length)],
+        pulsePhase: Math.random() * Math.PI * 2,
+      });
     }
-  });
+    nodesRef.current = nodes;
+  }, []);
+
+  // Animation loop
+  const animate = useCallback(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    const width = canvas.width;
+    const height = canvas.height;
+    const nodes = nodesRef.current;
+    const mouse = mouseRef.current;
+    const time = Date.now() * 0.001;
+
+    // Clear with slight trail effect
+    ctx.fillStyle = "rgba(0, 0, 0, 0.1)";
+    ctx.fillRect(0, 0, width, height);
+
+    // Draw connections first
+    const maxDistance = 150;
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dx = nodes[i].x - nodes[j].x;
+        const dy = nodes[i].y - nodes[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+
+        if (distance < maxDistance) {
+          const opacity = (1 - distance / maxDistance) * 0.3;
+
+          // Mouse proximity boost
+          const midX = (nodes[i].x + nodes[j].x) / 2;
+          const midY = (nodes[i].y + nodes[j].y) / 2;
+          const mouseDist = Math.sqrt(
+            Math.pow(mouse.x - midX, 2) + Math.pow(mouse.y - midY, 2)
+          );
+          const mouseBoost = Math.max(0, 1 - mouseDist / 200) * 0.5;
+
+          ctx.beginPath();
+          ctx.moveTo(nodes[i].x, nodes[i].y);
+          ctx.lineTo(nodes[j].x, nodes[j].y);
+
+          // Gradient line color
+          const gradient = ctx.createLinearGradient(
+            nodes[i].x, nodes[i].y,
+            nodes[j].x, nodes[j].y
+          );
+          gradient.addColorStop(0, `rgba(6, 182, 212, ${opacity + mouseBoost})`);
+          gradient.addColorStop(1, `rgba(139, 92, 246, ${opacity + mouseBoost})`);
+
+          ctx.strokeStyle = gradient;
+          ctx.lineWidth = 0.5 + mouseBoost * 2;
+          ctx.stroke();
+        }
+      }
+    }
+
+    // Update and draw nodes
+    nodes.forEach((node) => {
+      // Mouse interaction
+      const dx = mouse.x - node.x;
+      const dy = mouse.y - node.y;
+      const distToMouse = Math.sqrt(dx * dx + dy * dy);
+      const mouseInfluence = Math.max(0, 1 - distToMouse / 250);
+
+      // Gentle floating motion + mouse attraction
+      node.x = node.baseX + Math.sin(time * 0.5 + node.pulsePhase) * 15 + dx * mouseInfluence * 0.15;
+      node.y = node.baseY + Math.cos(time * 0.3 + node.pulsePhase) * 10 + dy * mouseInfluence * 0.15;
+
+      // Pulse effect
+      node.pulsePhase += 0.02;
+      const pulse = Math.sin(node.pulsePhase) * 0.3 + 1;
+      const currentRadius = node.radius * pulse * (1 + mouseInfluence * 0.5);
+
+      // Glow effect
+      const glowSize = currentRadius * (3 + mouseInfluence * 4);
+      const gradient = ctx.createRadialGradient(
+        node.x, node.y, 0,
+        node.x, node.y, glowSize
+      );
+      gradient.addColorStop(0, node.color);
+      gradient.addColorStop(0.4, node.color + "60");
+      gradient.addColorStop(1, "transparent");
+
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, glowSize, 0, Math.PI * 2);
+      ctx.fillStyle = gradient;
+      ctx.fill();
+
+      // Core dot
+      ctx.beginPath();
+      ctx.arc(node.x, node.y, currentRadius, 0, Math.PI * 2);
+      ctx.fillStyle = node.color;
+      ctx.fill();
+    });
+
+    animationRef.current = requestAnimationFrame(animate);
+  }, []);
+
+  // Handle resize
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    if (!canvas) return;
+
+    const handleResize = () => {
+      const dpr = window.devicePixelRatio || 1;
+      const rect = canvas.getBoundingClientRect();
+      canvas.width = rect.width * dpr;
+      canvas.height = rect.height * dpr;
+      const ctx = canvas.getContext("2d");
+      if (ctx) {
+        ctx.scale(dpr, dpr);
+      }
+      initializeNetwork(rect.width, rect.height);
+    };
+
+    handleResize();
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [initializeNetwork]);
+
+  // Handle mouse movement
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      const canvas = canvasRef.current;
+      if (!canvas) return;
+      const rect = canvas.getBoundingClientRect();
+      mouseRef.current = {
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
+      };
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => window.removeEventListener("mousemove", handleMouseMove);
+  }, []);
+
+  // Start animation
+  useEffect(() => {
+    animationRef.current = requestAnimationFrame(animate);
+    return () => {
+      if (animationRef.current) {
+        cancelAnimationFrame(animationRef.current);
+      }
+    };
+  }, [animate]);
 
   return (
-    <Sphere args={[0.8, 100, 100]} ref={meshRef}>
-      <MeshDistortMaterial
-        color="#4f46e5"
-        attach="material"
-        distort={0.6}
-        speed={1.5}
-        roughness={0.2}
-        metalness={0.8}
-        emissive="#3730a3"
-        emissiveIntensity={0.5}
-      />
-    </Sphere>
-  );
-};
-
-// Network Node component with enhanced visuals
-const NetworkNode = ({
-  position,
-  size,
-  color,
-  pulseSpeed = 1,
-}: {
-  position: [number, number, number];
-  size: number;
-  color: string;
-  pulseSpeed?: number;
-}) => {
-  // Scale down the positions to make the network more compact
-  const scaledPosition: [number, number, number] = [
-    position[0] * 0.7,
-    position[1] * 0.7,
-    position[2] * 0.7,
-  ];
-
-  const meshRef = useRef<THREE.Mesh>(null);
-  const glowRef = useRef<THREE.Mesh>(null);
-
-  useFrame(({ clock }) => {
-    if (meshRef.current) {
-      // Floating motion
-      meshRef.current.position.y =
-        scaledPosition[1] +
-        Math.sin(clock.getElapsedTime() * 2 * pulseSpeed + scaledPosition[0]) *
-          0.05;
-
-      // Subtle rotation
-      meshRef.current.rotation.x = clock.getElapsedTime() * 0.2 * pulseSpeed;
-      meshRef.current.rotation.y = clock.getElapsedTime() * 0.3 * pulseSpeed;
-    }
-
-    if (glowRef.current && glowRef.current.material instanceof THREE.Material) {
-      // Pulsing glow effect
-      const material = glowRef.current.material as THREE.MeshBasicMaterial;
-      material.opacity =
-        Math.sin(clock.getElapsedTime() * 2 * pulseSpeed) * 0.4 + 0.6;
-    }
-  });
-
-  return (
-    <group position={scaledPosition}>
-      {/* Glow effect */}
-      <mesh ref={glowRef} scale={1.5}>
-        <sphereGeometry args={[size, 16, 16]} />
-        <meshBasicMaterial color={color} transparent={true} opacity={0.6} />
-      </mesh>
-
-      {/* Main node */}
-      <mesh ref={meshRef}>
-        <sphereGeometry args={[size, 24, 24]} />
-        <meshStandardMaterial
-          color={color}
-          metalness={0.8}
-          roughness={0.2}
-          emissive={color}
-          emissiveIntensity={0.5}
-        />
-      </mesh>
-    </group>
-  );
-};
-
-// Connection Line component with pulsing energy effect
-const ConnectionLine = ({
-  startPos,
-  endPos,
-  color,
-}: {
-  startPos: [number, number, number];
-  endPos: [number, number, number];
-  color: string;
-}) => {
-  // Scale down positions to make network more compact
-  const scaledStartPos: [number, number, number] = [
-    startPos[0] * 0.7,
-    startPos[1] * 0.7,
-    startPos[2] * 0.7,
-  ];
-  const scaledEndPos: [number, number, number] = [
-    endPos[0] * 0.7,
-    endPos[1] * 0.7,
-    endPos[2] * 0.7,
-  ];
-
-  const ref = useRef<THREE.Line>(null);
-  const energyRef = useRef<THREE.Mesh>(null);
-  const [energyPosition, setEnergyPosition] = useState(0);
-
-  useFrame(({ clock }) => {
-    if (
-      ref.current &&
-      ref.current.material instanceof THREE.LineBasicMaterial
-    ) {
-      // Pulse effect on the line
-      (ref.current.material as THREE.LineBasicMaterial).opacity =
-        Math.sin(clock.getElapsedTime() * 2) * 0.3 + 0.7;
-    }
-
-    // Update energy pulse position
-    const newPos = (clock.getElapsedTime() * 0.5) % 2;
-    const normalizedPos = newPos <= 1 ? newPos : 2 - newPos;
-    setEnergyPosition(normalizedPos);
-
-    // Move energy pulse along the line
-    if (energyRef.current) {
-      const x =
-        scaledStartPos[0] +
-        (scaledEndPos[0] - scaledStartPos[0]) * normalizedPos;
-      const y =
-        scaledStartPos[1] +
-        (scaledEndPos[1] - scaledStartPos[1]) * normalizedPos;
-      const z =
-        scaledStartPos[2] +
-        (scaledEndPos[2] - scaledStartPos[2]) * normalizedPos;
-      energyRef.current.position.set(x, y, z);
-    }
-  });
-
-  return (
-    <>
-      <line ref={ref}>
-        <bufferGeometry attach="geometry">
-          <float32BufferAttribute
-            attach="attributes-position"
-            array={new Float32Array([...scaledStartPos, ...scaledEndPos])}
-            count={2}
-            itemSize={3}
-          />
-        </bufferGeometry>
-        <lineBasicMaterial
-          attach="material"
-          color={color}
-          opacity={0.7}
-          transparent={true}
-          linewidth={2}
-        />
-      </line>
-
-      {/* Energy pulse effect */}
-      <mesh ref={energyRef} scale={0.08}>
-        <sphereGeometry args={[1, 16, 16]} />
-        <meshBasicMaterial color={color} transparent={true} opacity={0.8} />
-      </mesh>
-    </>
-  );
-};
-
-// Create an enhanced network of nodes
-const BlockchainNetwork = () => {
-  const nodePositions: [number, number, number][] = [
-    [-2, 0, 0],
-    [2, 0, 0],
-    [0, 2, 0],
-    [0, -2, 0],
-    [-1.8, 1.8, 0.5],
-    [1.8, 1.8, 0.5],
-    [1.8, -1.8, 0.5],
-    [-1.8, -1.8, 0.5],
-    [0, 0, 2.5],
-    [0, 0, -2],
-  ];
-
-  const connections = [
-    [0, 1],
-    [0, 2],
-    [0, 4],
-    [0, 7],
-    [0, 9],
-    [1, 2],
-    [1, 5],
-    [1, 6],
-    [1, 8],
-    [2, 4],
-    [2, 5],
-    [2, 8],
-    [3, 6],
-    [3, 7],
-    [3, 9],
-    [4, 7],
-    [4, 8],
-    [5, 6],
-    [5, 8],
-    [6, 9],
-    [7, 9],
-    [8, 9],
-  ];
-
-  const colors = ["#4f46e5", "#10b981", "#f59e0b", "#818cf8", "#34d399"];
-
-  return (
-    <group>
-      {nodePositions.map((pos, i) => (
-        <NetworkNode
-          key={`node-${i}`}
-          position={pos}
-          size={0.12}
-          color={colors[i % colors.length]}
-          pulseSpeed={0.5 + Math.random() * 0.5}
-        />
-      ))}
-
-      {connections.map(([startIdx, endIdx], i) => (
-        <ConnectionLine
-          key={`connection-${i}`}
-          startPos={nodePositions[startIdx]}
-          endPos={nodePositions[endIdx]}
-          color={colors[i % colors.length]}
-        />
-      ))}
-    </group>
+    <canvas
+      ref={canvasRef}
+      className="absolute inset-0 w-full h-full"
+      style={{ opacity: 0.9 }}
+    />
   );
 };
 
 const HeroBanner = () => {
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
+  const heroRef = useRef<HTMLDivElement>(null);
+  const { t } = useLanguage();
 
+  // Track mouse for text glow effect
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
-      setMousePosition({
-        x: (e.clientX / window.innerWidth - 0.5) * 20,
-        y: (e.clientY / window.innerHeight - 0.5) * -20,
-      });
+      if (heroRef.current) {
+        const rect = heroRef.current.getBoundingClientRect();
+        setMousePosition({
+          x: ((e.clientX - rect.left) / rect.width) * 100,
+          y: ((e.clientY - rect.top) / rect.height) * 100,
+        });
+      }
     };
 
     window.addEventListener("mousemove", handleMouseMove);
@@ -274,139 +217,145 @@ const HeroBanner = () => {
   }, []);
 
   return (
-    <div className="relative h-screen w-full overflow-hidden">
-      {/* Enhanced radial gradient overlay with better shadows */}
-      <div className="absolute inset-0 bg-gradient-radial from-transparent via-dark/60 to-dark/90 z-10 pointer-events-none"></div>
+    <div
+      ref={heroRef}
+      className="relative h-screen w-full overflow-hidden"
+      style={{
+        background: "radial-gradient(ellipse at 50% 30%, #0c1445 0%, #050816 40%, #000000 100%)",
+      }}
+    >
+      {/* Neural Network Background */}
+      <NeuralNetworkCanvas />
 
-      {/* Animated lines background */}
-      <div className="absolute inset-0 opacity-40">
-        <div className="absolute top-0 left-0 w-full h-1/3 bg-gradient-to-b from-primary/30 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 w-full h-1/3 bg-gradient-to-t from-secondary/30 to-transparent"></div>
-      </div>
+      {/* Subtle noise texture overlay */}
+      <div
+        className="absolute inset-0 pointer-events-none opacity-[0.015]"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E")`,
+        }}
+      />
 
-      <Canvas camera={{ position: [0, 0, 6.5], fov: 40 }} shadows>
-        <ambientLight intensity={0.4} />
-        <directionalLight
-          position={[10, 10, 5]}
-          intensity={0.8}
-          castShadow
-          shadow-mapSize-width={1024}
-          shadow-mapSize-height={1024}
-        />
-        <pointLight position={[0, 0, 2]} intensity={1} color="#4f46e5" />
-        <pointLight position={[0, 2, 0]} intensity={1} color="#10b981" />
-
-        <Stars
-          radius={50}
-          depth={50}
-          count={1000}
-          factor={4}
-          saturation={1}
-          fade
-          speed={1}
-        />
-        <OrbitControls
-          enableZoom={false}
-          enablePan={false}
-          autoRotate
-          autoRotateSpeed={0.5}
-          enableDamping
-          dampingFactor={0.05}
-        />
-
-        <AnimatedSphere />
-        <BlockchainNetwork />
-      </Canvas>
-
+      {/* Main Content */}
       <div className="absolute inset-0 flex items-center justify-center z-20">
-        <div
-          className="max-w-4xl mx-auto text-center px-4"
-          style={{
-            transform: `perspective(1000px) rotateX(${
-              mousePosition.y * 0.01
-            }deg) rotateY(${mousePosition.x * 0.01}deg)`,
-          }}
-        >
+        <div className="max-w-5xl mx-auto text-center px-4">
+          {/* Tagline */}
           <motion.div
-            initial={{ opacity: 0, y: -50 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.2 }}
-            className="mb-6 drop-shadow-2xl"
+            className="mb-6"
           >
-            <span className="block text-gradient-gold mb-2 text-xl md:text-2xl">
-              Fair Future, Together
+            <span className="text-lg md:text-xl text-cyan-400/90 tracking-[0.3em] uppercase font-medium">
+              {t.hero.badge}
             </span>
+          </motion.div>
+
+          {/* Main Title - MEGAPAYER with mouse-responsive glow */}
+          <motion.h1
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.8, delay: 0.4 }}
+            className="mb-8 relative"
+          >
             <span
-              className="text-7xl md:text-8xl font-extrabold bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-blue-500"
+              className="text-6xl sm:text-7xl md:text-8xl lg:text-9xl font-black tracking-tight relative inline-block"
               style={{
-                textShadow: `
-                  0 0 5px rgba(56, 189, 248, 0.7),
-                  0 0 15px rgba(56, 189, 248, 0.5),
-                  0 0 25px rgba(59, 130, 246, 0.5),
-                  0 5px 20px rgba(59, 130, 246, 0.3)
-                `,
-                WebkitBoxDecorationBreak: "clone",
-                WebkitTextStroke: "1px rgba(255, 255, 255, 0.15)",
+                background: "linear-gradient(135deg, #06b6d4 0%, #8b5cf6 50%, #ec4899 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                filter: `drop-shadow(0 0 30px rgba(6, 182, 212, 0.4)) drop-shadow(0 0 60px rgba(139, 92, 246, 0.3))`,
               }}
             >
               MEGAPAYER
             </span>
-          </motion.div>
+            {/* Mouse-following glow overlay */}
+            <div
+              className="absolute inset-0 pointer-events-none"
+              style={{
+                background: `radial-gradient(circle at ${mousePosition.x}% ${mousePosition.y}%, rgba(6, 182, 212, 0.15) 0%, transparent 50%)`,
+              }}
+            />
+          </motion.h1>
 
+          {/* Subtitle */}
           <motion.p
-            initial={{ opacity: 0, y: 50 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="text-xl md:text-2xl text-gray-300 mb-10 max-w-3xl mx-auto drop-shadow-lg"
+            transition={{ duration: 0.8, delay: 0.6 }}
+            className="text-lg md:text-xl lg:text-2xl text-gray-300/90 mb-12 max-w-3xl mx-auto leading-relaxed"
           >
-            Building the future of the internet, together. Your partner for a
-            community-driven, transparent, and fair Web3 experience.
+            {t.hero.description}
           </motion.p>
 
+          {/* Glassmorphism Buttons */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, delay: 0.8 }}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.8 }}
             className="flex flex-col sm:flex-row gap-4 justify-center"
           >
+            {/* Primary CTA */}
             <Link
               href="#ecosystem"
-              className="neo-brutalism text-white font-bold py-4 px-8 rounded-lg text-lg 
-                [box-shadow:_0_10px_20px_-5px_rgba(79,70,229,0.5)]
-                transition-all duration-300 hover:scale-105
-                hover:[box-shadow:_0_15px_25px_-5px_rgba(79,70,229,0.65)]
-                hover:bg-gradient-to-br hover:from-primary/80 hover:to-primary/50
-                relative overflow-hidden group"
+              className="relative group px-10 py-4 rounded-xl text-white font-semibold text-lg overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
+              style={{
+                background: "linear-gradient(135deg, rgba(6, 182, 212, 0.2) 0%, rgba(139, 92, 246, 0.2) 100%)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: "1px solid rgba(6, 182, 212, 0.4)",
+                boxShadow: "0 0 20px rgba(6, 182, 212, 0.15), inset 0 0 20px rgba(255, 255, 255, 0.03)",
+              }}
             >
-              <span className="relative z-10">Explore Ecosystem</span>
-              <span
-                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent 
-                translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-700"
-              ></span>
+              {/* Neon glow on hover */}
+              <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  boxShadow: "0 0 30px rgba(6, 182, 212, 0.4), 0 0 60px rgba(139, 92, 246, 0.2)",
+                }}
+              />
+              <span className="relative z-10">{t.hero.cta_primary}</span>
             </Link>
+
+            {/* Secondary CTA */}
             <Link
               href="#ecosystem-products"
-              className="cosmic-border bg-dark/40 backdrop-blur-sm hover:bg-dark/60 text-white font-bold py-4 px-8 rounded-lg transition-all duration-300 text-lg shadow-lg"
+              className="relative group px-10 py-4 rounded-xl text-white font-semibold text-lg overflow-hidden transition-all duration-300 hover:-translate-y-0.5"
+              style={{
+                background: "rgba(255, 255, 255, 0.03)",
+                backdropFilter: "blur(12px)",
+                WebkitBackdropFilter: "blur(12px)",
+                border: "1px solid rgba(255, 255, 255, 0.1)",
+                boxShadow: "inset 0 0 20px rgba(255, 255, 255, 0.02)",
+              }}
             >
-              Learn More
+              <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                style={{
+                  background: "rgba(255, 255, 255, 0.05)",
+                  boxShadow: "0 0 20px rgba(255, 255, 255, 0.1)",
+                }}
+              />
+              <span className="relative z-10">{t.hero.cta_secondary}</span>
             </Link>
           </motion.div>
         </div>
       </div>
 
-      <div className="absolute bottom-10 left-0 right-0 text-center z-20">
+      {/* Scroll indicator */}
+      <motion.div
+        className="absolute bottom-24 left-0 right-0 text-center z-20"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5, delay: 1.2 }}
+      >
         <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5, delay: 1.2 }}
-          className="animate-bounce"
+          animate={{ y: [0, 8, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
         >
           <svg
-            className="w-8 h-8 mx-auto text-white/70 drop-shadow"
+            className="w-6 h-6 mx-auto text-cyan-400/50"
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
-            xmlns="http://www.w3.org/2000/svg"
           >
             <path
               strokeLinecap="round"
@@ -416,7 +365,15 @@ const HeroBanner = () => {
             />
           </svg>
         </motion.div>
-      </div>
+      </motion.div>
+
+      {/* Fade to black at bottom */}
+      <div
+        className="absolute bottom-0 left-0 right-0 h-48 pointer-events-none z-10"
+        style={{
+          background: "linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 50%, #000000 100%)",
+        }}
+      />
     </div>
   );
 };

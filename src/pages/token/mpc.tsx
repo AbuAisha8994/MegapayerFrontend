@@ -2,7 +2,7 @@ import Head from "next/head";
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
 import Link from "next/link";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { useInView } from "framer-motion";
 
 // Animated feature box component
@@ -58,8 +58,32 @@ const MPCTokenPage = () => {
   const sectionRef = useRef(null);
   const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
+  // Mouse tracking for neon glow
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e: MouseEvent) => {
+      setMousePos({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
+
   return (
     <Layout>
+      {/* Mouse-Following Neon Glow */}
+      <div
+        className="fixed pointer-events-none z-50 transition-all duration-150 ease-out"
+        style={{
+          left: mousePos.x - 150,
+          top: mousePos.y - 150,
+          width: '300px',
+          height: '300px',
+          background: 'radial-gradient(circle, rgba(0, 240, 255, 0.15) 0%, rgba(138, 43, 226, 0.1) 30%, transparent 60%)',
+          filter: 'blur(40px)',
+          borderRadius: '50%',
+        }}
+      />
       <Head>
         <title>MPC Token | Megapayer Cryptocurrency</title>
         <meta
@@ -110,46 +134,195 @@ const MPCTokenPage = () => {
             </div>
           </motion.div>
 
-          {/* Animated MPC Token Visual */}
+          {/* High-Speed Quantum Tunnel - 3D Cinematic Scene */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.7, delay: 0.3 }}
-            className="mt-16 relative max-w-lg mx-auto"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, delay: 0.3 }}
+            className="mt-16"
           >
-            <div className="relative w-40 h-40 mx-auto">
-              <div className="absolute inset-0 rounded-full bg-gradient-to-r from-primary to-secondary opacity-20 blur-xl"></div>
-              <div className="absolute inset-4 rounded-full bg-gradient-to-br from-primary to-secondary"></div>
-              <div className="absolute inset-8 rounded-full bg-dark flex items-center justify-center text-4xl font-bold text-white">
-                MPC
+            {/* CSS Keyframes */}
+            <style jsx>{`
+              @keyframes grid-flow {
+                0% { transform: rotateX(60deg) translateY(0); }
+                100% { transform: rotateX(60deg) translateY(100px); }
+              }
+              @keyframes laser-pulse {
+                0%, 100% { opacity: 0.7; box-shadow: 0 0 20px #00f0ff, 0 0 40px #8a2be2, 0 0 60px #00f0ff; }
+                50% { opacity: 1; box-shadow: 0 0 30px #00f0ff, 0 0 60px #8a2be2, 0 0 100px #00f0ff; }
+              }
+              @keyframes token-float {
+                0%, 100% { transform: translateY(0) rotateY(0deg); }
+                50% { transform: translateY(-15px) rotateY(180deg); }
+              }
+              @keyframes token-glow-3d {
+                0%, 100% { box-shadow: 0 0 40px rgba(255,215,0,0.7), 0 0 80px rgba(0,240,255,0.5), 0 0 120px rgba(138,43,226,0.3); }
+                50% { box-shadow: 0 0 60px rgba(255,215,0,1), 0 0 120px rgba(0,240,255,0.8), 0 0 180px rgba(138,43,226,0.5); }
+              }
+              @keyframes warp-speed {
+                0% { transform: translateX(100vw) scale(0.2); opacity: 0; }
+                10% { opacity: 1; }
+                90% { opacity: 1; }
+                100% { transform: translateX(-100vw) scale(1.5); opacity: 0; }
+              }
+              @keyframes tunnel-ring {
+                0% { transform: translateZ(-500px) scale(3); opacity: 0; }
+                50% { opacity: 0.5; }
+                100% { transform: translateZ(100px) scale(0.5); opacity: 0; }
+              }
+              @keyframes side-streak {
+                0% { transform: translateX(50vw); opacity: 0; }
+                20% { opacity: 0.8; }
+                100% { transform: translateX(-50vw); opacity: 0; }
+              }
+            `}</style>
+
+            {/* Scene Container with 3D Perspective */}
+            <div
+              className="relative w-full h-[500px] overflow-hidden"
+              style={{
+                background: 'linear-gradient(180deg, #000000 0%, #050510 50%, #0a0a20 100%)',
+                perspective: '1000px',
+                perspectiveOrigin: '50% 30%',
+              }}
+            >
+              {/* 3D Tilted Grid Floor */}
+              <div
+                className="absolute bottom-0 left-[-50%] w-[200%] h-[400px]"
+                style={{
+                  backgroundImage: `
+                    linear-gradient(rgba(0, 240, 255, 0.15) 2px, transparent 2px),
+                    linear-gradient(90deg, rgba(0, 240, 255, 0.15) 2px, transparent 2px)
+                  `,
+                  backgroundSize: '100px 100px',
+                  transformOrigin: 'center bottom',
+                  animation: 'grid-flow 2s linear infinite',
+                }}
+              />
+
+              {/* Tunnel Rings (Depth Effect) */}
+              {[...Array(5)].map((_, i) => (
+                <div
+                  key={`ring-${i}`}
+                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full pointer-events-none"
+                  style={{
+                    width: '300px',
+                    height: '300px',
+                    border: `2px solid ${i % 2 === 0 ? 'rgba(0, 240, 255, 0.2)' : 'rgba(138, 43, 226, 0.2)'}`,
+                    animation: 'tunnel-ring 3s linear infinite',
+                    animationDelay: `${i * 0.6}s`,
+                  }}
+                />
+              ))}
+
+              {/* Ambient Glow Center */}
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] rounded-full pointer-events-none"
+                style={{
+                  background: 'radial-gradient(ellipse, rgba(0, 240, 255, 0.1) 0%, rgba(138, 43, 226, 0.05) 40%, transparent 70%)',
+                  filter: 'blur(40px)',
+                }}
+              />
+
+              {/* Laser Beam - Center Line */}
+              <div
+                className="absolute top-1/2 left-0 right-0 h-1 -translate-y-1/2"
+                style={{
+                  background: 'linear-gradient(90deg, transparent 5%, #00f0ff 20%, #8a2be2 50%, #00f0ff 80%, transparent 95%)',
+                  animation: 'laser-pulse 1.5s ease-in-out infinite',
+                }}
+              />
+
+              {/* Warp Speed Particles */}
+              {[...Array(12)].map((_, i) => (
+                <div
+                  key={`warp-${i}`}
+                  className="absolute h-[2px] rounded-full"
+                  style={{
+                    top: `${15 + Math.random() * 70}%`,
+                    width: `${80 + Math.random() * 120}px`,
+                    background: `linear-gradient(90deg, transparent, ${i % 3 === 0 ? '#00f0ff' : i % 3 === 1 ? '#8a2be2' : '#ffffff'}, transparent)`,
+                    animation: 'warp-speed 1.5s linear infinite',
+                    animationDelay: `${i * 0.12}s`,
+                    opacity: 0.7,
+                  }}
+                />
+              ))}
+
+              {/* Side Streaks */}
+              {[...Array(6)].map((_, i) => (
+                <div
+                  key={`streak-${i}`}
+                  className="absolute w-[200px] h-[1px]"
+                  style={{
+                    top: `${20 + i * 12}%`,
+                    background: i % 2 === 0
+                      ? 'linear-gradient(90deg, transparent, #00f0ff, transparent)'
+                      : 'linear-gradient(90deg, transparent, #8a2be2, transparent)',
+                    animation: 'side-streak 0.8s linear infinite',
+                    animationDelay: `${i * 0.15}s`,
+                  }}
+                />
+              ))}
+
+              {/* THE HERO - Centered Token with Chase Cam Effect */}
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20"
+                style={{
+                  animation: 'token-float 4s ease-in-out infinite',
+                  transformStyle: 'preserve-3d',
+                }}
+              >
+                {/* Token Glow Aura */}
+                <div
+                  className="absolute inset-[-20px] rounded-full pointer-events-none"
+                  style={{
+                    background: 'radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 60%)',
+                    filter: 'blur(20px)',
+                  }}
+                />
+
+                {/* Token Image */}
+                <div
+                  className="w-40 h-40 rounded-full overflow-hidden relative"
+                  style={{
+                    animation: 'token-glow-3d 2s ease-in-out infinite',
+                  }}
+                >
+                  <img
+                    src="/images/mpc.png"
+                    alt="MPC Token"
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                {/* Speed Indicator Badge */}
+                <div
+                  className="absolute -bottom-8 left-1/2 -translate-x-1/2 px-4 py-1 rounded-full text-xs font-mono"
+                  style={{
+                    background: 'rgba(0, 240, 255, 0.2)',
+                    border: '1px solid rgba(0, 240, 255, 0.5)',
+                    color: '#00f0ff',
+                  }}
+                >
+                  QUANTUM TRANSFER
+                </div>
               </div>
 
-              {/* Orbiting dots */}
-              {[...Array(12)].map((_, i) => {
-                const angle = (i / 12) * Math.PI * 2;
-                const x = Math.cos(angle) * 80;
-                const y = Math.sin(angle) * 80;
+              {/* HUD Elements */}
+              <div className="absolute top-6 left-8 text-cyan-400 font-mono text-xs opacity-60">
+                <div>VELOCITY: QUANTUM</div>
+                <div>LATENCY: &lt;1ms</div>
+              </div>
 
-                return (
-                  <motion.div
-                    key={i}
-                    className="absolute w-2 h-2 bg-white rounded-full"
-                    style={{
-                      left: "calc(50% + " + x + "px)",
-                      top: "calc(50% + " + y + "px)",
-                    }}
-                    animate={{
-                      scale: [1, 1.5, 1],
-                      opacity: [0.3, 1, 0.3],
-                    }}
-                    transition={{
-                      duration: 3,
-                      repeat: Infinity,
-                      delay: i * 0.2,
-                    }}
-                  />
-                );
-              })}
+              <div className="absolute top-6 right-8 text-right font-mono text-xs">
+                <div className="text-green-400">● NETWORK ACTIVE</div>
+                <div className="text-gray-500">TPS: 50,000+</div>
+              </div>
+
+              <div className="absolute bottom-6 left-1/2 -translate-x-1/2 text-gray-400 font-mono text-sm">
+                HIGH-SPEED BLOCKCHAIN TRANSFER
+              </div>
             </div>
           </motion.div>
         </div>
@@ -456,69 +629,49 @@ const MPCTokenPage = () => {
                 </div>
 
                 <div className="self-center">
-                  <div className="space-y-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#4F46E5] mr-2"></div>
-                        <span>Community & Airdrop</span>
+                  <div className="space-y-5">
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center">
+                          <div className="w-3 h-3 rounded-full bg-[#00f0ff] mr-2"></div>
+                          <span className="font-semibold text-white">Community & Ecosystem</span>
+                        </div>
+                        <span className="font-bold text-[#00f0ff] text-xl">35%</span>
                       </div>
-                      <span className="font-bold">10%</span>
+                      <div className="text-xs text-gray-400 ml-5">Airdrop • Staking Rewards • Liquidity Mining • Ecosystem Grants</div>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#10B981] mr-2"></div>
-                        <span>Seed Sale</span>
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center">
+                          <div className="w-3 h-3 rounded-full bg-[#8a2be2] mr-2"></div>
+                          <span className="font-semibold text-white">Investors</span>
+                        </div>
+                        <span className="font-bold text-[#8a2be2] text-xl">28%</span>
                       </div>
-                      <span className="font-bold">15%</span>
+                      <div className="text-xs text-gray-400 ml-5">Seed Round • Series A/B • Public Sale</div>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#F59E0B] mr-2"></div>
-                        <span>Presale</span>
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center">
+                          <div className="w-3 h-3 rounded-full bg-[#ff00aa] mr-2"></div>
+                          <span className="font-semibold text-white">Team & Development</span>
+                        </div>
+                        <span className="font-bold text-[#ff00aa] text-xl">19%</span>
                       </div>
-                      <span className="font-bold">15%</span>
+                      <div className="text-xs text-gray-400 ml-5">Team & Advisors • Development Fund</div>
                     </div>
 
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#8B5CF6] mr-2"></div>
-                        <span>Team & Advisors</span>
+                    <div className="p-3 rounded-lg bg-white/5">
+                      <div className="flex items-center justify-between mb-1">
+                        <div className="flex items-center">
+                          <div className="w-3 h-3 rounded-full bg-[#00ff9d] mr-2"></div>
+                          <span className="font-semibold text-white">Governance & Liquidity</span>
+                        </div>
+                        <span className="font-bold text-[#00ff9d] text-xl">18%</span>
                       </div>
-                      <span className="font-bold">10%</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#EC4899] mr-2"></div>
-                        <span>Development</span>
-                      </div>
-                      <span className="font-bold">15%</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#0EA5E9] mr-2"></div>
-                        <span>Liquidity & Exchange</span>
-                      </div>
-                      <span className="font-bold">20%</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#F97316] mr-2"></div>
-                        <span>Staking Rewards</span>
-                      </div>
-                      <span className="font-bold">10%</span>
-                    </div>
-
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center">
-                        <div className="w-3 h-3 rounded-full bg-[#14B8A6] mr-2"></div>
-                        <span>DAO/Governance</span>
-                      </div>
-                      <span className="font-bold">5%</span>
+                      <div className="text-xs text-gray-400 ml-5">Treasury/DAO • Liquidity (DEX+CEX)</div>
                     </div>
                   </div>
                 </div>

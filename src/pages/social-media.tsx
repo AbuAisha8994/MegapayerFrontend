@@ -1,98 +1,14 @@
 import Head from "next/head";
-import { Canvas } from "@react-three/fiber";
-import { Environment, OrbitControls } from "@react-three/drei";
+import Link from "next/link";
 import { motion } from "framer-motion";
 import Layout from "@/components/layout/Layout";
-import SocialAnimation from "@/components/animations/SocialAnimation";
-import Stats from "@/components/common/Stats";
+import { useLanguage } from "@/context/LanguageContext";
 
 const SocialMediaPage = () => {
-  const features = [
-    {
-      id: "privacy",
-      title: "Privacy-First Design",
-      description:
-        "User data is encrypted and cryptographically protected. Users decide exactly what is shared and with whom.",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "ownership",
-      title: "Content Ownership",
-      description:
-        "All content is cryptographically signed and verifiable on-chain. Creators maintain true ownership of their work.",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "monetization",
-      title: "Direct Monetization",
-      description:
-        "Creators can monetize content through subscriptions, tips, or NFTs, with minimal platform fees.",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      ),
-    },
-    {
-      id: "censorship",
-      title: "Censorship Resistance",
-      description:
-        "Content cannot be arbitrarily removed. Community governance determines content moderation policies.",
-      icon: (
-        <svg
-          className="w-6 h-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-          />
-        </svg>
-      ),
-    },
-  ];
+  const { t } = useLanguage();
+
+  // Feature icons
+  const featureIcons = ["🔒", "📜", "💎", "🛡️", "🗳️", "🚀"];
 
   return (
     <Layout>
@@ -100,293 +16,339 @@ const SocialMediaPage = () => {
         <title>Decentralized Social | Megapayer Privacy-First Platform</title>
         <meta
           name="description"
-          content="Megapayer's decentralized social platform gives users control over their data, content ownership, and direct monetization opportunities in a censorship-resistant environment."
+          content="Megapayer's decentralized social platform gives users control over their data, content ownership, and direct monetization in a censorship-resistant environment."
         />
       </Head>
 
-      {/* Hero Section with Animation */}
-      <div className="relative pt-20 pb-16 overflow-hidden">
-        {/* Background elements */}
-        <div className="absolute inset-0 -z-10">
-          <div className="absolute top-1/2 left-1/4 w-64 h-64 bg-primary/20 rounded-full filter blur-3xl opacity-30 transform -translate-y-1/2"></div>
-          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-secondary/20 rounded-full filter blur-3xl opacity-20"></div>
-        </div>
+      {/* CSS Animations */}
+      <style jsx global>{`
+        @keyframes float-card {
+          0%, 100% { transform: translateY(0) rotate(-2deg); }
+          50% { transform: translateY(-15px) rotate(-2deg); }
+        }
+        @keyframes float-card-2 {
+          0%, 100% { transform: translateY(0) rotate(1deg); }
+          50% { transform: translateY(-12px) rotate(1deg); }
+        }
+        @keyframes float-card-3 {
+          0%, 100% { transform: translateY(0) rotate(-1deg); }
+          50% { transform: translateY(-18px) rotate(-1deg); }
+        }
+        @keyframes pulse-glow {
+          0%, 100% { opacity: 0.4; }
+          50% { opacity: 0.7; }
+        }
+        .neon-text {
+          text-shadow: 0 0 20px rgba(0, 240, 255, 0.5), 0 0 40px rgba(138, 43, 226, 0.3);
+        }
+        .gradient-icon {
+          background: linear-gradient(135deg, #00f0ff, #8a2be2);
+          -webkit-background-clip: text;
+          background-clip: text;
+          -webkit-text-fill-color: transparent;
+        }
+      `}</style>
 
-        <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center justify-between gap-8">
-            {/* Hero Content */}
+      {/* HERO SECTION */}
+      <section className="relative min-h-screen flex items-center overflow-hidden" style={{ background: '#050505' }}>
+        {/* Network Mesh Background */}
+        <div
+          className="absolute inset-0 opacity-5"
+          style={{
+            backgroundImage: `
+              linear-gradient(rgba(0, 240, 255, 0.3) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0, 240, 255, 0.3) 1px, transparent 1px)
+            `,
+            backgroundSize: '60px 60px',
+          }}
+        />
+
+        {/* Ambient Glow */}
+        <div
+          className="absolute top-1/3 right-1/4 w-[500px] h-[500px] rounded-full pointer-events-none"
+          style={{
+            background: 'radial-gradient(circle, rgba(138, 43, 226, 0.2) 0%, transparent 60%)',
+            filter: 'blur(80px)',
+            animation: 'pulse-glow 4s ease-in-out infinite',
+          }}
+        />
+
+        <div className="container mx-auto px-4 max-w-[1440px]">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            {/* LEFT: Text & CTA */}
             <motion.div
               initial={{ opacity: 0, x: -30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7 }}
-              className="lg:w-1/2 pt-16"
             >
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
-                <span className="text-gradient">Decentralized</span> Social
-                Platform
+              <div className="inline-block px-4 py-2 border border-cyan-500/30 rounded-full text-cyan-400 text-sm mb-6">
+                {t.social_page.hero.badge}
+              </div>
+
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-black mb-6 text-white neon-text leading-tight">
+                {t.social_page.hero.title.split(' ').slice(0, -2).join(' ')}
+                <br />
+                <span
+                  style={{
+                    background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                  }}
+                >
+                  {t.social_page.hero.title.split(' ').slice(-2).join(' ')}
+                </span>
               </h1>
-              <p className="text-xl md:text-2xl text-gray-300 mb-8">
-                A revolutionary social network that puts users in control
-                through blockchain-based content ownership and
-                privacy-preserving technology.
+
+              <p className="text-xl text-gray-400 mb-10 leading-relaxed max-w-lg">
+                {t.social_page.hero.description}
               </p>
-              <div className="flex flex-col sm:flex-row gap-4">
-                <a href="#learn-more" className="btn-primary">
-                  Learn More
-                </a>
-                <a href="/enterprise/contact" className="btn-secondary">
-                  Join Waitlist
-                </a>
+
+              <div className="flex flex-wrap gap-4">
+                {/* Neon Gradient Border Button */}
+                <Link
+                  href="/enterprise/contact"
+                  className="relative px-8 py-4 font-bold rounded-xl overflow-hidden group"
+                >
+                  <div
+                    className="absolute inset-0 rounded-xl"
+                    style={{
+                      background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                      padding: '2px',
+                    }}
+                  />
+                  <div
+                    className="absolute inset-[2px] rounded-[10px] bg-[#050505] group-hover:bg-transparent transition-all duration-300"
+                  />
+                  <span className="relative z-10 text-white group-hover:text-white">
+                    {t.social_page.hero.buttons.primary}
+                  </span>
+                </Link>
+
+                <Link
+                  href="/whitepaper/social-media"
+                  className="px-8 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
+                >
+                  {t.social_page.hero.buttons.secondary}
+                </Link>
               </div>
             </motion.div>
 
-            {/* 3D Animation */}
+            {/* RIGHT: Floating Glass Cards (Holographic Feed) */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, delay: 0.2 }}
-              className="lg:w-1/2"
+              className="relative h-[550px]"
             >
-              <div className="w-full h-[500px] lg:h-[600px] rounded-2xl overflow-hidden bg-gradient-to-br from-primary/5 via-dark/20 to-secondary/5 border border-white/10">
-                <Canvas
-                  camera={{ position: [0, 0, 20], fov: 60 }}
-                  dpr={[1, 2]} // Performance optimization
-                  className="touch-none"
-                >
-                  <ambientLight intensity={0.6} />
-                  <pointLight position={[10, 10, 10]} intensity={1.5} />
-                  <SocialAnimation />
-                  <OrbitControls
-                    enableZoom={false}
-                    enablePan={false}
-                    autoRotate
-                    autoRotateSpeed={0.5}
-                    maxPolarAngle={Math.PI / 2}
-                    minPolarAngle={Math.PI / 3}
-                  />
-                  <Environment preset="city" />
-                </Canvas>
+              {/* Background Glow */}
+              <div
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[350px] h-[400px] rounded-full"
+                style={{
+                  background: 'radial-gradient(ellipse, rgba(138, 43, 226, 0.25) 0%, transparent 60%)',
+                  filter: 'blur(50px)',
+                }}
+              />
+
+              {/* Floating Card 1 */}
+              <div
+                className="absolute top-[10%] left-[10%] w-[280px] p-5 rounded-2xl border border-white/10"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(20px)',
+                  animation: 'float-card 5s ease-in-out infinite',
+                }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  {/* NFT Frame Avatar */}
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(138, 43, 226, 0.2))',
+                      border: '2px solid rgba(0, 240, 255, 0.5)',
+                      boxShadow: '0 0 15px rgba(0, 240, 255, 0.3)',
+                    }}
+                  >
+                    🎨
+                  </div>
+                  <div>
+                    <div className="text-white font-semibold text-sm">{t.social_page.hero.demo_cards.card1.user}</div>
+                    <div className="text-gray-500 text-xs">@artist.mpc</div>
+                  </div>
+                  {/* Encrypted Badge */}
+                  <div className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">
+                    <span>🔐</span>
+                    <span>Encrypted</span>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm mb-3">{t.social_page.hero.demo_cards.card1.text}</p>
+                <div className="flex gap-4 text-gray-500 text-xs">
+                  <span>❤️ 2.4k</span>
+                  <span>💬 89</span>
+                  <span>🔄 156</span>
+                </div>
+              </div>
+
+              {/* Floating Card 2 */}
+              <div
+                className="absolute top-[35%] right-[5%] w-[260px] p-5 rounded-2xl border border-white/10"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(20px)',
+                  animation: 'float-card-2 6s ease-in-out infinite',
+                  animationDelay: '1s',
+                }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(138, 43, 226, 0.2), rgba(0, 240, 255, 0.2))',
+                      border: '2px solid rgba(138, 43, 226, 0.5)',
+                      boxShadow: '0 0 15px rgba(138, 43, 226, 0.3)',
+                    }}
+                  >
+                    💻
+                  </div>
+                  <div>
+                    <div className="text-white font-semibold text-sm">{t.social_page.hero.demo_cards.card3.user}</div>
+                    <div className="text-gray-500 text-xs">@whale.mpc</div>
+                  </div>
+                  <div className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">
+                    <span>🔐</span>
+                    <span>Encrypted</span>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm">{t.social_page.hero.demo_cards.card3.text}</p>
+              </div>
+
+              {/* Floating Card 3 */}
+              <div
+                className="absolute bottom-[10%] left-[15%] w-[270px] p-5 rounded-2xl border border-white/10"
+                style={{
+                  background: 'rgba(255, 255, 255, 0.05)',
+                  backdropFilter: 'blur(20px)',
+                  animation: 'float-card-3 7s ease-in-out infinite',
+                  animationDelay: '0.5s',
+                }}
+              >
+                <div className="flex items-center gap-3 mb-4">
+                  <div
+                    className="w-12 h-12 rounded-xl flex items-center justify-center text-2xl"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.2), rgba(138, 43, 226, 0.2))',
+                      border: '2px solid rgba(0, 240, 255, 0.5)',
+                      boxShadow: '0 0 15px rgba(0, 240, 255, 0.3)',
+                    }}
+                  >
+                    🎵
+                  </div>
+                  <div>
+                    <div className="text-white font-semibold text-sm">{t.social_page.hero.demo_cards.card2.user}</div>
+                    <div className="text-gray-500 text-xs">@music.mpc</div>
+                  </div>
+                  <div className="ml-auto flex items-center gap-1 px-2 py-1 rounded-full bg-green-500/20 text-green-400 text-xs">
+                    <span>🔐</span>
+                    <span>Encrypted</span>
+                  </div>
+                </div>
+                <p className="text-gray-300 text-sm">{t.social_page.hero.demo_cards.card2.text}</p>
+                <div className="flex gap-4 text-gray-500 text-xs mt-3">
+                  <span>❤️ 5.1k</span>
+                  <span>💬 234</span>
+                </div>
               </div>
             </motion.div>
           </div>
         </div>
-      </div>
+      </section>
 
-      {/* Features Section */}
-      <section
-        id="learn-more"
-        className="py-20 bg-gradient-to-b from-dark/80 via-dark to-dark/80"
-      >
-        <div className="container mx-auto px-4">
+      {/* FEATURE GRID */}
+      <section className="py-24" style={{ background: '#0a0a14' }}>
+        <div className="container mx-auto px-4 max-w-[1440px]">
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6 }}
             viewport={{ once: true }}
             className="text-center mb-16"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">
-              Take <span className="text-gradient">Control</span> of Your Social
-              Experience
+            <h2 className="text-4xl font-bold mb-6 text-white">
+              {t.social_page.features.title.split(' ').slice(0, 2).join(' ')}{' '}
+              <span style={{
+                background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+              }}>{t.social_page.features.title.split(' ').slice(2, 3).join(' ')}</span>{' '}
+              {t.social_page.features.title.split(' ').slice(3).join(' ')}
             </h2>
-            <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-              Traditional social media platforms exploit user data and content,
-              creating misaligned incentives. Our decentralized approach
-              restores power to users and creators.
+            <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+              {t.social_page.features.subtitle}
             </p>
           </motion.div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-            {features.map((feature, index) => (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {t.social_page.features.cards.map((feature, index) => (
               <motion.div
-                key={feature.id}
-                initial={{ opacity: 0, y: 20 }}
+                key={index}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
-                className="bg-dark/30 backdrop-blur-sm p-8 rounded-xl border border-white/10 hover:border-primary/30 transition-all duration-300"
+                className="p-8 rounded-2xl border border-white/10 hover:border-cyan-500/30 transition-all duration-300 group"
+                style={{ background: 'rgba(255, 255, 255, 0.02)' }}
               >
-                <div className="w-14 h-14 rounded-lg bg-primary/20 text-primary flex items-center justify-center mb-6">
-                  {feature.icon}
+                <div
+                  className="text-4xl mb-6 w-16 h-16 rounded-xl flex items-center justify-center"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(0, 240, 255, 0.1), rgba(138, 43, 226, 0.1))',
+                    border: '1px solid rgba(0, 240, 255, 0.2)',
+                  }}
+                >
+                  {featureIcons[index] || "✨"}
                 </div>
-                <h3 className="text-2xl font-bold mb-4">{feature.title}</h3>
-                <p className="text-gray-300">{feature.description}</p>
+                <h3 className="text-xl font-bold mb-4 text-white group-hover:text-cyan-400 transition-colors">
+                  {feature.title}
+                </h3>
+                <p className="text-gray-400">{feature.desc}</p>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Platform Metrics Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
+      {/* CTA SECTION */}
+      <section className="py-24" style={{ background: '#050505' }}>
+        <div className="container mx-auto px-4 max-w-[1440px]">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
+            transition={{ duration: 0.6 }}
             viewport={{ once: true }}
-            className="text-center max-w-4xl mx-auto mb-16"
+            className="text-center max-w-3xl mx-auto"
           >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Platform Metrics
+            <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
+              {t.social_page.cta.title}
             </h2>
-            <p className="text-xl text-gray-300">
-              Our decentralized social platform is designed for performance,
-              privacy, and creator success.
+            <p className="text-xl text-gray-400 mb-10">
+              {t.social_page.cta.subtitle}
             </p>
-          </motion.div>
-
-          <Stats product="social" />
-        </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="py-20 bg-gradient-to-b from-dark/50 to-dark">
-        <div className="container mx-auto px-4">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              viewport={{ once: true }}
-              className="bg-dark/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:border-primary/30 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M13 10V3L4 14h7v7l9-11h-7z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">Fast Content Delivery</h3>
-              <p className="text-gray-300">
-                Content delivery optimized for speed while maintaining complete
-                decentralization through distributed storage.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-dark/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:border-primary/30 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">Verifiable Content</h3>
-              <p className="text-gray-300">
-                All content is cryptographically signed and verifiable, ensuring
-                authenticity and preventing unauthorized modifications.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              viewport={{ once: true }}
-              className="bg-dark/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:border-primary/30 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">Community Governance</h3>
-              <p className="text-gray-300">
-                Platform policies are determined by community governance,
-                ensuring the platform evolves to meet user needs.
-              </p>
-            </motion.div>
-
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="bg-dark/30 backdrop-blur-sm border border-white/10 p-6 rounded-xl hover:border-primary/30 transition-all duration-300"
-            >
-              <div className="w-12 h-12 rounded-full bg-primary/20 text-primary flex items-center justify-center mb-6">
-                <svg
-                  className="w-6 h-6"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                  />
-                </svg>
-              </div>
-              <h3 className="text-xl font-bold mb-3">Creator Economy</h3>
-              <p className="text-gray-300">
-                Direct monetization options with minimal platform fees,
-                empowering creators to build sustainable businesses.
-              </p>
-            </motion.div>
-          </div>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.7 }}
-            viewport={{ once: true }}
-            className="max-w-4xl mx-auto text-center bg-gradient-to-r from-primary/10 to-secondary/10 backdrop-blur-sm p-10 rounded-2xl border border-white/10"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold mb-6">
-              Ready to Join the Future of Social Media?
-            </h2>
-            <p className="text-xl text-gray-300 mb-8">
-              Own your content, protect your privacy, and connect directly with
-              your audience in a truly decentralized social ecosystem.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <a href="/enterprise/contact" className="btn-primary">
-                Join Waitlist
-              </a>
-              <a href="/whitepaper/social-media" className="btn-secondary">
-                Read Whitepaper
-              </a>
+            <div className="flex flex-wrap gap-4 justify-center">
+              <Link
+                href="/enterprise/contact"
+                className="px-10 py-4 font-bold rounded-xl text-white"
+                style={{
+                  background: 'linear-gradient(135deg, #00f0ff, #8a2be2)',
+                  boxShadow: '0 0 30px rgba(0, 240, 255, 0.3)',
+                }}
+              >
+                {t.social_page.cta.buttons.primary}
+              </Link>
+              <Link
+                href="/whitepaper/social-media"
+                className="px-10 py-4 border border-white/20 text-white font-medium rounded-xl hover:bg-white/5 transition-all"
+              >
+                {t.social_page.cta.buttons.secondary}
+              </Link>
             </div>
           </motion.div>
         </div>

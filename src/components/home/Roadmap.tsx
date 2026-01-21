@@ -1,478 +1,265 @@
-import { useRef } from "react";
+import { useRef, useCallback, useEffect, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import Link from "next/link";
-
-// Category icons for roadmap items
-const categoryIcons = {
-  product: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
-      />
-    </svg>
-  ),
-  community: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-      />
-    </svg>
-  ),
-  finance: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>
-  ),
-  marketing: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"
-      />
-    </svg>
-  ),
-  exchange: (
-    <svg
-      className="w-5 h-5"
-      fill="none"
-      stroke="currentColor"
-      viewBox="0 0 24 24"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"
-      />
-    </svg>
-  ),
-};
-
-// Main roadmap data structure - translated to English
-const roadmapData = [
-  {
-    month: "May 2025",
-    title: "Launch and Community Growth",
-    status: "upcoming",
-    items: [
-      {
-        text: "Seed Sale Launch: First sale up to 10% of the total MPC supply",
-        category: "finance",
-      },
-      {
-        text: "Mini Airdrop Campaign: Community-exclusive tasks with MPC rewards",
-        category: "community",
-      },
-      {
-        text: "Community Growth Program: Social media engagement and audience building strategies",
-        category: "marketing",
-      },
-    ],
-  },
-  {
-    month: "June 2025",
-    title: "Evaluation and Preparation",
-    status: "upcoming",
-    items: [
-      {
-        text: "Seed Sale Performance Analysis: Evaluation of the first sale round data",
-        category: "finance",
-      },
-      {
-        text: "Pre-sale Preparation: Configuration of the second sale round parameters",
-        category: "finance",
-      },
-      {
-        text: "CEX Initial Contacts: Beginning communication with Gate.io, MEXC and BitMart",
-        category: "exchange",
-      },
-    ],
-  },
-  {
-    month: "July 2025",
-    title: "Product Vision and First Launch",
-    status: "upcoming",
-    items: [
-      {
-        text: "Megapayer Wallet Design + Development Start",
-        category: "product",
-      },
-      {
-        text: "Zenith Teaser Release: First concept video for Web3 social platform",
-        category: "marketing",
-      },
-      {
-        text: "DEX Launch: First MPC listing on Uniswap with dynamic liquidity plan",
-        category: "exchange",
-      },
-    ],
-  },
-  {
-    month: "August 2025",
-    title: "Testing Phase and Loyalty Rewards",
-    status: "upcoming",
-    items: [
-      {
-        text: "NFT Marketplace Testing: Open test process for the community",
-        category: "product",
-      },
-      {
-        text: "Wallet Beta (Open Testing): Iterative development through feedback collection",
-        category: "product",
-      },
-      {
-        text: "Loyalty Program Launch: Participation and contribution-based reward system",
-        category: "community",
-      },
-    ],
-  },
-  {
-    month: "September 2025",
-    title: "Web3 Experience Begins",
-    status: "planned",
-    items: [
-      {
-        text: "Zenith Demo Release: First user tests with limited features",
-        category: "product",
-      },
-      {
-        text: "P2P Beta Launch: Direct user-to-user transfer tests",
-        category: "product",
-      },
-      {
-        text: "NFT Numbers Feature: Personalized, identity-based NFT usernames",
-        category: "product",
-      },
-    ],
-  },
-  {
-    month: "October 2025",
-    title: "Main Product Release",
-    status: "planned",
-    items: [
-      {
-        text: "NFT Marketplace Mainnet Launch",
-        category: "product",
-      },
-      {
-        text: "CEX Integration Preparations: Adapting technical and contract structure for listings",
-        category: "exchange",
-      },
-      {
-        text: "CEX Marketing Process: Pre-listing advertising campaigns with partners",
-        category: "marketing",
-      },
-    ],
-  },
-  {
-    month: "November 2025",
-    title: "Community and Development Focus",
-    status: "planned",
-    items: [
-      {
-        text: "Zenith Community Test Program: Iterative testing and rewards based on feedback",
-        category: "community",
-      },
-      {
-        text: "Wallet Updates: Improvements after mobile beta",
-        category: "product",
-      },
-      {
-        text: "Community Engagement Campaigns: Special events for active MPC holders and referrals",
-        category: "community",
-      },
-    ],
-  },
-  {
-    month: "December 2025",
-    title: "Towards the Summit",
-    status: "planned",
-    items: [
-      {
-        text: "CEX Listing Approval: MPC token gets approval for listing on Gate.io or MEXC",
-        category: "exchange",
-      },
-      {
-        text: "Listing Preparation: Final technical steps for Q1 2026 launch",
-        category: "exchange",
-      },
-      {
-        text: "Year-End Report: 2025 general assessment and sharing of 2026 vision",
-        category: "community",
-      },
-    ],
-  },
-];
+import { useLanguage } from "@/context/LanguageContext";
 
 const Roadmap = () => {
-  const sectionRef = useRef(null);
-  const isInView = useInView(sectionRef, { once: true, amount: 0.1 });
+  const { t } = useLanguage();
+  const sectionRef = useRef<HTMLElement>(null);
+  const glowRef = useRef<HTMLDivElement>(null);
+  const isInView = useInView(sectionRef, { once: true, amount: 0.2 });
 
-  // Group roadmap items into pairs for the 2x2 layout
-  const roadmapGroups = [];
-  for (let i = 0; i < roadmapData.length; i += 4) {
-    roadmapGroups.push(roadmapData.slice(i, i + 4));
-  }
+  // Mouse tracking
+  const handleMouseMove = useCallback((e: React.MouseEvent<HTMLElement>) => {
+    if (!sectionRef.current || !glowRef.current) return;
+    const rect = sectionRef.current.getBoundingClientRect();
+    glowRef.current.style.left = `${e.clientX - rect.left - 150}px`;
+    glowRef.current.style.top = `${e.clientY - rect.top - 150}px`;
+  }, []);
+
+  const handleMouseEnter = useCallback(() => {
+    if (glowRef.current) glowRef.current.style.opacity = '1';
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    if (glowRef.current) glowRef.current.style.opacity = '0';
+  }, []);
 
   return (
     <section
-      className="py-24 bg-gradient-to-b from-dark/95 via-dark/90 to-dark/95 relative overflow-hidden"
-      id="roadmap"
       ref={sectionRef}
+      onMouseMove={handleMouseMove}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+      className="relative py-32 overflow-hidden"
+      id="roadmap"
+      style={{ background: '#050508' }}
     >
-      {/* Background decorative elements */}
-      <div className="absolute inset-0 pointer-events-none -z-10">
-        <div className="absolute top-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
-        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/30 to-transparent"></div>
+      {/* CSS Animations */}
+      <style jsx global>{`
+        @keyframes flowDot {
+          0% { offset-distance: 0%; opacity: 0; }
+          5% { opacity: 1; }
+          95% { opacity: 1; }
+          100% { offset-distance: 100%; opacity: 0; }
+        }
+        @keyframes pulse {
+          0%, 100% { opacity: 0.3; transform: scale(1); }
+          50% { opacity: 0.6; transform: scale(1.1); }
+        }
+        @keyframes float {
+          0%, 100% { transform: translateY(0); }
+          50% { transform: translateY(-6px); }
+        }
+        .flow-dot {
+          offset-path: var(--path);
+          animation: flowDot var(--duration) linear infinite;
+          animation-delay: var(--delay);
+        }
+        .neon-cube {
+          animation: float 4s ease-in-out infinite;
+        }
+      `}</style>
 
-        {/* Background elements */}
-        <div className="absolute inset-0 opacity-5">
-          <div
-            className="h-full w-full"
+      {/* Adım 1: Dijital Örümcek Ağı (Spider Web) */}
+      <svg
+        className="absolute inset-0 w-full h-full pointer-events-none"
+        viewBox="0 0 1200 600"
+        preserveAspectRatio="xMidYMid slice"
+      >
+        <defs>
+          <linearGradient id="webGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" stopColor="#8b5cf6" stopOpacity="0.4" />
+            <stop offset="100%" stopColor="#06b6d4" stopOpacity="0.4" />
+          </linearGradient>
+
+          {/* Paths for flowing dots */}
+          <path id="path1" d="M 100,150 Q 400,100 700,200" fill="none" />
+          <path id="path2" d="M 500,80 Q 600,200 900,150" fill="none" />
+          <path id="path3" d="M 200,400 Q 500,350 800,450" fill="none" />
+          <path id="path4" d="M 300,100 L 300,500" fill="none" />
+          <path id="path5" d="M 600,80 L 600,520" fill="none" />
+          <path id="path6" d="M 900,100 L 900,500" fill="none" />
+        </defs>
+
+        {/* Ferah ağ çizgileri - Thin web lines */}
+        <g stroke="url(#webGrad)" strokeWidth="1" fill="none" opacity="0.5">
+          {/* Horizontal curves */}
+          <path d="M 0,150 Q 300,100 600,180 T 1200,150" />
+          <path d="M 0,300 Q 400,250 800,320 T 1200,300" />
+          <path d="M 0,450 Q 350,400 700,470 T 1200,450" />
+
+          {/* Vertical lines */}
+          <line x1="200" y1="50" x2="200" y2="550" opacity="0.3" />
+          <line x1="400" y1="50" x2="400" y2="550" opacity="0.3" />
+          <line x1="600" y1="50" x2="600" y2="550" opacity="0.3" />
+          <line x1="800" y1="50" x2="800" y2="550" opacity="0.3" />
+          <line x1="1000" y1="50" x2="1000" y2="550" opacity="0.3" />
+
+          {/* Diagonal connections */}
+          <line x1="200" y1="150" x2="400" y2="300" opacity="0.2" />
+          <line x1="400" y1="300" x2="600" y2="150" opacity="0.2" />
+          <line x1="600" y1="300" x2="800" y2="450" opacity="0.2" />
+          <line x1="800" y1="300" x2="1000" y2="150" opacity="0.2" />
+        </g>
+
+        {/* Akan ışık noktaları - Flowing light dots */}
+        {[
+          { path: 'path1', dur: '5s', delay: '0s', color: '#06b6d4' },
+          { path: 'path2', dur: '6s', delay: '1s', color: '#8b5cf6' },
+          { path: 'path3', dur: '7s', delay: '2s', color: '#06b6d4' },
+          { path: 'path4', dur: '8s', delay: '0.5s', color: '#ec4899' },
+          { path: 'path5', dur: '6s', delay: '1.5s', color: '#8b5cf6' },
+          { path: 'path6', dur: '7s', delay: '2.5s', color: '#06b6d4' },
+        ].map((dot, i) => (
+          <circle
+            key={i}
+            r="4"
+            fill={dot.color}
+            className="flow-dot"
             style={{
-              backgroundImage:
-                "radial-gradient(circle, #4f46e5 1px, transparent 1px)",
-              backgroundSize: "30px 30px",
-            }}
-          ></div>
-        </div>
+              '--path': `url(#${dot.path})`,
+              '--duration': dot.dur,
+              '--delay': dot.delay,
+              filter: `drop-shadow(0 0 6px ${dot.color})`,
+            } as React.CSSProperties}
+          />
+        ))}
+      </svg>
 
-        {/* Background glows */}
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/20 rounded-full filter blur-[120px] opacity-30"></div>
-        <div className="absolute bottom-1/3 right-1/4 w-96 h-96 bg-secondary/20 rounded-full filter blur-[120px] opacity-20"></div>
+      {/* Adım 2: Neon Küpler (CSS-only 3D) */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[
+          { left: '8%', top: '15%', delay: 0 },
+          { left: '92%', top: '15%', delay: 0.5 },
+          { left: '5%', top: '75%', delay: 1 },
+          { left: '95%', top: '75%', delay: 1.5 },
+          { left: '50%', top: '10%', delay: 0.3 },
+          { left: '50%', top: '85%', delay: 0.8 },
+        ].map((cube, i) => (
+          <div
+            key={i}
+            className="absolute neon-cube"
+            style={{
+              left: cube.left,
+              top: cube.top,
+              transform: 'translate(-50%, -50%)',
+              animationDelay: `${cube.delay}s`,
+            }}
+          >
+            <div
+              className="w-6 h-6 rounded-sm"
+              style={{
+                background: 'linear-gradient(135deg, rgba(6, 182, 212, 0.3), rgba(139, 92, 246, 0.3))',
+                border: '1px solid rgba(6, 182, 212, 0.5)',
+                boxShadow: '0 0 15px rgba(6, 182, 212, 0.4), 0 0 30px rgba(139, 92, 246, 0.2), inset 0 0 10px rgba(255,255,255,0.1)',
+              }}
+            />
+          </div>
+        ))}
       </div>
 
-      <div className="container mx-auto px-4">
+      {/* Adım 3: Mouse Takip Eden Işık Huzmesi */}
+      <div
+        ref={glowRef}
+        className="absolute w-[300px] h-[300px] rounded-full pointer-events-none transition-opacity duration-700"
+        style={{
+          background: 'radial-gradient(circle, rgba(139, 92, 246, 0.2) 0%, rgba(6, 182, 212, 0.15) 30%, transparent 70%)',
+          opacity: 0,
+          filter: 'blur(20px)',
+        }}
+      />
+
+      {/* Adım 4: Roadmap Kartları (Havada Asılı) */}
+      <div className="relative z-10 container mx-auto px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
+          transition={{ duration: 0.6 }}
           viewport={{ once: true }}
           className="text-center mb-20"
         >
-          {/* Section header */}
-          <div className="inline-block px-6 py-2 border border-primary/30 rounded-full text-primary mb-6">
-            2025 Journey
+          <div className="inline-block px-5 py-2 border border-cyan-500/40 rounded-full text-cyan-400 text-sm mb-6">
+            🚀 {t.roadmap.badge}
           </div>
-          <h2 className="text-4xl md:text-5xl font-bold mb-6">
-            Megapayer <span className="text-gradient">Roadmap</span>
+          <h2 className="text-4xl md:text-5xl font-bold mb-6 text-white">
+            {t.roadmap.title}
           </h2>
-          <p className="text-xl text-gray-300 max-w-3xl mx-auto">
-            Our month-by-month concrete roadmap for growth as we strengthen
-            Megapayer's position in the decentralized finance world.
+          <p className="text-gray-500 max-w-xl mx-auto">
+            {t.roadmap.subtitle}
           </p>
         </motion.div>
 
-        {/* Roadmap Groups (2x2 grid layout) */}
-        {roadmapGroups.map((group, groupIndex) => (
-          <div key={`group-${groupIndex}`} className="mb-32 last:mb-0">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-16 max-w-5xl mx-auto relative">
-              {/* Remove connecting SVG lines */}
-
-              {/* Roadmap boxes with enhanced visual flow indicators */}
-              {group.map((milestone, index) => {
-                // Calculate delay based on position in flow
-                const flowPosition = index % 4;
-                const delayMultiplier =
-                  flowPosition === 0
-                    ? 0
-                    : flowPosition === 1
-                    ? 0.5
-                    : flowPosition === 2
-                    ? 1
-                    : 1.5;
-
-                // Determine the direction indicator for each box
-                const getDirectionIndicator = () => {
-                  if (flowPosition === 0) return "→"; // First box points right
-                  if (flowPosition === 1) return "↓"; // Second box points down
-                  if (flowPosition === 2) return "←"; // Third box points left
-                  return ""; // Last box has no indicator
-                };
-
-                return (
-                  <motion.div
-                    key={`milestone-${groupIndex}-${index}`}
-                    initial={{ opacity: 0, y: 30 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    transition={{
-                      duration: 0.6,
-                      delay: 0.3 + delayMultiplier * 0.3,
-                    }}
-                    viewport={{ once: true, amount: 0.3 }}
-                    className="relative z-10"
-                  >
-                    {/* Flow direction indicators for mobile */}
-                    {index < group.length - 1 && (
-                      <div className="md:hidden absolute -bottom-8 left-1/2 transform -translate-x-1/2">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          className="text-primary"
-                        >
-                          <path
-                            d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                            stroke="currentColor"
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                          />
-                        </svg>
-                      </div>
-                    )}
-
-                    {/* Milestone box with enhanced styling */}
-                    <div
-                      className={`
-                      h-full bg-dark/40 backdrop-blur-lg border rounded-xl p-6 shadow-xl
-                      ${
-                        milestone.status === "upcoming"
-                          ? "border-primary/30"
-                          : "border-secondary/30"
-                      }
-                      hover:border-primary/50 hover:shadow-primary/10 transition-all duration-300
-                      transform hover:-translate-y-1
-                    `}
-                    >
-                      {/* Month badge with flow position indicator */}
-                      <div className="flex items-center justify-between mb-4">
-                        <div
-                          className={`
-                          inline-block px-4 py-2 rounded-full text-sm font-bold
-                          ${
-                            milestone.status === "upcoming"
-                              ? "bg-primary/20 text-primary"
-                              : "bg-secondary/20 text-secondary"
-                          }
-                        `}
-                        >
-                          {milestone.month}
-                        </div>
-
-                        {/* Flow indicator (desktop only) */}
-                        {flowPosition !== 3 && (
-                          <div className="hidden md:flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary">
-                            {getDirectionIndicator()}
-                          </div>
-                        )}
-                      </div>
-
-                      <h3 className="text-xl font-bold mb-5">
-                        {milestone.title}
-                      </h3>
-
-                      {/* Timeline items */}
-                      <ul className="space-y-4">
-                        {milestone.items.map((item, itemIndex) => (
-                          <li
-                            key={`item-${index}-${itemIndex}`}
-                            className="flex items-start"
-                          >
-                            <div
-                              className={`
-                              flex-shrink-0 p-1.5 rounded-full mr-3 shadow-md
-                              ${
-                                item.category === "product"
-                                  ? "bg-primary/20 text-primary shadow-primary/30"
-                                  : item.category === "community"
-                                  ? "bg-green-500/20 text-green-500 shadow-green-500/30"
-                                  : item.category === "finance"
-                                  ? "bg-yellow-500/20 text-yellow-500 shadow-yellow-500/30"
-                                  : item.category === "marketing"
-                                  ? "bg-purple-500/20 text-purple-500 shadow-purple-500/30"
-                                  : "bg-blue-500/20 text-blue-500 shadow-blue-500/30"
-                              }
-                            `}
-                            >
-                              {categoryIcons[item.category]}
-                            </div>
-                            <span className="text-gray-300">{item.text}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-                  </motion.div>
-                );
-              })}
-            </div>
-          </div>
-        ))}
-
-        {/* Roadmap footer */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8 }}
-          viewport={{ once: true }}
-          className="text-center mt-16 max-w-2xl mx-auto"
-        >
-          <p className="text-gray-400 italic mb-8 leading-relaxed">
-            This roadmap provides clarity to investors while being based on
-            dynamics that evolve with the community. Each step reflects growth,
-            transparency, and commitment to decentralization.
-          </p>
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.3 }}
-            viewport={{ once: true }}
-            className="group"
-          >
-            <Link
-              href="/whitepaper/roadmap"
-              className="inline-flex items-center px-8 py-3 rounded-lg bg-gradient-to-r from-primary/20 to-primary/5 text-primary border border-primary/50 hover:bg-primary/20 transition-all duration-300 shadow-lg shadow-primary/5 hover:shadow-primary/20 group-hover:translate-y-[-2px]"
+        {/* Floating Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
+          {t.roadmap.items.map((item, index) => (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, y: 40 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.15 }}
+              viewport={{ once: true }}
+              className="group relative"
             >
-              <span>Detailed Roadmap</span>
-              <svg
-                className="ml-2 w-5 h-5 transition-transform duration-300 group-hover:translate-x-1"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+              {/* Connection line */}
+              {index < t.roadmap.items.length - 1 && (
+                <div className="hidden lg:block absolute top-1/2 -right-3 w-6 h-px bg-gradient-to-r from-cyan-500/50 to-purple-500/50" />
+              )}
+
+              {/* Floating Card */}
+              <div
+                className="relative p-6 rounded-2xl border border-white/10 backdrop-blur-sm hover:border-cyan-500/50 transition-all duration-500 hover:-translate-y-2"
+                style={{
+                  background: 'rgba(5, 5, 15, 0.8)',
+                  boxShadow: '0 0 30px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255,255,255,0.05)',
+                }}
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M14 5l7 7m0 0l-7 7m7-7H3"
-                />
-              </svg>
-            </Link>
-          </motion.div>
+                {/* Glow on hover */}
+                <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" style={{
+                  background: 'radial-gradient(circle at center, rgba(6, 182, 212, 0.1), transparent 70%)',
+                }} />
+
+                <div className="relative z-10">
+                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-bold mb-4 ${item.quarter.includes('2025')
+                    ? 'bg-cyan-500/20 text-cyan-400'
+                    : 'bg-purple-500/20 text-purple-400'
+                    }`}>
+                    {item.quarter}
+                  </span>
+
+                  <h3 className="text-xl font-bold text-white mb-3">{item.title}</h3>
+
+                  <ul className="space-y-2">
+                    {item.bullets.map((bullet, i) => (
+                      <li key={i} className="flex items-center text-sm text-gray-400">
+                        <span className="w-1.5 h-1.5 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 mr-2" />
+                        {bullet}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+
+        {/* Footer */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          viewport={{ once: true }}
+          className="text-center mt-16"
+        >
+          <Link
+            href="/whitepaper/roadmap"
+            className="inline-flex items-center px-6 py-3 rounded-full bg-gradient-to-r from-cyan-500/10 to-purple-500/10 text-cyan-400 border border-cyan-500/30 hover:border-cyan-400/60 transition-all group"
+          >
+            {t.roadmap.button}
+            <svg className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </Link>
         </motion.div>
       </div>
     </section>

@@ -1,6 +1,6 @@
 # Megapayer Website
 
-## The Future of Blockchain Technology - 2025 Edition
+## The Future of Blockchain Technology - 2026 Edition
 
 This repository contains the official website for Megapayer, a comprehensive blockchain ecosystem featuring a native blockchain, social media platform, P2P exchange, DEX, universal wallet, and stablecoin.
 
