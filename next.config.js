@@ -29,7 +29,6 @@ const nextConfig = {
     // Disables the SWC compiler
     styledComponents: true,
     emotion: false,
-    relay: false,
     reactRemoveProperties: false,
     removeConsole: false,
   },
