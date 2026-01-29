@@ -24,11 +24,11 @@ const countryFlags: Record<string, string> = {
 
 const teamMembers = [
   {
-    name: "Muhammed",
+    name: "Muhammad Salih",
     title: "CEO, Megapayer",
     country: "Turkey",
     image: "/images/team/muhammed.jpeg",
-    x: "https://x.com/muhammed_CEO",
+    x: "https://x.com/MoSalihX",
     linkedin: "https://linkedin.com/in/muhammed-ceo",
   },
   {
@@ -56,7 +56,7 @@ const teamMembers = [
     linkedin: "https://linkedin.com/in/feiyzulloh",
   },
   {
-    name: "Muhammad Najeem",
+    name: "Mohammad Najeem",
     title: "Engineer",
     country: "Malaysia",
     image: "/images/team/najeem.jpg",
