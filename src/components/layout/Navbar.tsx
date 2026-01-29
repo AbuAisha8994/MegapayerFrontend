@@ -114,7 +114,7 @@ const Navbar = () => {
         { name: t.navbar.sdk_api, href: "/developers/getting-started" },
         {
           name: t.navbar.github,
-          href: "https://github.com/megapayer",
+          href: "https://github.com/Megapayer-Network",
           isExternal: true,
         },
         {
@@ -534,7 +534,7 @@ const Navbar = () => {
                       </svg>
                     </a>
                     <a
-                      href="https://github.com/megapayer"
+                      href="https://github.com/Megapayer-Network"
                       target="_blank"
                       rel="noopener noreferrer"
                       className="text-gray-400 hover:text-white transition-colors"
